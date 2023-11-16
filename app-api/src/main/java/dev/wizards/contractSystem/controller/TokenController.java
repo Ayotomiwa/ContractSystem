@@ -5,8 +5,10 @@ import dev.wizards.contractSystem.config.Security.JwtTokenProvider;
 import dev.wizards.contractSystem.model.LoginRequest;
 import dev.wizards.contractSystem.model.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,17 +36,25 @@ public class TokenController {
     public ResponseEntity<?> authenticate(@Valid @RequestBody LoginRequest loginRequest) {
 
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
+                    )
+            );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtTokenProvider.generateToken(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return ResponseEntity.ok(new LoginResponse(jwt, userDetails.getUsername()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtTokenProvider.generateToken(authentication);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            return ResponseEntity.ok(new LoginResponse(jwt, userDetails.getUsername()));
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Authentication failed");
+        }
     }
-}
+    }
+
 

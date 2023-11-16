@@ -1,0 +1,22 @@
+[
+  {
+    "companyName": "ABC Corporation",
+    "Industry": "Technology"
+  },
+  {
+    "companyName": "XYZ Ltd",
+    "Industry": "Finance"
+  },
+  {
+    "companyName": "123 Industries",
+    "Industry": "Manufacturing"
+  },
+  {
+    "companyName": "PQR Co.",
+    "Industry": "Retail"
+  },
+  {
+    "companyName": "DEF Group",
+    "Industry": "Hospitality"
+  }
+]

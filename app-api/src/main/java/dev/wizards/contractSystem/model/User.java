@@ -18,7 +18,9 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+    private String address;
     private String password;
     private ROLE type;
+    private String phoneNumber;
     private Business business;
 }

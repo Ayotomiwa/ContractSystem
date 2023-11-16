@@ -1,12 +1,13 @@
 package dev.wizards.contractSystem.model;
 
-import dev.wizards.contractSystem.model.Enums.ROLE;
-import jakarta.persistence.GeneratedValue;
+
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDate;
 
 @Data
 @Document
@@ -15,6 +16,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Client {
     @Id
     private String id;
-    private User user;
-    private Business business;
+    private User userRecipient;
+    private Business businessRecipient;
+    private Business businessUser;
+    private LocalDate createdDate;
+    private LocalDate lastUpdatedDate;
 }

@@ -1,0 +1,179 @@
+[
+  {
+    "firstName": "John",
+    "lastNamed": "Doe",
+    "email": "johndoe@example.com",
+    "password": "password123",
+    "type": "BUSINESS_USER",
+    business:{
+        "companyName": "ABC Corporation",
+        "Industry": "Technology"
+    }
+  },
+  {
+    "firstName": "Jane",
+    "lastNamed": "Smith",
+    "email": "janesmith@example.com",
+    "password": "password456",
+    "type": "INDIVIDUAL_USER"
+  },
+  {
+    "firstName": "Michael",
+    "lastNamed": "Johnson",
+    "email": "michaeljohnson@example.com",
+    "password": "password789",
+    "type": "BUSINESS_USER",
+      business:{
+            "companyName": "ABC Corporation",
+            "Industry": "Technology"
+        }
+  },
+  {
+    "firstName": "Emily",
+    "lastNamed": "Davis",
+    "email": "emilydavis@example.com",
+    "password": "passwordabc",
+    "type": "INDIVIDUAL_USER"
+  },
+  {
+    "firstName": "David",
+    "lastNamed": "Brown",
+    "email": "davidbrown@example.com",
+    "password": "passworddef",
+    "type": "BUSINESS_USER",
+     business:{
+           "companyName": "ABC Corporation",
+           "Industry": "Technology"
+       }
+  },
+  {
+    "firstName": "Sarah",
+    "lastNamed": "Wilson",
+    "email": "sarahwilson@example.com",
+    "password": "passwordghi",
+    "type": "INDIVIDUAL_USER",
+  },
+  {
+    "firstName": "Robert",
+    "lastNamed": "Taylor",
+    "email": "roberttaylor@example.com",
+    "password": "passwordjkl",
+    "type": "BUSINESS_USER",
+    business:{
+            "companyName": "123 Industries",
+            "Industry": "Manufacturing"
+        }
+  },
+  {
+    "firstName": "Olivia",
+    "lastNamed": "Anderson",
+    "email": "oliviaanderson@example.com",
+    "password": "passwordmno",
+    "type": "INDIVIDUAL_USER"
+  },
+  {
+    "firstName": "William",
+    "lastNamed": "Thomas",
+    "email": "williamthomas@example.com",
+    "password": "passwordpqr",
+    "type": "BUSINESS_USER",
+    business:{
+            "companyName": "123 Industries",
+            "Industry": "Manufacturing"
+        }
+  },
+  {
+    "firstName": "Sophia",
+    "lastNamed": "Martinez",
+    "email": "sophiamartinez@example.com",
+    "password": "passwordstu",
+    "type": "INDIVIDUAL_USER"
+  },
+  {
+    "firstName": "Joseph",
+    "lastNamed": "Hernandez",
+    "email": "josephhernandez@example.com",
+    "password": "passwordvwx",
+    "type": "BUSINESS_USER",
+    business:{
+            "companyName": "123 Industries",
+            "Industry": "Manufacturing"
+        }
+  },
+  {
+    "firstName": "Isabella",
+    "lastNamed": "Lopez",
+    "email": "isabellalopez@example.com",
+    "password": "passwordyz1",
+    "type": "INDIVIDUAL_USER"
+  },
+  {
+    "firstName": "Daniel",
+    "lastNamed": "Gonzalez",
+    "email": "danielgonzalez@example.com",
+    "password": "password234",
+    "type": "BUSINESS_USER",
+    business:{
+            "companyName": "123 Industries",
+            "Industry": "Manufacturing"
+        }
+  },
+  {
+    "firstName": "Mia",
+    "lastNamed": "Perez",
+    "email": "miaperez@example.com",
+    "password": "password567",
+    "type": "INDIVIDUAL_USER"
+  },
+  {
+    "firstName": "Andrew",
+    "lastNamed": "Robinson",
+    "email": "andrewrobinson@example.com",
+    "password": "password890",
+    "type": "BUSINESS_USER",
+    business:{
+            "companyName": "123 Industries",
+            "Industry": "Manufacturing"
+        }
+  },
+  {
+    "firstName": "Camila",
+    "lastNamed": "Clark",
+    "email": "camilaclark@example.com",
+    "password": "passwordabc1",
+    "type": "INDIVIDUAL_USER",
+    business:{
+            "companyName": "123 Industries",
+            "Industry": "Manufacturing"
+        }
+  },
+  {
+    "firstName": "Matthew",
+    "lastNamed": "Rodriguez",
+    "email": "matthewrodriguez@example.com",
+    "password": "passworddef2",
+    "type": "BUSINESS_USER",
+    business:{
+            "companyName": "123 Industries",
+            "Industry": "Manufacturing"
+        }
+  },
+  {
+    "firstName": "Luna",
+    "lastNamed": "Lewis",
+    "email": "lunalewis@example.com",
+    "password": "passwordghi3",
+    "type": "INDIVIDUAL_USER"
+  },
+  {
+    "firstName": "Ethan",
+    "lastNamed": "Lee",
+    "email": "ethanlee@example.com",
+    "password": "passwordjkl4",
+    "type": "BUSINESS_USER",
+    business:{
+            "companyName": "123 Industries",
+            "Industry": "Manufacturing"
+        }
+  }
+]

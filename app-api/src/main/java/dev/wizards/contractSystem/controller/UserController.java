@@ -10,9 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
+@RequestMapping("/api/users")
 public class UserController {
     private final CustomUserDetailsService customUserDetailsService;
     private final TokenBlacklistService tokenBlacklistService;
@@ -31,8 +35,32 @@ public class UserController {
         if (customUserDetailsService.existsByEmail(user.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with the same username or email already exists.");
         }
+
         return ResponseEntity.ok(customUserDetailsService.save(user));
     }
+
+    @PostMapping("/sign-up-users")
+    public ResponseEntity<List<User>>signUpUsers(@RequestBody List<User> users){
+        for(User user: users){
+            if(user.getEmail() == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+            if (customUserDetailsService.existsByEmail(user.getEmail())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        }
+        return ResponseEntity.ok(customUserDetailsService.saveAll(users));
+    }
+
+
+
+
+
+
+
+
+
+
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {

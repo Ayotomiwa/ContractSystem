@@ -55,7 +55,7 @@ export const Layout = (props) => {
         display: 'flex',
         flex: '1 1 auto',
         flexDirection: 'column',
-        paddingLeft: openNav ? "280px" : "0px",
+        paddingLeft: openNav && (window.innerWidth > 768) ? "280px" : "0px",
         backGroundColor: 'transparent',
         // backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.25) 100%), linear-gradient(225deg, #e1e1e1 0%, #f6f6f6 100%)',
         // backgroundSize: 'cover',

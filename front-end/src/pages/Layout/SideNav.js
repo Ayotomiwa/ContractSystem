@@ -12,7 +12,7 @@ import {
     Stack,
     SvgIcon, SwipeableDrawer,
     Typography,
-    useMediaQuery
+    useMediaQuery, useTheme
 } from '@mui/material';
 // import { Logo } from 'src/components/logo';
 // import { Scrollbar } from 'src/components/scrollbar';
@@ -22,6 +22,8 @@ import {Scrollbar} from "../../components/scrollbar";
 
 export const SideNav = (props) => {
     const {open, onClose, OnOpen} = props;
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     // const pathname = usePathname();
     // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
@@ -35,30 +37,31 @@ export const SideNav = (props) => {
                 height: '100%',
             }}
         >
-            <Box sx={{p: 3}}>
+            {/*<Box sx={{p: 3}}>*/}
                 <Box
                     sx={{
+                        display: 'flex',
                         alignItems: 'center',
                         backgroundColor: 'rgba(255, 255, 255, 0.04)',
                         borderRadius: 1,
                         cursor: 'pointer',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        mt: 2,
-                        p: '12px'
+                        justifyContent: 'center',
+                        mt: 10,
+                        p: 3
                     }}
                 >
-                    <div>
+
                         <Typography
                             color="inherit"
                             variant="h5"
                             sx={{textAlign:"center"}}
                         >
-                            Manage Your Business
+                            {/*Manage Your Business*/}
+                            DASHBOARD
                         </Typography>
-                    </div>
+
                 </Box>
-            </Box>
+            {/*</Box>*/}
             <Divider sx={{borderColor: 'neutral.700'}}/>
             <Box
                 component="nav"
@@ -101,7 +104,7 @@ export const SideNav = (props) => {
 
 
     return (
-        window.innerWidth > 768 ? (
+        !isSmallScreen ? (
                 open &&
                 (<SwipeableDrawer
                     anchor="left"
@@ -110,7 +113,10 @@ export const SideNav = (props) => {
                     onOpen={OnOpen}
                     PaperProps={{
                         sx: {
-                            backgroundColor: "rgb(99, 102, 241)",
+                                backgroundColor: "rgb(59, 61, 145)",
+                            // backgroundColor: "#e75480",
+                            // backgroundColor: "rgb(185,67,102)",
+
                             color: "white",
                             width: 250
                         }
@@ -130,7 +136,8 @@ export const SideNav = (props) => {
                     onOpen={OnOpen}
                     PaperProps={{
                         sx: {
-                            backgroundColor: "rgb(99, 102, 241)",
+                            backgroundColor: "rgb(59, 61, 145)",
+                            // backgroundColor: "#e75480",
                             color: "white",
                             width: 250
                         }

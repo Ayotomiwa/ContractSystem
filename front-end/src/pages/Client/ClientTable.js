@@ -14,10 +14,10 @@ import {
   TableRow,
   Typography
 } from '@mui/material';
-import { Scrollbar } from './scrollbar';
-// import { getInitials } from 'src/utils/get-initials';
+import Skeleton from '@mui/material/Skeleton';
 
-export const CustomersTable = (props) => {
+
+export const ClientTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -29,7 +29,8 @@ export const CustomersTable = (props) => {
     onSelectOne,
     page = 0,
     rowsPerPage = 0,
-    selected = []
+    selected = [],
+    isLoading
   } = props;
 
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
@@ -39,7 +40,7 @@ export const CustomersTable = (props) => {
   return (
     <Card>
       {/*<Scrollbar>*/}
-        <Box sx={{ minWidth: 800 }}>
+        <Box sx={{ minWidth: 800, minHeight: 450}}>
           <Table>
             <TableHead>
               <TableRow>
@@ -66,7 +67,7 @@ export const CustomersTable = (props) => {
                   Business
                 </TableCell>
                 <TableCell>
-                  Phone
+                  Phone Number
                 </TableCell>
                 <TableCell>
                   Created Date
@@ -74,7 +75,16 @@ export const CustomersTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((client) => {
+              {isLoading ? (
+                  Array.from(new Array(rowsPerPage)).map((_, index) => (
+                      <TableRow key={index}>
+                        <TableCell colSpan={7}>
+                          <Skeleton variant="rectangular" width="100%" />
+                        </TableCell>
+                      </TableRow>
+                  ))
+              ) : (
+              items.map((client) => {
                 const isSelected = selected.includes(client.id);
 
 
@@ -122,7 +132,8 @@ export const CustomersTable = (props) => {
                     </TableCell>
                   </TableRow>
                 );
-              })}
+              })
+                )}
             </TableBody>
           </Table>
         </Box>
@@ -140,7 +151,7 @@ export const CustomersTable = (props) => {
   );
 };
 
-CustomersTable.propTypes = {
+ClientTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onDeselectAll: PropTypes.func,

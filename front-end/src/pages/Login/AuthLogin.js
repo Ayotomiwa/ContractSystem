@@ -159,7 +159,7 @@ const AuthLogin = () => {
               </Grid>
 
               <Grid item xs={12} sx={{ mt: -1 }}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={10}>
                   {/*<FormControlLabel*/}
                   {/*  control={*/}
                   {/*    <Checkbox*/}
@@ -175,7 +175,11 @@ const AuthLogin = () => {
                   <Link variant="string" component={RouterLink} to="" color="rgb(99, 102, 241)">
                     Forgot Password?
                   </Link>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <Link variant="string" component={RouterLink} to="/register" color="rgb(99, 102, 241)">
+                  <Link variant="string" component={RouterLink}
+                        to="/register"
+                        color="rgb(99, 102, 241)"
+                        sx={{textAlign:"right"}}
+                  >
                     Don't have an account? Sign Up
                   </Link>
                 </Stack>

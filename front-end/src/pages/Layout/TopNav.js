@@ -2,18 +2,19 @@ import PropTypes from 'prop-types';
 import BellIcon from '@heroicons/react/24/solid/BellIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
-import NewspaperIcon from '@heroicons/react/24/outline/NewspaperIcon';
+import NewspaperIcon from '@heroicons/react/24/solid/NewspaperIcon';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import HomeModernIcon from '@heroicons/react/24/solid/HomeModernIcon';
+import DocumentPlusIcon from '@heroicons/react/24/solid/DocumentPlusIcon';
 import {
     Avatar,
     Badge,
-    Box,
+    Box, Button,
     IconButton,
     Stack,
     SvgIcon,
     Tooltip, Typography,
-    useMediaQuery
+    useMediaQuery, useTheme
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { usePopover } from '../../hooks/use-popover';
@@ -25,22 +26,25 @@ const TOP_NAV_HEIGHT = 84;
 
 export const TopNav = (props) => {
   const { onNavOpen, openNav } = props;
-  const sideBarWidth = openNav ? SIDE_NAV_WIDTH : 0;
+  const sideBarWidth = openNav && (window.innerWidth > 768) ? SIDE_NAV_WIDTH : 0;
   console.log(openNav + " " + sideBarWidth);
   // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const accountPopover = usePopover();
+  const theme= useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <div>
+    <>
       <Box
         component="header"
         sx={{
           backdropFilter: 'blur(25px)',
-          // backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
-            backgroundColor: 'rgba(255, 255, 255, 1)',
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            top: 0,
           position: 'sticky',
           left:`${sideBarWidth}px`,
           maxWidth: `calc(100% - ${sideBarWidth}px)`,
+            zIndex: 1000,
         }}
       >
         <Stack
@@ -60,16 +64,22 @@ export const TopNav = (props) => {
           >
               <IconButton onClick={onNavOpen}>
                 <SvgIcon fontSize="large">
-                  <Bars3Icon color="rgb(99, 102, 241)"/>
+                  {/*<Bars3Icon color="#e75480"/>*/}
+                    <Bars3Icon color= "rgb(59, 61, 145)"/>
+                  {/*  <Bars3Icon color="rgb(185,67,102)"/>*/}
                 </SvgIcon>
               </IconButton>
               <Stack direction="row">
                   <SvgIcon fontSize="large">
-                      <HomeModernIcon color="rgb(99, 102, 241)"/>
+                      {/*<HomeModernIcon  color="#e75480"/>*/}
+                      {/*<HomeModernIcon  color="rgb(185,67,102)"/>*/}
+                      <HomeModernIcon  color="rgb(59, 61, 145)"/>
                   </SvgIcon>
-                  <Typography variant="h4" sx={{fontStyle:"bold", color:"#e75480", letterSpacing:"-5px", font:""}}>
+                  {!isSmallScreen &&(
+                  <Typography variant="h4" sx={{fontStyle:"bold", letterSpacing:"-5px", font:""}}>
                       Contract 101
                   </Typography>
+                      )}
               </Stack>
           </Stack>
           <Stack
@@ -77,13 +87,29 @@ export const TopNav = (props) => {
             direction="row"
             spacing={2}
           >
+              CREATE CONTRACT
             <Tooltip title="Create Contract">
               <IconButton>
-                  {/*CREATE*/}
                 <SvgIcon fontSize="large">
-                  <NewspaperIcon color="rgb(99, 102, 241)"/>
+                    <DocumentPlusIcon
+                        color="#e75480"
+                    />
                 </SvgIcon>
               </IconButton>
+                {/*<Button variant={isSmallScreen ? "text": "outlined"}*/}
+                {/*        color="error"*/}
+                {/*        size="large"*/}
+                {/*        sx={{borderRadius:"100px"}}*/}
+                {/*        startIcon={*/}
+                {/*    <SvgIcon fontSize="large">*/}
+                {/*    <DocumentPlusIcon*/}
+                {/*        color="#e75480"*/}
+                {/*    />*/}
+                {/*        </SvgIcon>}>*/}
+                {/*    {!isSmallScreen && (*/}
+                {/*        "Build New Contract"*/}
+                {/*    )}*/}
+                {/*    </Button>*/}
             </Tooltip>
             <Tooltip title="Notifications">
               <IconButton>
@@ -94,7 +120,9 @@ export const TopNav = (props) => {
                 >
 
                   <SvgIcon fontSize="large">
-                    <BellIcon color="rgb(99, 102, 241)"/>
+                      {/*<BellIcon color="rgb(185,67,102)"/>*/}
+                      {/*<BellIcon color="#e75480"/>*/}
+                    <BellIcon color="rgb(59, 61, 145)"/>
                   </SvgIcon>
                 </Badge>
               </IconButton>
@@ -102,12 +130,13 @@ export const TopNav = (props) => {
             <Avatar
               onClick={accountPopover.handleOpen}
               ref={accountPopover.anchorRef}
+              size="large"
               sx={{
                 cursor: 'pointer',
-                height: 40,
-                width: 40
+                // height: 40,
+                // width: 40
               }}
-              src={""}
+              src={"/assets/avatars/avatar-carson-darrin.png"}
             />
           </Stack>
         </Stack>
@@ -117,7 +146,7 @@ export const TopNav = (props) => {
         open={accountPopover.open}
         onClose={accountPopover.handleClose}
       />
-    </div>
+    </>
   );
 };
 

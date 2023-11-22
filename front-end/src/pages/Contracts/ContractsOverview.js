@@ -3,7 +3,6 @@ import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import {Box, Button, Card, Container, IconButton, Stack, SvgIcon, Typography} from '@mui/material';
 import { useSelection } from '../../hooks/UseSelection';
 import { Layout as DashboardLayout } from '../../components/Layout';
-import { ClientTable } from './ClientTable';
 import { SearchBar } from '../../components/SearchBar';
 import { applyPagination } from '../../utils/apply-pagination';
 import axios from "axios";
@@ -14,66 +13,47 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 
 import Skeleton from '@mui/material/Skeleton';
-import {Pages} from "@mui/icons-material";
-import {PagesTable} from "../../components/PagesTable";
+import {ContractsTable} from "./ContractsTable";
 
 
 
-// const useCustomers = (page, rowsPerPage) => {
-//   return useMemo(
-//     () => {
-//       return applyPagination(data, page, rowsPerPage);
-//     },
-//     [page, rowsPerPage]
-//   );
-// };
 
-//
-// const useCustomerIds = (customers) => {
-//   return useMemo(
-//     () => {
-//       return customers.map((customer) => customer.id);
-//     },
-//     [customers]
-//   );
-// };
-
-const Clients = () => {
+const ContractsOverview = () => {
     const {user} = useContext(UserContext);
-    const [clients, setClients] = useState([]);
+    const [contracts, setContracts] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [totalClients, setTotalClients] = useState(0);
+    const [totalContracts, setTotalContracts] = useState(0);
     const [searchTerm, setSearchTerm] = useState("");
     const [search, setSearch] = useState(false);
     const businessId = "65523e0a91702e609ee9040b"
-    const basicClientUrl = `http://localhost:8080/api/business/${businessId}/clients`;
-    const fetchClientsUrl = `size=${rowsPerPage}&page=${page}`;
-    const searchClientUrl = basicClientUrl + `/search?query=${searchTerm}`;
+    const basicContractUrl = `http://localhost:8080/api/business/${businessId}/clients`;
+    const fetchContractUrl = `size=${rowsPerPage}&page=${page}`;
+    const searchContractUrl = basicContractUrl + `/search?query=${searchTerm}`;
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedClientId, setSelectedClientId] = useState(null);
+    const [selectedContractId, setSelectedContractId] = useState(null);
     const display =useRef("");
 
 
     useEffect(() => {
         if (search === false || searchTerm === "") {
-            setClients([]);
-            fetchClients();
+            setContracts([]);
+            fetchContracts();
         } else if (search === true && searchTerm !== "") {
             if (page === 0) {
-                setClients([]);
+                setContracts([]);
             }
             fetchSearchData();
         }
     }, [user, page, rowsPerPage, searchTerm, search]);
 
 
-    const fetchClients = () => {
+    const fetchContracts = () => {
         // if (user) {
         // axios.get(`http://localhost:8080/api/clients/business/${user.business.id}`)
-        axios.get(basicClientUrl + "?" + fetchClientsUrl)
+        axios.get(basicContractUrl + "?" + fetchContractUrl)
             .then(response => {
-                processClientData(response.data);
+                processContractsData(response.data);
                 setIsLoading(false);
                 // const clientWithAvatars = response.data.content.map((client) => ({
                 //     ...client,
@@ -82,7 +62,7 @@ const Clients = () => {
 
             })
             .catch(error => {
-                console.error("Error fetching clients:", error);
+                console.error("Error fetching contracts:", error);
                 setIsLoading(false);
             });
     }
@@ -90,7 +70,7 @@ const Clients = () => {
     // const useCustomers = (page, rowsPerPage) => {
     //     return useMemo(
     //         () => {
-    //             return applyPagination(clients, page, rowsPerPage);
+    //             return applyPagination(contracts, page, rowsPerPage);
     //         },
     //         [page, rowsPerPage]
     //     );
@@ -99,9 +79,9 @@ const Clients = () => {
 
     const fetchSearchData = () => {
         setIsLoading(true);
-        axios.get(searchClientUrl + "&" + fetchClientsUrl)
+        axios.get(searchContractUrl + "&" + fetchContractUrl)
             .then(response => {
-                processClientData(response.data);
+                processContractsData(response.data);
                 setIsLoading(false);
                 // const clientWithAvatars = response.data.content.map((client) => ({
                 //     ...client,
@@ -110,45 +90,45 @@ const Clients = () => {
 
             })
             .catch(error => {
-                console.error("Error fetching clients:", error);
+                console.error("Error fetching contracts:", error);
                 setIsLoading(false);
             });
     }
 
     const handleDelete = (event) => {
         event.preventDefault();
-        deleteClient()
+        deleteContract()
     }
 
 
-    const deleteClient = () =>
+    const deleteContract = () =>
     {
-        axios.get(`http://localhost:8080/api/business/delete/${selectedClientId}`)
+        axios.get(`http://localhost:8080/api/business/delete/${selectedContractId}`)
             .then((res) => res.status)
             .then((status)=>{
                 if(status === 200){
-                    setClients(prevClients => prevClients.filter(client => client.id !== selectedClientId));
+                    setContracts(prevClients => prevClients.filter(client => client.id !== selectedContractId));
                 }
             }).
-            catch((error) => {
-              console.log(error);
-           })
+        catch((error) => {
+            console.log(error);
+        })
     }
 
 
-    const processClientData = (data) => {
+    const processContractsData = (data) => {
         const clientWithAvatars = data.content.map((client) => ({
             ...client,
             avatar: generateRandomAvatar()
         }));
-        setClients(clientWithAvatars);
-        setTotalClients(data.totalElements);
+        setContracts(clientWithAvatars);
+        setTotalContracts(data.totalElements);
     }
 
 
-    const resetClientList = (value) => {
+    const resetContractsList = (value) => {
         // setExams([]);
-        setTotalClients(0);
+        setTotalContracts(0);
         setPage(0);
         setSearch(value);
     }
@@ -163,24 +143,9 @@ const Clients = () => {
         setPage(0);
     };
 
-    const clientId = useMemo(() => clients.map((customer) => customer.id), [clients]);
+    const contractIds = useMemo(() => contracts.map((customer) => customer.id), [contracts]);
 
-    const clientSelection = useSelection(clientId);
-
-
-    // const handlePageChange = useCallback(
-    //   (event, value) => {
-    //     setPage(value);
-    //   },
-    //   []
-    // );
-
-    // const handleRowsPerPageChange = useCallback(
-    //   (event) => {
-    //     setRowsPerPage(event.target.value);
-    //   },
-    //   []
-    // );
+    const contractSelection = useSelection(contractIds);
 
     return (
         <>
@@ -202,7 +167,7 @@ const Clients = () => {
                         >
                             <Stack spacing={1}>
                                 <Typography variant="h4">
-                                    Clients
+                                    Contracts
                                 </Typography>
                                 <Stack
                                     alignItems="center"
@@ -231,7 +196,7 @@ const Clients = () => {
                                         }
                                     }}
                                 >
-                                    New Client
+                                    New Contract
                                 </Button>
                             </div>
                         </Stack>
@@ -242,7 +207,7 @@ const Clients = () => {
                                    spacing={4}
                             >
 
-                                <SearchBar setSearchTerm={setSearchTerm} resetList={resetClientList}/>
+                                <SearchBar setSearchTerm={setSearchTerm} resetList={resetContractsList}/>
                                 <IconButton
                                     color="red"
                                     onClick={handleDelete}
@@ -254,30 +219,21 @@ const Clients = () => {
                             </Stack>
 
                         </Card>
-                        <PagesTable
-                            count={totalClients}
-                            items={clients}
-                            onDeselectAll={clientSelection.handleDeselectAll}
-                            onDeselectOne={clientSelection.handleDeselectOne}
+                        <ContractsTable
+                            count={totalContracts}
+                            items={contracts}
+                            onDeselectAll={contractSelection.handleDeselectAll}
+                            onDeselectOne={contractSelection.handleDeselectOne}
                             onPageChange={handlePageChange}
                             onRowsPerPageChange={handleRowsPerPageChange}
-                            onSelectAll={clientSelection.handleSelectAll}
-                            onSelectOne={clientSelection.handleSelectOne}
+                            onSelectAll={contractSelection.handleSelectAll}
+                            onSelectOne={contractSelection.handleSelectOne}
                             page={page}
                             rowsPerPage={rowsPerPage}
-                            selected={clientSelection.selected}
+                            selected={contractSelection.selected}
                             isLoading={isLoading}
                             businessId={businessId}
-                            setItemsId={setSelectedClientId}
-                            columnHeaders={{
-                                "Name": "userRecipient.firstName",
-                                "Email": "userRecipient.email",
-                                "Phone Number":"userRecipient.phoneNumber",
-                                    "Business":"userRecipient.business.companyName",
-                                    "Created Date":"createdDate",
-                                    "Last Updated":"lastUpdated",
-                                }}
-                            showAvatar={true}
+                            setContractsId={setSelectedContractId}
                         />
                     </Stack>
                 </Container>
@@ -285,5 +241,4 @@ const Clients = () => {
         </>
     );
 };
-export default Clients;
-
+export default ContractsOverview;

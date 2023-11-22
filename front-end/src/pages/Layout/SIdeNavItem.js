@@ -23,21 +23,19 @@ export const SIdeNavItem = (props) => {
     <li>
       <ButtonBase
         sx={{
+            display: 'flex',
+            flexDirection: 'column',
           alignItems: 'center',
           borderRadius: 1,
-          display: 'flex',
-          justifyContent: 'flex-start',
-          pl: '16px',
-          pr: '16px',
-          py: '16px',
+          padding:"14px",
           textAlign: 'left',
           width: '100%',
-          ...(active && {
-            // backgroundColor: 'rgba(255, 255, 255, 0.04)'
+          ...(active &&{
+            backgroundColor: 'rgba(255, 255, 255, 0.3)'
           }),
-          '&:hover': {
-            backgroundColor: 'rgba(255, 255, 255, 0.04)'
-          }
+          // '&:hover': {
+          //   backgroundColor: 'rgba(255, 255, 255, 0.04)'
+          // }
         }}
         {...linkProps}
       >
@@ -45,14 +43,17 @@ export const SIdeNavItem = (props) => {
           <Box
             component="span"
             sx={{
+                color:"",
               alignItems: 'center',
-              color: 'neutral.400',
               display: 'inline-flex',
               justifyContent: 'center',
-              mr: 2,
-              ...(active && {
-                color: 'primary.main'
-              })
+              mr: 1,
+                ...(disabled &&{
+                    color: "gray"
+                }),
+                ...(active && {
+                    color: "rgb(185,67,102)"
+                })
             }}
           >
             {icon}
@@ -63,17 +64,11 @@ export const SIdeNavItem = (props) => {
           sx={{
             color: 'white',
             flexGrow: 1,
-            // fontFamily: (theme) => theme.typography.fontFamily,
-            // fontSize: 14,
-            // fontWeight: 600,
             lineHeight: '24px',
             whiteSpace: 'nowrap',
-            ...(active && {
-              color: 'white'
-            }),
-            ...(disabled && {
-              color: 'rgba(255, 255, 255, 0.04)'
-            })
+              ...(disabled &&{
+                  color: "gray"
+              }),
           }}
         >
           {title}

@@ -67,7 +67,7 @@ const AuthLogin = () => {
                 password: values.password
               }
             });
-            const path= '/user'
+            const path= '/contracts'
             login(logInResponse.data, path)
             console.log("Signing IN")
             setStatus({success: true})
@@ -133,21 +133,6 @@ const AuthLogin = () => {
                     name="password"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    // endAdornment={
-                    //   <InputAdornment position="end"  sx={{color: "RGB(176, 196, 222, 0.4)"}}>
-                    //     <IconButton
-                    //       aria-label="toggle password visibility"
-                    //       onClick={handleClickShowPassword}
-                    //       onMouseDown={handleMouseDownPassword}
-                    //       edge="end"
-                    //       size="large"
-                    //       sx={{backgroundColor: "RGB(176, 196, 222, 0.4)"}}
-                    //     >
-                    //
-                    //       {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
-                    //     </IconButton>
-                    //   </InputAdornment>
-                    // }
                     placeholder="Enter password"
                   />
                   {touched.password && errors.password && (
@@ -160,18 +145,6 @@ const AuthLogin = () => {
 
               <Grid item xs={12} sx={{ mt: -1 }}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={10}>
-                  {/*<FormControlLabel*/}
-                  {/*  control={*/}
-                  {/*    <Checkbox*/}
-                  {/*      checked={checked}*/}
-                  {/*      onChange={(event) => setChecked(event.target.checked)}*/}
-                  {/*      name="checked"*/}
-                  {/*      color="primary"*/}
-                  {/*      size="small"*/}
-                  {/*    />*/}
-                  {/*  }*/}
-                  {/*  label={<Typography variant="h6">Keep me sign in</Typography>}*/}
-                  {/*/>*/}
                   <Link variant="string" component={RouterLink} to="" color="rgb(99, 102, 241)">
                     Forgot Password?
                   </Link>

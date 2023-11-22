@@ -1,6 +1,6 @@
 import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 import { Layout as DashboardLayout } from '../../components/Layout';
-import { ProfileDetails } from './ProfileDetails';
+import  ProfileDetails  from './ProfileDetails';
 
 const ClientForm = () => (
   <>

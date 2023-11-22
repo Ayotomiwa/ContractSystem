@@ -1,9 +1,5 @@
-// import NextLink from 'next/link';
-// import { usePathname } from 'next/navigation';
-import {Link as RouterLink} from 'react-router-dom';
+
 import PropTypes from 'prop-types';
-import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
-import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
 import {
     Box,
     Button,
@@ -14,11 +10,9 @@ import {
     Typography,
     useMediaQuery, useTheme
 } from '@mui/material';
-// import { Logo } from 'src/components/logo';
-// import { Scrollbar } from 'src/components/scrollbar';
 import { items } from './Config';
 import { SIdeNavItem } from './SIdeNavItem';
-import {Scrollbar} from "../../components/scrollbar";
+
 
 export const SideNav = (props) => {
     const {open, onClose, OnOpen} = props;
@@ -56,8 +50,7 @@ export const SideNav = (props) => {
                             variant="h5"
                             sx={{textAlign:"center"}}
                         >
-                            {/*Manage Your Business*/}
-                            DASHBOARD
+                            Manage Your Business
                         </Typography>
 
                 </Box>
@@ -87,7 +80,7 @@ export const SideNav = (props) => {
                         return (
                             <SIdeNavItem
                                 active={active}
-                                disabled={item.disabled}
+                                disabled={!active}
                                 external={item.external}
                                 icon={item.icon}
                                 key={item.title}
@@ -98,7 +91,7 @@ export const SideNav = (props) => {
                     })}
                 </Stack>
             </Box>
-            <Divider sx={{borderColor: 'neutral.700'}}/>
+            <Divider />
         </Box>
     );
 
@@ -112,17 +105,16 @@ export const SideNav = (props) => {
                     onClose={onClose}
                     onOpen={OnOpen}
                     PaperProps={{
-                        sx: {
-                                backgroundColor: "rgb(59, 61, 145)",
-                            // backgroundColor: "#e75480",
-                            // backgroundColor: "rgb(185,67,102)",
 
+                        sx: {
+                            mt:0,
+                            backgroundColor: "rgb(59, 61, 145)",
+                            border:"1px solid black",
+                            boxShadow: 20,
                             color: "white",
-                            width: 250
+                            width: 200
                         }
                     }}
-                    // sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
-                    // variant="temporary"
                     variant="permanent"
                 >
                     {content}
@@ -139,7 +131,7 @@ export const SideNav = (props) => {
                             backgroundColor: "rgb(59, 61, 145)",
                             // backgroundColor: "#e75480",
                             color: "white",
-                            width: 250
+                            width: 200
                         }
                     }}
                     // sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
@@ -151,26 +143,6 @@ export const SideNav = (props) => {
             )
 );
 };
-
-  // return (
-  //   <Drawer
-  //     anchor="left"
-  //     onClose={onClose}
-  //     open={open}
-  //     PaperProps={{
-  //       sx: {
-  //         backgroundColor: 'neutral.800',
-  //         color: 'common.white',
-  //         width: 280
-  //       }
-  //     }}
-  //     sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
-  //     variant="temporary"
-  //   >
-  //     {content}
-  //   </Drawer>
-  // );
-// };
 
 SideNav.propTypes = {
   onClose: PropTypes.func,

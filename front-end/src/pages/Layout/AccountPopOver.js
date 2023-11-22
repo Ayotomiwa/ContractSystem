@@ -19,7 +19,8 @@ export const AccountPopOver = (props) => {
   };
 
   const handleSignIn = () => {
-      navigate('/');
+      // navigate('/');
+      window.location.href = '/'
   }
 
   return (
@@ -31,7 +32,7 @@ export const AccountPopOver = (props) => {
       }}
       onClose={onClose}
       open={open}
-      PaperProps={{ sx: { width: 200 } }}
+      PaperProps={{ sx: { width: 150 } }}
     >
       <Box
         sx={{

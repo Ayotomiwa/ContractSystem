@@ -1,0 +1,64 @@
+
+{
+    "name": "Tenant 01",
+     "industry": "Housing",
+     "type":"LEASE",
+    "placeholders":{
+        "contract":{
+            "day":null,
+            "month":null,
+            "year": null
+        },
+        "individualOwner":{
+            "business":{
+               "name":null,
+               "type":null,
+               "address":null
+            }
+        },
+        "recipient":{
+            "userRecipient":{
+                 "name":null,
+                 "type": null
+            }
+        },
+        "userSignedDate":null,
+        "clientSignedDate":null,
+        "endDate":null,
+        "startDate":null,
+        "rentAmount":null,
+        "propertyAddress":null
+    },
+    "description":"A contract conveying land, property, or services to another for a specified time against periodic payment",
+     "data":{
+         "title": "Tenant Agreement",
+        "sectionA": {
+            "title": "PARTIES",
+            "body": "This Agreement ('the Agreement') is made this %%contract.day%% day of %%contract.month%%, %%contract.year%% between: The Landlord: %%individualOwner.business.name%%, a %%individualOwner.type%% with its registered office at %%individualOwner.business.address%%, hereinafter referred to as 'the Landlord'. AND The Tenant: %%client.userRecipient.name%%, a %%client.userRecipient.type%% with its registered office at %%userRecipient.business.address%%, hereinafter referred to as 'the Tenant'."
+        },
+        "sectionB": {
+            "title": "PROPERTY",
+            "body": "The Landlord agrees to rent to the Tenant, and the Tenant agrees to rent from the Landlord, the property located at %%propertyAddress%%, hereinafter referred to as 'the Property'."
+        },
+        "sectionC": {
+            "title": "TERM",
+            "body": "This tenancy will begin on %%startDate%% and end on %%endDate%%."
+        },
+        "sectionD": {
+            "title": "RENT",
+            "body": "The Tenant will pay the Landlord a monthly rent of %%rentAmount%%."
+        },
+        "signatures": {
+            "user_signature": {
+                "signatory_name": "%%individualOwner.firstName%% %%individualOwner.lastName%%",
+                "email": "%%individualOwner.email%%",
+                "timestamp": %%userSignedDate%%
+            },
+            "landlord_signature": {
+                "signatory_name": "%%client.userRecipient.firstName%% %%client.userRecipient.lastName%%",
+                "email": "%%client.userRecipient.email%%",
+                "timestamp": "%%clientSignedDate%%"
+            }
+        }
+}
+}

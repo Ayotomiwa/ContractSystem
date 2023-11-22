@@ -4,8 +4,8 @@ import { subDays, subHours } from 'date-fns';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import {Box, Button, Card, Container, Stack, SvgIcon, Typography} from '@mui/material';
-import { useSelection } from '../../hooks/use-selection';
+import {Box, Button, Card, Container, IconButton, Stack, SvgIcon, Typography} from '@mui/material';
+import { useSelection } from '../../hooks/UseSelection';
 import { Layout as DashboardLayout } from '../../components/Layout';
 import { SearchBar } from '../../components/SearchBar';
 import { applyPagination } from '../../utils/apply-pagination';
@@ -13,6 +13,7 @@ import axios from "axios";
 import UserContext from "../../hooks/UserProvider";
 import {generateRandomAvatar} from "../../utils/avatarUtils";
 import {ProductTable} from "./ProductTable";
+import TrashIcon from "@heroicons/react/24/solid/TrashIcon";
 
 
 
@@ -30,6 +31,7 @@ const Products = () => {
     const fetchProductUrl = `size=${rowsPerPage}&page=${page}`;
     const searchProductUrl= basicProductUrl + `/search?query=${searchTerm}` ;
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState(null);
 
 
     useEffect(() => {
@@ -98,6 +100,25 @@ const Products = () => {
     }
 
 
+    const handleDelete = (event) => {
+        event.preventDefault();
+        deleteProduct()
+    }
+
+
+    const deleteProduct = () =>
+    {
+        axios.post(`http://localhost:8080/api/product-services/${selectedProductId}`)
+            .then((res) => res.status)
+            .then((status)=>{
+                if(status === 200){
+                    setProducts(prevProducts => prevProducts.filter(product => product.id !== selectedProductId));
+                }
+            }).
+        catch((error) => {
+            console.log(error);
+        })
+    }
 
 
 
@@ -122,7 +143,9 @@ const Products = () => {
                 component="main"
                 sx={{
                     flexGrow: 1,
-                    py: 8
+                    py: 8,
+                    marginLeft: "50px",
+                    marginRight: "50px",
                 }}
             >
                 <Container maxWidth="xl">
@@ -153,17 +176,10 @@ const Products = () => {
                                     variant="contained"
                                     size ="small"
                                     sx={{backgroundColor:"rgb(99, 102, 241)", fontSize:"1.2rem", color:"white",
-                                        width:"100%", height:"50px", borderRadius:"10px", '&:hover': {
-                                            // backgroundColor: "rgb(99, 102, 241)",
-                                            backgroundColor: "#e75480",
-                                        },
-                                        '&:focus': {
-                                            // backgroundColor: "rgb(99, 102, 241)",
-                                            backgroundColor: "#e75480",
-                                        },
-                                        '&:active': {
-                                            // backgroundColor: "rgb(99, 102, 241)",
-                                            backgroundColor: "#e75480",
+                                        width:"100%", height:"50px", borderRadius:"10px",
+                                        '&:hover, &:focus, &active': {
+                                            backgroundColor: "rgb(99, 102, 241)",
+                                            // backgroundColor: "#e75480",
                                         }
                                     }}
                                 >
@@ -173,6 +189,14 @@ const Products = () => {
                         </Stack>
                         <Card sx={{display:"flex", alignItems:"left", justifyContent:"left", p: 2 }}>
                             <SearchBar setSearchTerm={setSearchTerm} resetList={resetProductsList} />
+                            <IconButton
+                                color="red"
+                                onClick={handleDelete}
+                            >
+                                <SvgIcon sx={{fontSize: "40px"}}>
+                                    <TrashIcon color="rgb(185,67,102)"/>
+                                </SvgIcon>
+                            </IconButton>
                         </Card>
                         <ProductTable
                             count={totalProducts}
@@ -186,8 +210,8 @@ const Products = () => {
                             page={page}
                             rowsPerPage={rowsPerPage}
                             selected={productSelection.selected}
-                            // resetList={resetProductsList}
                             isLoading={isLoading}
+                            setProductId={setSelectedProductId}
                         />
                     </Stack>
                 </Container>

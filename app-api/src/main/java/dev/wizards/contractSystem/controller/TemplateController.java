@@ -16,11 +16,19 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/templates")
+@RequestMapping("/api/templates")
 public class TemplateController {
 
     private final DefaultTemplateRepo defaultTemplateRepo;
     private final CustomTemplateRepo customTemplateRepo;
+
+
+    @PostMapping("/default")
+    public ResponseEntity<DefaultTemplate> createDefaultTemplate(@RequestBody DefaultTemplate template) {
+        DefaultTemplate createdTemplate = defaultTemplateRepo.save(template);
+        return ResponseEntity.ok(createdTemplate);
+    }
+
 
     @GetMapping("/default")
     public ResponseEntity<Page<DefaultTemplate>> getTemplates(
@@ -37,6 +45,9 @@ public class TemplateController {
         );
         return ResponseEntity.ok(templates);
     }
+
+
+
     @GetMapping("/default/{template-id}")
     public ResponseEntity<DefaultTemplate> getTemplate( @PathVariable("template-id") String parameter) {
         DefaultTemplate template = defaultTemplateRepo.findById(parameter)

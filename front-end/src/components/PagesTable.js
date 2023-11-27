@@ -51,8 +51,6 @@ export const PagesTable = (props) => {
     };
 
 
-
-
     return (
         <Card elevation={6}  sx={{overflowX: "auto", border: "0.5px solid black", boxShadow:3}}>
             {/*<Card sx={{boxShadow:3}}>*/}
@@ -60,11 +58,11 @@ export const PagesTable = (props) => {
             <Box sx={{minWidth: 800, minHeight: 450}}>
                 <Table>
                     {/*<TableHead sx={{backgroundColor:"rgb(59, 61, 145, 0.3)"}}>*/}
-                    <TableHead >
+                    <TableHead>
                         <TableRow sx={{backgroundColor:"rgb(59, 61, 145, 0.5)",
-                            color:"yellow",
                             textTransform: "uppercase",
-                            fontWeight: "bold"}}>
+                            height:"40px"
+                            }}>
                             <TableCell padding="checkbox">
                                 <Checkbox
                                     checked={selectedAll}
@@ -79,7 +77,9 @@ export const PagesTable = (props) => {
                                 />
                             </TableCell>
                             {Object.entries(columnHeaders).map(([columnHeader], index ) => (
-                                <TableCell key={index}>
+                                <TableCell key={index} sx={{
+                                    fontSize: "16px",
+                                    }}>
                                     {columnHeader}
                                 </TableCell>
                             ))
@@ -110,7 +110,7 @@ export const PagesTable = (props) => {
                                             layout
                                             selected={isSelected}
                                             onClick={() => {
-                                                navigate(`/clients/edit?clientId=${item.id}&businessId=${businessId}`, {replace: true});
+                                                // navigate(`/clients/edit?clientId=${item.id}&businessId=${businessId}`, {replace: true});
                                             }}
                                             sx={{
                                                 cursor: 'pointer',

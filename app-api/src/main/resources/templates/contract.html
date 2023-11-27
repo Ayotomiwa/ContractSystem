@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>Contract</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            text-align: center;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-$END$
+<div class="container">
+    <h1>Hello,</h1>
+    <p>
+        You have a new contract named <strong th:text="${contract.name}"></strong>.
+    </p>
+    <p>
+        Please review the contract details and sign in to proceed.
+    </p>
+    <p>
+        <a th:href="${signinLink}" class="button">Sign In</a>
+    </p>
+</div>
 </body>
 </html>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, ButtonBase } from '@mui/material';
 import {Link as RouterLink} from 'react-router-dom';
 
-export const SIdeNavItem = (props) => {
+export const SideNavItem = (props) => {
   const { active = false, disabled, external, icon, path, title } = props;
 
   const linkProps = path
@@ -78,7 +78,7 @@ export const SIdeNavItem = (props) => {
   );
 };
 
-SIdeNavItem.propTypes = {
+SideNavItem.propTypes = {
   active: PropTypes.bool,
   disabled: PropTypes.bool,
   external: PropTypes.bool,

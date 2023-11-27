@@ -68,10 +68,10 @@ const AuthRegister = () => {
                         email: '',
                         phoneNumber: '',
                         business: {
-                            companyName: "",
-                            industry: "",
-                            address: "",
-                            phoneNumber: ""
+                            companyName: null,
+                            industry: null,
+                            address: null,
+                            phoneNumber: null
                         },
                         password: '',
                         submit: null
@@ -134,7 +134,7 @@ const AuthRegister = () => {
                                 </Typography>
                                 <Button type="link"
                                         component={RouterLink}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    to={`/`}
+                                        to={`/login`}
                                         sx={{color:"rgb(99, 102, 241)"}}
                                 > Have an Account? Log in</Button>
                             </Stack>

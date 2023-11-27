@@ -14,6 +14,7 @@ import UserContext from "../../hooks/UserProvider";
 import {generateRandomAvatar} from "../../utils/avatarUtils";
 import {ProductTable} from "./ProductTable";
 import TrashIcon from "@heroicons/react/24/solid/TrashIcon";
+import {PagesTable} from "../../components/PagesTable";
 
 
 
@@ -55,7 +56,7 @@ const Products = () => {
 
 
     const fetchProducts = () => {
-        setIsLoading(true);
+        setIsLoading(false);
         // if (user) {
         // axios.get(`http://localhost:8080/api/products/business/${user.business.id}`)
         axios.get(basicProductUrl + "?" + fetchProductUrl)
@@ -183,12 +184,17 @@ const Products = () => {
                                         }
                                     }}
                                 >
-                                    New
+                                    New Product
                                 </Button>
                             </div>
                         </Stack>
-                        <Card sx={{display:"flex", alignItems:"left", justifyContent:"left", p: 2 }}>
-                            <SearchBar setSearchTerm={setSearchTerm} resetList={resetProductsList} />
+                        <Card elevation={8} sx={{p: 2}}>
+                        <Stack direction="row"
+                               justifyContent="space-between"
+                               alignItems="center"
+                               spacing={4}
+                        >
+                            <SearchBar setSearchTerm={setSearchTerm} resetList={resetProductsList} placeHolder="Search Products" />
                             <IconButton
                                 color="red"
                                 onClick={handleDelete}
@@ -197,8 +203,9 @@ const Products = () => {
                                     <TrashIcon color="rgb(185,67,102)"/>
                                 </SvgIcon>
                             </IconButton>
+                            </Stack>
                         </Card>
-                        <ProductTable
+                        <PagesTable
                             count={totalProducts}
                             items={products}
                             onDeselectAll={productSelection.handleDeselectAll}
@@ -211,7 +218,13 @@ const Products = () => {
                             rowsPerPage={rowsPerPage}
                             selected={productSelection.selected}
                             isLoading={isLoading}
-                            setProductId={setSelectedProductId}
+                            setItemsId={setSelectedProductId}
+                            columnHeaders={{
+                                "Name": "name",
+                                "Description": "description",
+                                "Type":"type",
+                                "Cost Per Unit":"price",
+                            }}
                         />
                     </Stack>
                 </Container>

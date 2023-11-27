@@ -1,12 +1,16 @@
-import {useContext} from "react";
+import { useContext } from "react";
 import UserContext from "./UserProvider";
-import {Navigate, Route} from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-const PrivateRoute = ({ path, element }) =>  {
+const BusinessContent = ({ children }) => {
     const { user } = useContext(UserContext);
-    const Component = user && user.businessId ? element : <Navigate to='/' replace />;
 
-    return <Route path={path} element={Component} />;
-}
+    if (!user || !user.businessId) {
+        window.location.pathname = "/";
+        return null;
+    }
 
-export default PrivateRoute;
+    return children;
+};
+
+export default BusinessContent;

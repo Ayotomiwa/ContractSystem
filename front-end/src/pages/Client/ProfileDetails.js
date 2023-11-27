@@ -90,6 +90,7 @@ const ProfileDetails = () => {
     catch((error) => {
         console.log(error);
     });
+    window.location.href = '/clients';
   };
 
 

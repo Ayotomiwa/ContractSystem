@@ -4,6 +4,8 @@ package dev.wizards.contractSystem.controller;
 import dev.wizards.contractSystem.config.Security.JwtTokenProvider;
 import dev.wizards.contractSystem.model.LoginRequest;
 import dev.wizards.contractSystem.model.LoginResponse;
+import dev.wizards.contractSystem.repository.BusinessRepo;
+import dev.wizards.contractSystem.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +26,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class TokenController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserRepo userRepo;
+    private final BusinessRepo businessRepo;
 
     @Autowired
     public TokenController(AuthenticationManager authenticationManager,
-                           JwtTokenProvider jwtTokenProvider) {
+                           JwtTokenProvider jwtTokenProvider, UserRepo userRepo, BusinessRepo businessRepo) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.userRepo = userRepo;
+        this.businessRepo = businessRepo;
     }
 
     @PostMapping("")
@@ -48,7 +54,10 @@ public class TokenController {
             String jwt = jwtTokenProvider.generateToken(authentication);
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-            return ResponseEntity.ok(new LoginResponse(jwt, userDetails.getUsername()));
+            String id = userRepo.findByEmail(userDetails.getUsername()).get().getId();
+            String businessId = userRepo.findByEmail(userDetails.getUsername()).get().getBusiness().getId();
+
+            return ResponseEntity.ok(new LoginResponse(jwt, userDetails.getUsername(),id, businessId));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
         } catch (Exception e) {

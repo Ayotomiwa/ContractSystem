@@ -1,6 +1,7 @@
 package dev.wizards.contractSystem.service.ServiceImpl;
 
 
+import dev.wizards.contractSystem.model.Business;
 import dev.wizards.contractSystem.model.Enums.ROLE;
 import dev.wizards.contractSystem.model.User;
 import dev.wizards.contractSystem.repository.BusinessRepo;
@@ -39,16 +40,31 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public User save(User user) {
+
+        Business business = null;
+        String userId;
+
+        if(userRepo.existsByEmail(user.getEmail())){
+            userId = userRepo.getByEmail(user.getEmail()).getId();
+            user.setId(userId);
+        }
+        
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        if(user.getBusiness() == null){
+
+        if(user.getBusiness().getCompanyName() == null){
+            System.out.println("Business is null");
             user.setType(ROLE.INDIVIDUAL_USER);
         }
         else if(businessRepo.existsByCompanyName(user.getBusiness().getCompanyName())){
+            System.out.println("Business exists - " + user.getBusiness().getCompanyName());
             user.setType(ROLE.BUSINESS_USER);
+            business = businessRepo.getByCompanyName(user.getBusiness().getCompanyName());
         }
         else{
-            businessRepo.save(user.getBusiness());
+            business = businessRepo.save(user.getBusiness());
+            user.setBusiness(business);
         }
+
         return userRepo.save(user);
     }
 

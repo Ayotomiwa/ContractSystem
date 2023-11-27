@@ -10,4 +10,6 @@ import lombok.RequiredArgsConstructor;
 public class LoginResponse {
     private String token;
     private String email;
+    private String id;
+    private String businessId;
 }

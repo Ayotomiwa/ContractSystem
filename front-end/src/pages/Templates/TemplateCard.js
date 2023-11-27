@@ -6,7 +6,7 @@ export default function TemplateCard({ title, description, image, color, contrac
 
 
     return (
-        <Card borderShadow={24} sx={{ maxWidth: 250, mb: 4,
+        <Card elevation={8} sx={{ maxWidth: 250, mb: 4,
             backgroundColor:color,
             elevation: 6,
             border:"0.5px solid black",

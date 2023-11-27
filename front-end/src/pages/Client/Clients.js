@@ -46,7 +46,8 @@ const Clients = () => {
     const [totalClients, setTotalClients] = useState(0);
     const [searchTerm, setSearchTerm] = useState("");
     const [search, setSearch] = useState(false);
-    const businessId = "65523e0a91702e609ee9040b"
+    // const businessId = "65523e0a91702e609ee9040b";
+    const businessId = user?.businessId? user.businessId : "";
     const basicClientUrl = `http://localhost:8080/api/business/${businessId}/clients`;
     const fetchClientsUrl = `size=${rowsPerPage}&page=${page}`;
     const searchClientUrl = basicClientUrl + `/search?query=${searchTerm}`;
@@ -56,6 +57,7 @@ const Clients = () => {
 
 
     useEffect(() => {
+        // console.log("fetch Clients: " +  user.businessId)
         if (search === false || searchTerm === "") {
             setClients([]);
             fetchClients();
@@ -69,6 +71,7 @@ const Clients = () => {
 
 
     const fetchClients = () => {
+        // console.log("fetch Clients: " +  user.businessId)
         // if (user) {
         // axios.get(`http://localhost:8080/api/clients/business/${user.business.id}`)
         axios.get(basicClientUrl + "?" + fetchClientsUrl)
@@ -235,14 +238,15 @@ const Clients = () => {
                                 </Button>
                             </div>
                         </Stack>
-                        <Card elevation={10} sx={{p: 2}}>
+                        <Card elevation={8} sx={{p: 2}}>
                             <Stack direction="row"
                                    justifyContent="space-between"
                                    alignItems="center"
                                    spacing={4}
                             >
 
-                                <SearchBar setSearchTerm={setSearchTerm} resetList={resetClientList}/>
+                                <SearchBar setSearchTerm={setSearchTerm} resetList={resetClientList}
+                                           placeHolder="Search Client - Name or Email"/>
                                 <IconButton
                                     color="red"
                                     onClick={handleDelete}
@@ -275,7 +279,7 @@ const Clients = () => {
                                 "Phone Number":"userRecipient.phoneNumber",
                                     "Business":"userRecipient.business.companyName",
                                     "Created Date":"createdDate",
-                                    "Last Updated":"lastUpdated",
+                                    "Last Updated":"lastUpdatedDate",
                                 }}
                             showAvatar={true}
                         />

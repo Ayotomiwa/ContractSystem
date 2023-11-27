@@ -24,8 +24,10 @@ public interface ClientRepo extends MongoRepository<Client, String> {
             "{'userRecipient.firstName': {$regex: ?0, $options: 'i'}}, " +
             "{'userRecipient.lastName': {$regex: ?0, $options: 'i'}}, " +
             "{'userRecipient.email': {$regex: ?0, $options: 'i'}}," +
-            "{'businessRecipient.companyName': {$regex: ?0, $options: 'i'}}" +
+            "{'userRecipient.business.companyName': {$regex: ?0, $options: 'i'}}" +
             "]}" +
             "]}")
     Page<Client> findByRegexSearch(String searchPattern, String parameter, PageRequest pageRequest);
+
+    boolean existsByUserRecipientEmailAndBusinessUserId(String email, String parameter);
 }

@@ -20,23 +20,28 @@ import {
 import { alpha } from '@mui/material/styles';
 import { usePopover } from '../../hooks/UsePopover';
 import { AccountPopOver } from './AccountPopOver';
-import {Link as RouterLink, useLocation} from "react-router-dom";
+import {Link as RouterLink, useLocation, useNavigate} from "react-router-dom";
 import {generateRandomAvatar} from "../../utils/avatarUtils";
 import ChartBarIcon from "@heroicons/react/24/solid/ChartBarIcon";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import UserContext from "../../hooks/UserProvider";
 
 const SIDE_NAV_WIDTH = 200;
 const TOP_NAV_HEIGHT = 84;
 
 export const TopNav = (props) => {
   const { onNavOpen, openNav, showSideBar } = props;
-  const sideBarWidth = openNav && (window.innerWidth > 768) ? SIDE_NAV_WIDTH : 0;
+    const theme= useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const sideBarWidth = openNav && !isSmallScreen ? SIDE_NAV_WIDTH : 0;
   const accountPopover = usePopover();
-  const theme= useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const {user} = useContext(UserContext);
+
+    // const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
     const currentPath = useLocation().pathname;
     // const [dashBoardNav, setDashBoardNav] = useState(false);
     // const[contractsNav, setContractsNav] = useState(false);
+    const navigate = useNavigate();
 
 
     const handleNavClick = (path) => {
@@ -44,7 +49,7 @@ export const TopNav = (props) => {
     }
 
 
-   const navBgColor =  (currentPath === "/contracts") ? "rgb(59, 61, 145)" : "transparent";
+   const navBgColor =  (currentPath === "/contracts") ? "rgb(0, 0, 0, 0.2)" : "transparent";
 
     return (
     <>
@@ -87,15 +92,18 @@ export const TopNav = (props) => {
               </IconButton>
                   )}
               <Stack direction="row">
-                  <SvgIcon fontSize="large">
-                      {/*<HomeModernIcon  color="#e75480"/>*/}
-                      {/*<HomeModernIcon  color="rgb(185,67,102)"/>*/}
-                      <HomeModernIcon
-                          color="rgb(59, 61, 145)"/>
-                  </SvgIcon>
+
                   {!isSmallScreen &&(
                   <Typography variant="h4" sx={{fontStyle:"bold", letterSpacing:"-5px", color:"black"}}>
-                      Contract 101
+                      <a href="/" style={{textDecoration:"none", color:"black"}}>
+                          <SvgIcon fontSize="large">
+                              {/*<HomeModernIcon  color="#e75480"/>*/}
+                              {/*<HomeModernIcon  color="rgb(185,67,102)"/>*/}
+                              <HomeModernIcon
+                                  color="rgb(59, 61, 145)"/>
+                          </SvgIcon>
+                          Contract 101
+                      </a>
                   </Typography>
                       )}
               </Stack>
@@ -105,75 +113,80 @@ export const TopNav = (props) => {
             direction="row"
             spacing={2}
           >
-              {/*CREATE CONTRACT*/}
-            <Tooltip title="Create Contract">
+              {
+                  !user ? (
+                      <Button
+                          variant="text"
+                          onClick={() => window.location.pathname="/login"}
+                          sx={{
+                              color: "rgb(59, 61, 145)",
+                              fontSize: "16px"
+                          }}
+                      >
+                          <SvgIcon fontSize="large">
+                              <UsersIcon color="rgb(185,67,102)" />
+                          </SvgIcon>
+                          Login
+                      </Button>
+                  ) : (
+                      <>
+                          <Tooltip title="Create Contract">
+                              {!isSmallScreen ? (
+                                  <Button
+                                      variant="text"
+                                      onClick={() => handleNavClick("/templates")}
+                                      sx={{
+                                          color: "rgb(59, 61, 145)",
+                                          fontSize: "16px"
+                                      }}
+                                  >
+                                      <SvgIcon fontSize="large">
+                                          <DocumentPlusIcon color="rgb(185,67,102)" />
+                                      </SvgIcon>
+                                      Contracts
+                                  </Button>
+                              ) : (
+                                  <IconButton onClick={() => handleNavClick("/templates")}>
+                                      <SvgIcon fontSize="large">
+                                          <DocumentPlusIcon color="rgb(185,67,102)" />
+                                      </SvgIcon>
+                                  </IconButton>
+                              )}
+                          </Tooltip>
+                          <Tooltip title="View Dashboard">
+                              {!isSmallScreen ? (
+                                  <Button
+                                      variant="text"
+                                      onClick={() => handleNavClick("/contracts")}
+                                      size="large"
+                                      sx={{
+                                          color: "rgb(59, 61, 145)",
+                                          fontSize: "16px",
+                                          // backgroundColor: navBgColor, // Assuming navBgColor is a valid variable
+                                          // "&:active, &:focus, &:hover": {
+                                          //   color: navBgColor, // Uncomment and fix if needed
+                                          //   backgroundColor: navBgColor, // Uncomment and fix if needed
+                                          // }
+                                      }}
+                                  >
+                                      <SvgIcon fontSize="large">
+                                          <ChartBarIcon color="rgb(185,67,102)" />
+                                      </SvgIcon>
+                                      Dashboard
+                                  </Button>
+                              ) : (
+                                  <IconButton onClick={() => handleNavClick("/contracts")}>
+                                      <SvgIcon fontSize="large">
+                                          <ChartBarIcon color="rgb(185,67,102)" />
+                                      </SvgIcon>
+                                  </IconButton>
+                              )}
+                          </Tooltip>
+                      </>
+                  )
+              }
 
-                {window.innerWidth > 768 ? (
-                <Button
-                    variant="text"
-                    onClick={() => handleNavClick("/templates")}
-                    sx={{color:"rgb(59, 61, 145)",
-                    fontSize:"16px"
-                }}>
-                    <SvgIcon fontSize="large">
-                          <DocumentPlusIcon
-                              color="rgb(185,67,102)"
-                          />
-                      </SvgIcon>
-                    Contracts
-                </Button>
-                ):(
-              <IconButton
-                  onClick={() => handleNavClick("/templates")}>
-                <SvgIcon fontSize="large">
-                    <DocumentPlusIcon
-                        color="rgb(185,67,102)"
-                    />
-                </SvgIcon>
-              </IconButton>
-
-              )}
-
-            </Tooltip>
-
-              <Tooltip title="View Dashboard">
-
-                  {window.innerWidth > 768 ? (
-                  <Button
-                      variant="text"
-                      onClick={() => handleNavClick("/contracts")}
-                      size="large"
-                          sx={{color:"rgb(59, 61, 145)",
-                              fontSize:"16px",
-                              backgroundColor: {navBgColor},
-                          // "&:active, &:focus, &:hover": {
-                          //       color: {navBgColor},
-                          //       backgroundColor: {navBgColor},
-                          //   }
-                  }}
-                  >
-                      <SvgIcon fontSize="large">
-                                  <ChartBarIcon
-                                      color="rgb(185,67,102)"
-                                  />
-                  </SvgIcon>
-                      Dashboard
-                  </Button>
-                  ):(
-
-                  <IconButton>
-                      onClick={() => handleNavClick("/contracts")}
-                      <SvgIcon fontSize="large">
-                          <ChartBarIcon
-                              color="rgb(185,67,102)"
-                          />
-                      </SvgIcon>
-                  </IconButton>
-                      )}
-              </Tooltip>
-
-
-            <Tooltip title="Notifications">
+              <Tooltip title="Notifications">
               <IconButton>
                 <Badge
                   badgeContent={4}

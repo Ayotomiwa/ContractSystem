@@ -3,7 +3,7 @@ import {Button,InputAdornment, OutlinedInput, SvgIcon} from "@mui/material";
 import {useState} from "react";
 
 
-export const SearchBar = ({setSearchTerm, resetList}) => {
+export const SearchBar = ({setSearchTerm, resetList, placeHolder}) => {
     const [searchTermHolder, setSearchTermHolder] = useState("")
 
 const handleSearch = (event) => {
@@ -34,9 +34,14 @@ return (
     <OutlinedInput
       defaultValue=""
       fullWidth
-      placeholder="Search Client"
+      placeholder={placeHolder}
       // handleInputChange={handleInputChange}
       onChange={handleInputChange}
+      onKeyPress={(event) => {
+            if (event.key === 'Enter') {
+                handleSearch(event);
+            }
+      }}
       endAdornment={(
         <InputAdornment position="end">
           <Button

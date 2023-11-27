@@ -14,13 +14,13 @@ export const AccountPopOver = (props) => {
 
   const handleSignOut = () => {
         logout();
-        navigate('/');
+        // navigate('/');
        window.location.href = '/'
   };
 
   const handleSignIn = () => {
       // navigate('/');
-      window.location.href = '/'
+      window.location.href = '/login'
   }
 
   return (

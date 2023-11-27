@@ -28,38 +28,32 @@ public class ClientController {
 
     @PostMapping("{business-id}/clients")
     public ResponseEntity<Client> addClient(@RequestBody Client client, @PathVariable("business-id") String parameter){
-        User user = new User();
-        String clientEmail = client.getUserRecipient().getEmail();
-        user.setEmail(clientEmail);
-        Business businessUser= businessRepo.findById(parameter).orElse(null);
 
-        Client newClient = new Client();
+        User user = client.getUserRecipient();
 
-        if(!userRepo.existsByEmail(clientEmail)){
+        if(!userRepo.existsByEmail(user.getEmail())){
             user.setType(ROLE.CLIENT_NON_USER);
             userRepo.save(user);
-            newClient.setUserRecipient(user);
-            newClient.setBusinessUser(businessUser);
-            newClient.setCreatedDate(LocalDate.now());
-            clientRepo.save(newClient);
-            return ResponseEntity.ok(newClient);
-        }
-        User olduser = userRepo.findByEmail(clientEmail).get();
-
-        if(clientRepo.existsByUserRecipient(olduser)){
-            return ResponseEntity.badRequest().build();
         }
 
-        newClient.setUserRecipient(olduser);
-        if(olduser.getBusiness() != null){
-            Business oldBusiness = olduser.getBusiness();
-            newClient.setBusinessRecipient(oldBusiness);
-        }
-        newClient.setBusinessUser(businessUser);
-        newClient.setCreatedDate(LocalDate.now());
+        Business businessUser= businessRepo.findById(parameter).orElse(null);
+        client.setBusinessUser(businessUser);
 
-        clientRepo.save(newClient);
-        return ResponseEntity.ok(newClient);
+        Business businessRecipient = businessRepo.findByCompanyName(client.getUserRecipient()
+                .getBusiness().getCompanyName()).orElse(null);
+
+        client.setBusinessRecipient(businessRecipient);
+
+        if(!clientRepo.existsByUserRecipientEmailAndBusinessUserId(user.getEmail(), parameter)){
+            client.setCreatedDate(LocalDate.now());
+            client.setLastUpdatedDate(client.getCreatedDate());
+        }
+        else{
+            client.setLastUpdatedDate(LocalDate.now());
+        }
+
+        clientRepo.save(client);
+        return ResponseEntity.ok(client);
     }
 
     @GetMapping("{business-id}/clients")
@@ -73,8 +67,8 @@ public class ClientController {
         Page<Client> clientPages = clientRepo.findAllByBusinessUserId(
                 PageRequest.of(page.orElse(0),
                         size.orElse(30L).intValue(),
-                        Sort.Direction.valueOf(sort.orElse("ASC")),
-                        sortBy.orElse("id")), parameter);
+                        Sort.Direction.valueOf(sort.orElse("DESC")),
+                        sortBy.orElse("lastUpdatedDate")), parameter);
         return ResponseEntity.ok(clientPages);
     }
 
@@ -115,7 +109,14 @@ public class ClientController {
     }
 
 
-    @DeleteMapping("/{client-id}")
+//    @DeleteMapping("/{client-id}")
+//    public ResponseEntity<String> deleteClient(@PathVariable("client-id") String parameter){
+//        clientRepo.deleteById(parameter);
+//        return ResponseEntity.ok("Client deleted");
+//    }
+
+
+    @GetMapping("delete/{client-id}")
     public ResponseEntity<String> deleteClient(@PathVariable("client-id") String parameter){
         clientRepo.deleteById(parameter);
         return ResponseEntity.ok("Client deleted");

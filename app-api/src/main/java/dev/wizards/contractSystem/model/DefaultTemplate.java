@@ -21,5 +21,7 @@ public class DefaultTemplate {
         private String industry;
         private CONTRACT_TYPE type;
         private String description;
+        private Map<String,Object> placeholders;
         private Map<String, Object> data;
     }
+

@@ -68,7 +68,7 @@ const AuthLogin = () => {
               }
             });
             const path= '/contracts'
-            login(logInResponse.data, path)
+            login(logInResponse.data)
             console.log("Signing IN")
             setStatus({success: true})
             console.log("Status is successful")

@@ -4,21 +4,21 @@
      "industry": "Housing",
      "type":"LEASE",
     "placeholders":{
-        "contract":{
+        "Contract":{
             "day":null,
             "month":null,
-            "year": null
+            "year": null.
         },
-        "individualOwner":{
-            "business":{
+        "Recipient":{
                "name":null,
                "type":null,
                "address":null
             }
         },
-        "recipient":{
-            "userRecipient":{
-                 "name":null,
+        "Client":{
+                 "individualName":null,
+                 "businessName":null,
+                 "businessAddress":null,
                  "type": null
             }
         },
@@ -32,33 +32,783 @@
     "description":"A contract conveying land, property, or services to another for a specified time against periodic payment",
      "data":{
          "title": "Tenant Agreement",
+         "sections":{
+            "sectionA": {
+                "title": "PARTIES",
+                "body": "This Agreement ('the Agreement') is made this %%contract.day%% day of %%contract.month%%, %%contract.year%% between: The Landlord: %%owner.businessName%%, a %%owner.type%% with its registered office at %%owner.businessAddress%%, hereinafter referred to as 'the Landlord'. AND The Tenant: %%Recipient.name%%, a %%recipient.type%% with its registered office at %%recipient.businessAddress%%, hereinafter referred to as 'the Tenant'."
+            },
+            "sectionB": {
+                "title": "PROPERTY",
+                "body": "The Landlord agrees to rent to the Tenant, and the Tenant agrees to rent from the Landlord, the property located at %%propertyAddress%%, hereinafter referred to as 'the Property'."
+            },
+            "sectionC": {
+                "title": "TERM",
+                "body": "This tenancy will begin on %%startDate%% and end on %%endDate%%."
+            },
+            "sectionD": {
+                "title": "RENT",
+                "body": "The Tenant will pay the Landlord a monthly rent of %%rentAmount%%."
+            },
+            "sectionE": {
+                "title": "SECURITY DEPOSIT",
+                "body": "The Tenant will pay the Landlord a security deposit of %%securityDeposit%%."
+            },
+          },
+         "signatures": {
+             "userSignature": {
+               "signatoryName": "%%Owner.name%%",
+                "email": "%%owner.email%%",
+              "timestamp": %%userSignedDate%%
+             },
+             "clientSignature": {
+               "signatoryName": "%%Recipient.individualName%%",
+               "email": "%%recipient.email%%",
+              "timestamp": "%%recipientSignedDate%%"
+             }
+           }
+}
+}
+
+.....................
+
+{
+  "name": "Non-disclosure Agreement",
+  "type": "CONFIDENTIALITY",
+  "industry": "Various",
+  "placeholders": {
+    "Contract": {
+      "effectiveDate": null,
+      "termYears": null
+    },
+    "Owner": {
+      "name": "",
+      "address": "",
+    },
+    "Recipient": {
+      "individualName": "",
+      "businessName": null,
+      "businessAddress": "",
+      "type": null
+    },
+    "Jurisdiction": {
+      "stateOrCountry": null
+    },
+    "userSignedDate": null,
+    "clientSignedDate": null,
+  },
+
+  "description": "An agreement outlining the terms for maintaining confidentiality.",
+  "data": {
+    "title": "Non-disclosure Agreement",
+
+    "sections":{
         "sectionA": {
-            "title": "PARTIES",
-            "body": "This Agreement ('the Agreement') is made this %%contract.day%% day of %%contract.month%%, %%contract.year%% between: The Landlord: %%individualOwner.business.name%%, a %%individualOwner.type%% with its registered office at %%individualOwner.business.address%%, hereinafter referred to as 'the Landlord'. AND The Tenant: %%client.userRecipient.name%%, a %%client.userRecipient.type%% with its registered office at %%userRecipient.business.address%%, hereinafter referred to as 'the Tenant'."
+          "title": "Summary",
+          "body": "The parties intend to share Confidential Information in relation to the Purpose."
         },
         "sectionB": {
-            "title": "PROPERTY",
-            "body": "The Landlord agrees to rent to the Tenant, and the Tenant agrees to rent from the Landlord, the property located at %%propertyAddress%%, hereinafter referred to as 'the Property'."
+          "title": "Length of Agreement",
+          "body": "This agreement starts on the %%contract.effectiveDate%% and continues throughout the Term of %%contract.termYears%% years."
         },
         "sectionC": {
-            "title": "TERM",
-            "body": "This tenancy will begin on %%startDate%% and end on %%endDate%%."
+          "title": "Keeping Information Secret",
+          "body": "Any party receiving Confidential Information from the other will keep that information confidential. This includes not using, exploiting, storing, or copying the Confidential Information except as necessary for the Purpose, and not disclosing any Confidential Information to anyone else."
         },
         "sectionD": {
-            "title": "RENT",
-            "body": "The Tenant will pay the Landlord a monthly rent of %%rentAmount%%."
+          "title": "Keeping Information Safe",
+          "body": "The parties agree to apply to Confidential Information the same safeguards they would apply to their own confidential information."
+        },
+        "sectionE": {
+          "title": "When You Can Disclose Information",
+          "body": "Confidential Information can be disclosed by a party under certain conditions as outlined in the agreement."
+        },
+        "sectionF": {
+          "title": "Ownership of Information",
+          "body": "All Confidential Information is the property of the party disclosing it."
+        },
+        "sectionG": {
+          "title": "Breaches of This Agreement",
+          "body": "The parties acknowledge that the Confidential Information is highly-sensitive and that financial compensation may not be a sufficient remedy for a party breaking this agreement."
+        },
+        "sectionH": {
+          "title": "Governing Law and Jurisdiction",
+          "body": "This Agreement and any dispute arising out of or in connection with it is governed by and interpreted in accordance with the laws of %%Jurisdiction.stateOrCountry%%."
+        },
+    },
+    "signatures": {
+      "userSignature": {
+        "signatoryName": "%%Owner.name%%",
+         "email": "%%owner.email%%",
+       "timestamp": %%userSignedDate%%
+      },
+      "clientSignature": {
+        "signatoryName": "%%Recipient.individualName%%",
+        "email": "%%recipient.email%%",
+       "timestamp": "%%recipientSignedDate%%"
+      }
+    }
+  }
+}
+
+.......
+
+
+{
+  "name": "Employment Agreement",
+  "type": "HR",
+  "industry": "Various",
+  "placeholders": {
+    "contract": {
+      "effectiveDate": null,
+      "termYears": null
+    },
+    "Owner": {
+      "name": "",
+      "address": "",
+    },
+    "Recipient": {
+      "individualName": "",
+      "businessName": null,
+      "businessAddress": "",
+      "type": null
+    },
+     "userSignedDate": null,
+     "clientSignedDate": null,
+  },
+  "description": "An agreement outlining the terms of employment.",
+  "data": {
+    "title": "Employment Agreement",
+    "sections":{
+        "sectionA": {
+          "title": "Summary",
+          "body": "The parties agree to the terms of employment."
+        },
+        "sectionB": {
+          "title": "Length of Agreement",
+          "body": "This agreement starts on the %%contract.effectiveDate%% and continues throughout the Term of %%contract.termYears%% years."
+        },
+        "sectionC": {
+          "title": "Employment",
+          "body": "The Employer agrees to employ the Employee as a %%Recipient.type%%."
+        },
+        "sectionD": {
+          "title": "Duties",
+          "body": "The Employee agrees to perform the duties of the position to the best of their ability."
+        },
+        "sectionE": {
+          "title": "Compensation",
+          "body": "The Employer agrees to pay the Employee a salary of $%%Recipient.salary%% per year."
+        },
+        "sectionF": {
+          "title": "Benefits",
+          "body": "The Employee will be entitled to the following benefits: %%Recipient.benefits%%."
+        },
+        "sectionG": {
+          "title": "Termination",
+          "body": "The Employer may terminate the Employee's employment at any time for any reason."
+        },
+        "sectionH": {
+          "title": "Governing Law and Jurisdiction",
+          "body": "This Agreement and any dispute arising out of or in connection with it is governed by and interpreted in accordance with the laws of New York."
+        },
+      },
+    "signatures": {
+      "userSignature": {
+        "signatory_name": "%%Owner.name%%",
+          "email": "%%owner.email%%",
+         "timestamp": %%userSignedDate%%
+      },
+        "clientSignature": {
+            "signatoryName": "%%Recipient.individualName%%",
+             "email": "%%recipient.email%%",
+            "timestamp": "%%recipientSignedDate%%"
+        }
+    }
+    }
+}
+
+.........
+
+    {
+    "name": "Service Agreement",
+    "type": "COMMERCIAL",
+    "industry": "Various",
+    "placeholders": {
+        "contract": {
+        "effectiveDate": null,
+        "termYears": null
+        },
+        "Owner": {
+        "name": "",
+        "address": "",
+        },
+        "Recipient": {
+        "individualName": "",
+        "businessName": null,
+        "businessAddress": "",
+        "type": null
+        }
+    },
+    "userSignedDate": null,
+    "clientSignedDate": null,
+    "description": "An agreement outlining the terms of service.",
+    "data": {
+        "title": "Service Agreement",
+        "sections":{
+            "sectionA": {
+            "title": "Summary",
+            "body": "The parties agree to the terms of service."
+            },
+            "sectionB": {
+            "title": "Length of Agreement",
+            "body": "This agreement starts on the %%contract.effectiveDate%% and continues throughout the Term of %%contract.termYears%% years."
+            },
+            "sectionC": {
+            "title": "Services",
+            "body": "The Service Provider agrees to provide the following services: %%Recipient.services%%."
+            },
+            "sectionD": {
+            "title": "Compensation",
+            "body": "The Service Provider agrees to pay the Service Recipient a fee of $%%Recipient.fee%% per year."
+            },
+            "sectionE": {
+            "title": "Termination",
+            "body": "The Service Provider may terminate the Service Recipient's services at any time for any reason."
+            },
+            "sectionF": {
+            "title": "Governing Law and Jurisdiction",
+            "body": "This Agreement and any dispute arising out of or in connection with it is governed by and interpreted in accordance with the laws of New York."
+            },
         },
         "signatures": {
-            "user_signature": {
-                "signatory_name": "%%individualOwner.firstName%% %%individualOwner.lastName%%",
-                "email": "%%individualOwner.email%%",
-                "timestamp": %%userSignedDate%%
-            },
-            "landlord_signature": {
-                "signatory_name": "%%client.userRecipient.firstName%% %%client.userRecipient.lastName%%",
-                "email": "%%client.userRecipient.email%%",
-                "timestamp": "%%clientSignedDate%%"
-            }
+         "userSignature": {
+                "signatory_name": "%%Owner.name%%",
+                  "email": "%%owner.email%%",
+                 "timestamp": %%userSignedDate%%
+              },
+       "clientSignature": {
+                   "signatoryName": "%%Recipient.individualName%%",
+                    "email": "%%recipient.email%%",
+                   "timestamp": "%%recipientSignedDate%%"
+               }
         }
+    }
+ }
+ ......
+ {
+   "name": "Supplier Agreement",
+   "type": "COMMERCIAL",
+   "industry": "Various",
+   "placeholders": {
+     "contract": {
+       "effectiveDate": null
+     },
+     "Customer": {
+       "name": null,
+       "registrationNumber": null,
+       "address": null,
+       "stateOrCountry": null
+     },
+     "Supplier": {
+       "name": null,
+       "registrationNumber": null,
+       "address": null,
+       "stateOrCountry": null
+     }
+       "userSignedDate": null,
+        "clientSignedDate": null
+   },
+   "description": "An agreement between a Customer and Supplier outlining the terms for providing goods and services.",
+   "data": {
+     "title": "Supplier Agreement",
+     "sections":{
+         "sectionA": {
+           "title": "Goods and Services",
+           "body": "The Supplier shall provide the goods ('Goods') and services ('Services') as described in Section 1.2 in accordance with the terms and conditions set out in this Agreement."
+         },
+         "sectionB": {
+           "title": "Payment",
+           "body": "The Customer shall pay the Supplier for the Goods and Services in accordance with the following terms: %%PaymentTerms%%"
+         },
+         "sectionC": {
+           "title": "Liability",
+           "body": "Neither party excludes or limits its liability for: (a) death or personal injury caused by its negligence; (b) fraud or fraudulent misrepresentation; or (c) any other liability that cannot be excluded or limited under applicable law."
+         },
+         "sectionD": {
+           "title": "Intellectual Property Rights",
+           "body": "All intellectual property rights in the Goods or Services provided under this Agreement shall remain the property of the Supplier, unless otherwise agreed in writing."
+         },
+         "sectionE": {
+           "title": "Confidentiality",
+           "body": "Each party agrees to keep the other party’s Confidential Information confidential and to use it strictly for the performance of this Agreement."
+         },
+         "sectionF": {
+           "title": "Data Protection",
+           "body": "Each party shall comply with all the requirements of the Data Protection Legislation. The Supplier shall, in relation to any Personal Data processed in connection with its performance under this Agreement, process that Personal Data only based on the written instructions of the Customer unless the Supplier is required by law to process that Personal Data."
+         },
+         "sectionG": {
+           "title": "Term and Termination",
+           "body": "This Agreement shall commence on the Effective Date %%contract.effectiveDate%% and shall continue until terminated by either party providing not less than %%TerminationNoticePeriod%% written notice."
+         },
+         "sectionH": {
+           "title": "Governing Law and Jurisdiction",
+           "body": "This Agreement and any dispute or claim arising out of or in connection with it shall be governed by and construed in accordance with the law of %%GoverningLaw%%."
+         }
+     },
+     "signatures": {
+       "clientSignature": {
+          key": "Customer",
+         "signatoryName": "%%Customer.name%%",
+         "email": "%%Customer.email%%",
+         "timestamp": "%%Customer.timestamp%%"
+       },
+       "userSignature": {
+         "key": "Supplier",
+         "signatoryName": "%%Supplier.name%%",
+         "email": "%%Supplier.email%%",
+         "timestamp": "%%Supplier.timestamp%%"
+       }
+     }
+   }
+ }
+........
+{
+  "name": "Software Development Agreement",
+  "type": "COMMERCIAL",
+  "industry": "Various",
+  "placeholders": {
+    "contract": {
+      "effectiveDate": null,
+      "termYears": null
+    },
+    "Owner": {
+      "name": "",
+      "address": "",
+    },
+    "Recipient": {
+      "individualName": "",
+      "businessName": null,
+      "businessAddress": "",
+      "type": null
+    }
+     "userSignedDate": null,
+      "clientSignedDate": null
+  },
+  "description": "An agreement outlining the terms of software development.",
+  "data": {
+    "title": "Software Development Agreement",
+    "sections":{
+        "sectionA": {
+          "title": "Summary",
+          "body": "The parties agree to the terms of software development."
+        },
+        "sectionB": {
+          "title": "Length of Agreement",
+          "body": "This agreement starts on the %%contract.effectiveDate%% and continues throughout the Term of %%contract.termYears%% years."
+        },
+        "sectionC": {
+          "title": "Services",
+          "body": "The Service Provider agrees to provide the following services: %%Recipient.services%%."
+        },
+        "sectionD": {
+          "title": "Compensation",
+          "body": "The Service Provider agrees to pay the Service Recipient a fee of $%%Recipient.fee%% per year."
+        },
+        "sectionE": {
+          "title": "Termination",
+          "body": "The Service Provider may terminate the Service Recipient's services at any time for any reason."
+        },
+        "sectionF": {
+          "title": "Governing Law and Jurisdiction",
+          "body": "This Agreement and any dispute arising out of or in connection with it is governed by and interpreted in accordance with the laws of New York."
+        }
+     }
+    "signatures": {
+            "userSignature": {
+                   "signatory_name": "%%Owner.name%%",
+                     "email": "%%owner.email%%",
+                    "timestamp": %%userSignedDate%%
+                 },
+          "clientSignature": {
+                      "signatoryName": "%%Recipient.individualName%%",
+                       "email": "%%recipient.email%%",
+                      "timestamp": "%%recipientSignedDate%%"
+                  }
+           }
+  }
 }
+........
+{
+  "name": "Software License Agreement",
+  "type": "COMMERCIAL",
+  "industry": "Various",
+  "placeholders": {
+    "contract": {
+      "effectiveDate": null,
+      "termYears": null
+    },
+    "Owner": {
+      "name": "",
+      "address": "",
+    },
+    "Recipient": {
+      "individualName": "",
+      "businessName": null,
+      "businessAddress": "",
+      "type": null
+    }
+      "userSignedDate": null,
+      "clientSignedDate": null
+  },
+  "description": "An agreement outlining the terms of software licensing.",
+  "data": {
+    "title": "Software License Agreement",
+    "sections":{
+        "sectionA": {
+          "title": "Summary",
+          "body": "The parties agree to the terms of software licensing."
+        },
+        "sectionB": {
+          "title": "Length of Agreement",
+          "body": "This agreement starts on the %%contract.effectiveDate%% and continues throughout the Term of %%contract.termYears%% years."
+        },
+        "sectionC": {
+          "title": "Services",
+          "body": "The Service Provider agrees to provide the following services: %%Recipient.services%%."
+        },
+        "sectionD": {
+          "title": "Compensation",
+          "body": "The Service Provider agrees to pay the Service Recipient a fee of $%%Recipient.fee%% per year."
+        },
+        "sectionE": {
+          "title": "Termination",
+          "body": "The Service Provider may terminate the Service Recipient's services at any time for any reason."
+        },
+        "sectionF": {
+          "title": "Governing Law and Jurisdiction",
+          "body": "This Agreement and any dispute arising out of or in connection with it is governed by and interpreted in accordance with the laws of New York."
+        }
+     },
+    "signatures": {
+            "userSignature": {
+                   "signatory_name": "%%Owner.name%%",
+                     "email": "%%owner.email%%",
+                    "timestamp": %%userSignedDate%%
+                 },
+          "clientSignature": {
+                      "signatoryName": "%%Recipient.individualName%%",
+                       "email": "%%recipient.email%%",
+                      "timestamp": "%%recipientSignedDate%%"
+                  }
+           }
+  }
 }
+
+--------
+{
+   "name": "Basic Rental Agreement",
+   "type": "LEASE",
+   "industry": "Real Estate",
+   "placeholders": {
+     "Contract": {
+       "effectiveDate": null,
+        "termYears": null,
+        "address": null
+     },
+     "RENT": {
+       "amount": null,
+       "dueDate": null,
+       "securityDeposit": null
+     },
+     "Renter": {
+       "name": null,
+       "address": null
+     },
+     "Landlord": {
+       "name": null,
+       "address": null
+     },
+     juridiction": null,
+     "terminationNoticePeriod": null,
+     "userSignedDate": null,
+     "clientSignedDate": null
+   },
+   "description": "A rental agreement between a Renter and Landlord for leasing a property, outlining terms including rent, occupancy, and termination.",
+   "data": {
+     "title": "Basic Rental Agreement",
+     "sections": {
+
+          "sectionA":{
+            "title": "Parties",
+            "Body":"This Rental Agreement (hereinafter referred to as the “Agreement”) is entered into on %%Contract.effectiveDate%% by and between %%Renter.name%% (hereinafter referred to as the “Renter”) and %%Landlord.name%% (hereinafter referred to as the “Landlord”)(collectively referred to as the “Parties”)."
+          },
+          "sectionB":{
+            "title":"Consideration",
+            "Body":"The Renter hereby agrees to pay the Landlord the amount of money mentioned in this Agreement to lease the property owned by the Landlord"
+            },
+          "sectionC":{
+                "title":"Term",
+                "Body":"The term of this Agreement shall begin on %%Contract.effectiveDate%% and shall continue until %%Contract.termYears%% years."
+            },
+         "sectionD": {
+           "title": "Premises and Occupancy",
+           "body": "The premises to be rented by the Landlord are located at %%Contract.address%%. The premises are to be used only for residential purposes and may be occupied only by the registered occupants."
+         },
+         "sectionE": {
+           "title": "Costs and Payment",
+           "body": "The monthly rent is %%Rent.amount. It is to be paid by the Renter before the first day of every month. The first rent payment is due on %%Rent.dueDate%%.-	Prior to taking occupancy of the premises, the Renter will pay the Landlord an amount of %%Rent.securityDeposit%% as a security deposit to cover the cost of any damages suffered by the premises and cleaning. Such security deposit will be returned to the Renter upon the end of this Agreement, provided the premises are left in the same condition as prior to the occupancy."
+         },
+         "sectionF": {
+           "title": "Termination",
+           "body": "This Agreement may be terminated immediately in the event of a breach, or at any time by providing written notice %%terminationNoticePeriod" days prior to terminating the Agreement."
+         },
+         "sectionG": {
+           "title": "Abandonment and Right to Enter",
+           "body": "In the event that the Renter abandons the premises during the term of this Agreement, the Landlord will be entitled to enter the Premises by any means without facing any liability and the Landlord may terminate this Agreement.The Landlord is entitled to enter the premises to inspect or repair the premises."
+         },
+         "sectionH": {
+           "title": "Dispute Resolution",
+           "body": "Any dispute or difference whatsoever arising out of or in connection with this Agreement shall be submitted to arbitration/mediation/negotiation (circle one) in accordance with, and subject to the laws of %%jurisdiction%%."
+         },
+         "sectionI": {
+           "title": "Governing Law",
+           "body": "This Agreement shall be governed and construed in accordance with the laws of %%juridiction%%."
+         },
+         "sectionJ": {
+           "title": "Pets",
+           "body": "-	This Agreement contains the entire agreement and understanding among the Parties hereto with respect to the subject matter hereof, and supersedes all prior agreements, understandings, inducements and conditions, express or implied, oral or written, of any nature whatsoever with respect to the subject matter hereof. The express terms hereof control and supersede any course of performance and/or usage of the trade inconsistent with any of the terms hereof."
+         },
+         "sectionK": {
+           "title": "Severability",
+           "body": "If any provision of this Agreement is found void and unenforceable, the remaining provisions will remain in force."
+         }
+     },
+     "signatures": {
+       "clientSignature": {
+         "key": "Renter",
+         "signatoryName": null,
+         "email": null,
+         "timestamp": null
+       },
+       "userSignature": {
+         "key": "Landlord",
+         "signatoryName": null,
+         "email": null,
+         "timestamp": null
+       }
+     }
+   }
+}
+--------
+
+{
+   "name": "Business Partnership Contractual Agreement",
+   "type": "COMMERCIAL",
+   "industry": "Various",
+   "placeholders": {
+     "contract": {
+       "effectiveDate": null
+     },
+     "First Partner": {
+       "name": null,
+       "address": null
+     },
+     "Second Partner": {
+       "name": null,
+       "address": null
+     },
+     "PartnershipPurpose": null,
+     "CapitalContributions": null,
+     "ManagementDetails": null,
+     "VotingRights": null,
+     "TerminationConditions": null,
+     "Jurisdiction": null,
+     "userSignedDate": null,
+     "clientSignedDate": null
+   },
+   "description": "An agreement establishing the terms of a business partnership between two entities, covering aspects such as capital contributions, profit distribution, and termination conditions.",
+   "data": {
+     "title": "Business Partnership Contractual Agreement",
+     "sections": {
+         "sectionA": {
+           "title": "Partnership Purpose",
+           "body": "The purpose of the partnership is %%PartnershipPurpose%%."
+         },
+         "sectionB": {
+           "title": "Capital Contributions",
+           "body": "Capital contributions by each partner, in cash or property, are agreed upon as %%CapitalContributions%%."
+         },
+         "sectionC": {
+           "title": "Profits and Losses",
+           "body": "Profits and losses are determined by the appointed accountants and distributed according to the Partners' capital contribution values."
+         },
+         "sectionD": {
+           "title": "Management",
+           "body": "The business will be managed as %%ManagementDetails%%."
+         },
+         "sectionE": {
+           "title": "Voting",
+           "body": "Voting rights and weight are determined as %%VotingRights%%."
+         },
+         "sectionF": {
+           "title": "Termination",
+           "body": "Conditions under which this Agreement and partnership may be terminated are %%TerminationConditions%%."
+         },
+         "sectionG": {
+           "title": "Amendments",
+           "body": "Any amendments to this Agreement must be in writing and signed by both Partners."
+         },
+         "sectionH": {
+           "title": "Severability",
+           "body": "If any provision is found void/unenforceable, remaining provisions continue to be enforced."
+         },
+         "sectionI": {
+           "title": "Dispute Resolution",
+           "body": "Disputes related to this Agreement will be submitted to [Arbitration/mediation/negotiation] according to the laws of %%Jurisdiction%%."
+         },
+         "sectionJ": {
+           "title": "Governing Law",
+           "body": "This Agreement is governed and construed according to the laws of %%Jurisdiction%%."
+         }
+     },
+     "signatures": {
+       "clientSignature": {
+         "key": "First Partner",
+         "signatoryName": null,
+         "email": null,
+         "timestamp": null
+       },
+       "userSignature": {
+         "key": "Second Partner",
+         "signatoryName": null,
+         "email": null,
+         "timestamp": null
+       }
+     }
+   }
+}
+
+
+------
+{
+   "name": "Investment Contractual Agreement",
+   "type": "COMMERCIAL",
+   "industry": "Finance",
+   "placeholders": {
+     "EffectiveDate": null,
+     "InvestorName": null,
+     "InvestorAddress": null,
+     "CompanyName": null,
+     "CompanyAddress": null,
+     "InvestmentAmount": null,
+     "CompanyShares": null,
+     "InvestmentPaymentMethod": null,
+     "InvestmentPaymentFrequency": null,
+     "InvestmentPeriodYears": null,
+     "Executives": [
+       null,
+       null,
+       null
+     ],
+     "BoardOfDirectors": [
+       null,
+       null,
+       null
+     ],
+     "NetProfitsOrLossesDistribution": null,
+     "DissolutionTerms": null,
+     "OwnershipPercentageForBoardApproval": null,
+     "InvestorVotesPercentage": null,
+     "InvestorOwnershipPercentage": null,
+     "BiannualVotingMonths": null,
+     "ConfidentialityTermYears": null,
+     "NonCompetitionTermMonths": null,
+     "TerminationNoticeDays": null,
+     "MajorityShareholderRightRefusal": null,
+     "ShareSaleRestriction": null,
+     "AmendmentTerms": null,
+     "DisputeResolutionMethod": null,
+     "GoverningLaw": null,
+     "InvestorSignature": null,
+     "CompanySignature": null,
+     "InvestorDate": null,
+     "CompanyDate": null
+   },
+   "description": "An agreement between an Investor and a Company outlining the terms of investment, including payment details, share distribution, management, and control, along with provisions for dissolution, voting rights, confidentiality, non-competition, and termination.",
+   "data": {
+     "title": "Investment Contractual Agreement",
+     "sections": {
+       "sectionA": {
+         "title": "Parties",
+         "body": "This Agreement is entered into by %%InvestorName%%, with an address of %%InvestorAddress%%, and %%CompanyName%%, with an address of %%CompanyAddress%%."
+       },
+       "sectionB": {
+         "title": "Investment",
+         "body": "The Investor will invest %%InvestmentAmount%% in exchange for %%CompanyShares%% of the Company's shares."
+       },
+       "sectionC": {
+         "title": "Investment Payment",
+         "body": "Payment will be made via %%InvestmentPaymentMethod%%. The payment frequency is %%InvestmentPaymentFrequency%%, over a period of %%InvestmentPeriodYears%% years."
+       },
+       "sectionD": {
+         "title": "Management and Control",
+         "body": "The Company will be managed by Executives: %%Executives%%, and a Board of Directors: %%BoardOfDirectors%%."
+       },
+       "sectionE": {
+         "title": "Distribution",
+         "body": "Net profits or losses will be determined and distributed as per %%NetProfitsOrLossesDistribution%%."
+       },
+       "sectionF": {
+         "title": "Dissolution",
+         "body": "In case of dissolution, %%DissolutionTerms%%."
+       },
+       "sectionG": {
+         "title": "Voting",
+         "body": "Approval of Board actions requires shareholders holding more than %%OwnershipPercentageForBoardApproval%%. The Investor has %%InvestorVotesPercentage%% of votes when owning more than %%InvestorOwnershipPercentage%%. Voting occurs biannually in %%BiannualVotingMonths%%."
+       },
+       "sectionH": {
+         "title": "Confidentiality",
+         "body": "Confidentiality terms last for %%ConfidentialityTermYears%% years."
+       },
+       "sectionI": {
+         "title": "Non-Competition",
+         "body": "Non-competition terms last for %%NonCompetitionTermMonths%% months following the termination of this Agreement."
+       },
+       "sectionJ": {
+         "title": "Termination",
+         "body": "The Agreement may be terminated as per the conditions outlined, with a notice period of %%TerminationNoticeDays%% days. In case of termination by the Investor, %%MajorityShareholderRightRefusal%%. The Investor agrees to %%ShareSaleRestriction%%."
+       },
+       "sectionK": {
+         "title": "Amendments",
+         "body": "Amendments must be made in writing and signed by both Parties as per %%AmendmentTerms%%."
+       },
+       "sectionL": {
+         "title": "Severability",
+         "body": "If any provision is found void, the remaining provisions will still be enforced."
+       },
+       "sectionM": {
+         "title": "Dispute Resolution",
+         "body": "Disputes will be submitted to %%DisputeResolutionMethod%% according to the laws of %%GoverningLaw%%."
+       },
+       "sectionN": {
+         "title": "Governing Law",
+         "body": "This Agreement is governed by the laws of %%GoverningLaw%%."
+       },
+       "sectionO": {
+         "title": "Entire Agreement",
+         "body": "This Agreement supersedes all prior agreements and conditions regarding this subject matter."
+       }
+     },
+     "signatures": {
+       "InvestorSignature": {
+         "name": "%%InvestorName%%",
+         "date": "%%InvestorDate%%"
+       },
+       "CompanySignature": {
+         "name": "%%CompanyName%%",
+         "date": "%%CompanyDate%%"
+       }
+     }
+   }
+}
+------

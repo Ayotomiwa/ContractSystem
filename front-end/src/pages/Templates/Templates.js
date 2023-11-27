@@ -28,6 +28,7 @@ const Templates = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [contracts, setContracts] = useState([]);
+    const[filteredContracts, setFilteredContracts] = useState([]);
     const[contractData, setContractData] = useState({});
     const [selectedContractId, setSelectedContractId] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
@@ -79,21 +80,11 @@ const Templates = () => {
 
     const fetchTemplates= ()=>{
 
-        // fetch(`http://localhost:8080/api/templates/default`)
-        //     .then(res => res.json())
-        //     .then(res => res.data.content)
-        //     .then(data => {
-        //         setContracts(data);
-        //         console.log(data);
-        //     })
-        //     .catch(error => console.error(error));
-
-
-
        axios.get(`http://localhost:8080/api/templates/default`)
             .then(res => res.data.content)
            .then(data => {
                setContracts(data);
+               setFilteredContracts(data)
                console.log(data);
            })
             .catch(error => console.error(error));
@@ -101,16 +92,6 @@ const Templates = () => {
 
 
     const previewContract = () => {
-        //
-        //     fetch(`http://localhost:8080/api/templates/default/${selectedContractId}`)
-        //         .then(res => res.json())
-        //         .then(res => res.data)
-        //         .then(data => {
-        //             setContractData(data);
-        //             setModalOpen(true);
-        //             setSelectedContractId(null);
-        //         }).catch(error => console.error(error));
-        // };
 
         axios.get(`http://localhost:8080/api/templates/default/${selectedContractId}`)
             .then(res => res.data)
@@ -119,9 +100,16 @@ const Templates = () => {
                 setModalOpen(true);
                 setSelectedContractId(null);
             }).catch(error => console.error(error));
-
     };
 
+
+    const handleFilter = (text) => {
+        if(text === "ALL"){
+            fetchTemplates();
+            return;
+        }
+        setContracts(filteredContracts.filter(contract => contract.type === text));
+    }
 
     return (
         <div style={{padding:"40px"}}>
@@ -132,6 +120,7 @@ const Templates = () => {
                     {['All', 'Commercial', 'HR', 'Confidentiality', 'Lease', 'Other'].map((text, index) => (
                         <ListItem key={text}>
                             <ListItemButton
+                                onClick={() => handleFilter(text.toUpperCase())}
                                 sx={{backdropFilter: 'blur(25px)',
                                     backgroundColor: 'rgba(255,255,255,0.47)',
                                     border: "1px solid black",

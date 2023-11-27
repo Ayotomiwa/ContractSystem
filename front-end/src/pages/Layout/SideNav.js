@@ -10,14 +10,20 @@ import {
     Typography,
     useMediaQuery, useTheme
 } from '@mui/material';
-import { items } from './Config';
-import { SIdeNavItem } from './SIdeNavItem';
+import items from './Config';
+import { SideNavItem } from './SideNavItem';
+import UserContext from  '../../hooks/UserProvider';
+import {useContext, useRef, useState} from "react";
 
 
 export const SideNav = (props) => {
     const {open, onClose, OnOpen} = props;
     const theme = useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+    const {user} = useContext(UserContext);
+    console.log("user");
+    console.log(user);
+    const  isBusiness = !user?.businessId === null;
     // const pathname = usePathname();
     // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
@@ -73,12 +79,12 @@ export const SideNav = (props) => {
                         m: 0
                     }}
                 >
-                    {items.map((item) => {
+                    {items.filter(item => item.public || isBusiness).map((item) => {
                         const active = item.path ? (path === item.path) : false;
                         //   const active = true;
 
                         return (
-                            <SIdeNavItem
+                            <SideNavItem
                                 active={active}
                                 disabled={!active}
                                 external={item.external}

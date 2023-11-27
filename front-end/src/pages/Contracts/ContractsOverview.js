@@ -1,6 +1,6 @@
 import {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import {Box, Button, Card, Container, IconButton, Stack, SvgIcon, Typography} from '@mui/material';
+import {Box, Button, Card, Container, Divider, IconButton, Stack, SvgIcon, Typography} from '@mui/material';
 import { useSelection } from '../../hooks/UseSelection';
 import { Layout as DashboardLayout } from '../../components/Layout';
 import { SearchBar } from '../../components/SearchBar';
@@ -14,6 +14,8 @@ import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 
 import Skeleton from '@mui/material/Skeleton';
 import {ContractsTable} from "./ContractsTable";
+import {PagesTable} from "../../components/PagesTable";
+import ContractFilterButtons from "./ContractFilterButtons";
 
 
 
@@ -26,8 +28,9 @@ const ContractsOverview = () => {
     const [totalContracts, setTotalContracts] = useState(0);
     const [searchTerm, setSearchTerm] = useState("");
     const [search, setSearch] = useState(false);
-    const businessId = "65523e0a91702e609ee9040b"
-    const basicContractUrl = `http://localhost:8080/api/business/${businessId}/clients`;
+    const userId = user?.id;
+    console.log("userId: ", userId);
+    const basicContractUrl = `http://localhost:8080/api/contracts/${userId}`;
     const fetchContractUrl = `size=${rowsPerPage}&page=${page}`;
     const searchContractUrl = basicContractUrl + `/search?query=${searchTerm}`;
     const [isLoading, setIsLoading] = useState(false);
@@ -67,14 +70,15 @@ const ContractsOverview = () => {
             });
     }
 
-    // const useCustomers = (page, rowsPerPage) => {
-    //     return useMemo(
-    //         () => {
-    //             return applyPagination(contracts, page, rowsPerPage);
-    //         },
-    //         [page, rowsPerPage]
-    //     );
-    // };
+    const stagesColor = {
+        "ALL": "#a8e6cf",
+        "DRAFT": "#a7c7e7",
+        "EXPIRED": "#f8c6d1",
+        "REVIEWED": "#d1c4e9",
+        "SIGNED": "#88d8b0",
+        "ATTENTION": "#ffccaa",
+        "SENT": "#87ceeb"
+    }
 
 
     const fetchSearchData = () => {
@@ -103,7 +107,7 @@ const ContractsOverview = () => {
 
     const deleteContract = () =>
     {
-        axios.get(`http://localhost:8080/api/business/delete/${selectedContractId}`)
+        axios.post(`http://localhost:8080/api/contracts/delete/${selectedContractId}`)
             .then((res) => res.status)
             .then((status)=>{
                 if(status === 200){
@@ -178,8 +182,7 @@ const ContractsOverview = () => {
                             </Stack>
                             <div>
                                 <Button
-                                    component={RouterLink}
-                                    to={`/clients/edit?businessId=${businessId}`}
+                                   onClick={() => window.location.href = "/templates"}
                                     startIcon={(
                                         <SvgIcon fontSize="small">
                                             <PlusIcon/>
@@ -207,7 +210,9 @@ const ContractsOverview = () => {
                                    spacing={4}
                             >
 
-                                <SearchBar setSearchTerm={setSearchTerm} resetList={resetContractsList}/>
+                                <SearchBar setSearchTerm={setSearchTerm} resetList={resetContractsList}
+                                placeHolder="Search Contracts"
+                                />
                                 <IconButton
                                     color="red"
                                     onClick={handleDelete}
@@ -217,9 +222,17 @@ const ContractsOverview = () => {
                                     </SvgIcon>
                                 </IconButton>
                             </Stack>
-
+                            <Box sx={{mt:"30px"}}>
+                                <Divider />
+                            </Box>
+                            <Box sx={{m:"10px"}}>
+                                <ContractFilterButtons setSearchTerm={setSearchTerm} resetList={resetContractsList}/>
+                            </Box>
                         </Card>
-                        <ContractsTable
+                        {/*<Card >*/}
+                        {/*   */}
+                        {/*</Card>*/}
+                        <PagesTable
                             count={totalContracts}
                             items={contracts}
                             onDeselectAll={contractSelection.handleDeselectAll}
@@ -232,8 +245,17 @@ const ContractsOverview = () => {
                             rowsPerPage={rowsPerPage}
                             selected={contractSelection.selected}
                             isLoading={isLoading}
-                            businessId={businessId}
-                            setContractsId={setSelectedContractId}
+                            setItemsId={setSelectedContractId}
+                            columnHeaders={{
+                                "Name": "name",
+                                "Recipient": "recipientEmail",
+                                "Business":"businessOwnerId",
+                                "Owner":"userRecipient.phoneNumber",
+                                "Created Date":"createdAt",
+                                "Last Updated":"modifiedAt",
+                                "Status":"ownerStage",
+                            }}
+
                         />
                     </Stack>
                 </Container>

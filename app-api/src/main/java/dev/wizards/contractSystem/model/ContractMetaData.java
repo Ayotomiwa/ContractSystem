@@ -22,7 +22,6 @@ public class ContractMetaData {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private User individualOwner;
-    private Business businessOwner;
     private Client recipient;
-    private ContractData contractData;
+    private String contractDataId;
 }

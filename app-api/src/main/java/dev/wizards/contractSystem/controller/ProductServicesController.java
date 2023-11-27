@@ -1,10 +1,7 @@
 package dev.wizards.contractSystem.controller;
 
 import dev.wizards.contractSystem.model.Business;
-import dev.wizards.contractSystem.model.Client;
-import dev.wizards.contractSystem.model.Enums.ROLE;
 import dev.wizards.contractSystem.model.ProductServices;
-import dev.wizards.contractSystem.model.User;
 import dev.wizards.contractSystem.repository.BusinessRepo;
 import dev.wizards.contractSystem.repository.ClientRepo;
 import dev.wizards.contractSystem.repository.ProductServicesRepo;
@@ -17,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +30,7 @@ public class ProductServicesController {
     public ResponseEntity<?> addProductServices(@RequestBody ProductServices productServices, @PathVariable("business-id") String parameter) {
 
 
-        if (!productServicesRepo.existsByName(productServices.getName())) {
+        if (productServicesRepo.existsByName(productServices.getName())) {
             Business business = businessRepo.findById(parameter).orElse(null);
             if (business == null) {
                 return ResponseEntity.badRequest().build();
@@ -51,7 +47,7 @@ public class ProductServicesController {
     public ResponseEntity<?> addMultipleProductServices(@RequestBody List<ProductServices> multipleProductServices, @PathVariable("business-id") String parameter){
 
         for(ProductServices productServices: multipleProductServices){
-            if(!productServicesRepo.existsByName(productServices.getName())){
+            if(productServicesRepo.existsByName(productServices.getName())){
                 Business business = businessRepo.findById(parameter).orElse(null);
                 if(business == null){
                     return ResponseEntity.badRequest().build();
@@ -80,7 +76,7 @@ public class ProductServicesController {
         return ResponseEntity.ok(productPages);
     }
 
-    @GetMapping("{business-id}/search")
+    @GetMapping("business/{business-id}/search")
     public ResponseEntity<Page<ProductServices>> searchClients(
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<String> sortBy,
@@ -117,13 +113,31 @@ public class ProductServicesController {
     }
 
 
-    @DeleteMapping("/{product-id}")
+//    @DeleteMapping("/{product-id}")
+//    public ResponseEntity<String> deleteClient(@PathVariable("product-id") String parameter){
+//        productServicesRepo.deleteById(parameter);
+//        return ResponseEntity.ok("deleted");
+//    }
+
+    @PostMapping("/{product-id}")
     public ResponseEntity<String> deleteClient(@PathVariable("product-id") String parameter){
         productServicesRepo.deleteById(parameter);
         return ResponseEntity.ok("deleted");
     }
 
-    @DeleteMapping("/multiple")
+//    @DeleteMapping("/multiple")
+//    public ResponseEntity<String> deleteMultipleProducts(List<String> productIDs){
+//        try{
+//            productServicesRepo.deleteAllById(productIDs);
+//        }
+//        catch(Exception e){
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error Occurred: Could not Delete All products");
+//        }
+//
+//      return ResponseEntity.ok("All Deleted");
+//    }
+
+    @PostMapping("/multiple")
     public ResponseEntity<String> deleteMultipleProducts(List<String> productIDs){
         try{
             productServicesRepo.deleteAllById(productIDs);
@@ -132,6 +146,10 @@ public class ProductServicesController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error Occurred: Could not Delete All products");
         }
 
-      return ResponseEntity.ok("All Deleted");
+        return ResponseEntity.ok("All Deleted");
     }
+
+
+
+
 }

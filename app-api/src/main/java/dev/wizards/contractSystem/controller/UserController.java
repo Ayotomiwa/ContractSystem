@@ -35,6 +35,7 @@ public class UserController {
         if (customUserDetailsService.existsByEmail(user.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with the same username or email already exists.");
         }
+        System.out.println("Sign Up User : " + user);
 
         return ResponseEntity.ok(customUserDetailsService.save(user));
     }

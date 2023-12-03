@@ -107,16 +107,14 @@ const heroVariants = {
 }
 
 const cardVariants = {
-    hidden: { x: '-100vw' },
+    hidden: { x: '-100%' },
     visible: { x: 0, transition: { type: 'spring', stiffness: 120 } }
 }
 
 const carouselVariants = {
-    hidden: { x: '-100vw' },
+    hidden: { x: '-100%' },
     visible: { x: 0, transition: { type: 'spring', stiffness: 120 } }
 };
-
-
 
 
 
@@ -149,7 +147,7 @@ const CMAPP2 = () => {
                     <Button variant="contained" 
                             onClick={() => handleLogin()}
                             style={styles.ctaButton}>
-                        Explore Features</Button>
+                        <Typography>Explore Features </Typography></Button>
                 </Box>
                 <motion.div
                     variants={heroVariants}
@@ -170,6 +168,9 @@ const CMAPP2 = () => {
 
            
             <motion.div
+                style={{backgroundColor: 'rgb(59, 61, 145, 0.7)',
+                    color: 'white',
+                    width: "100%", height: "100%", marginTop:"300px"}}
                 ref={ref}
                 variants={cardVariants}
                 initial="hidden"

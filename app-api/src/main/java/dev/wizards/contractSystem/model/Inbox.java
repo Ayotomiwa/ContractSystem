@@ -2,6 +2,7 @@ package dev.wizards.contractSystem.model;
 
 
 import dev.wizards.contractSystem.model.Enums.INBOX_STATUS;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 public class Inbox {
+    @Id
     private String id;
     private String to;
     private String from;

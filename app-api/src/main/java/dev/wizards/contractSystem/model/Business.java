@@ -18,9 +18,6 @@ public class Business{
     private String id;
     private String companyName;
     private String industry;
-    private List<User> employees = new ArrayList<>();
-    private List<Client> clients = new ArrayList<>();
-    private List<ProductServices> productsServices = new ArrayList<>();
-    private List<CustomTemplate> customTemplates = new ArrayList<>();
-    private List<ContractMetaData> contractMetaData = new ArrayList<>();
+    private String address;
+    private String phoneNumber;
 }

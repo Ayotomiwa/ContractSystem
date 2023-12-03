@@ -55,9 +55,12 @@ public class TokenController {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
             String id = userRepo.findByEmail(userDetails.getUsername()).get().getId();
+            String firstName = userRepo.findById(id).get().getFirstName();
+            String lastName = userRepo.findById(id).get().getLastName();
+            System.out.println("User: " + id + " " + firstName + " " + lastName);
             String businessId = userRepo.findByEmail(userDetails.getUsername()).get().getBusiness().getId();
 
-            return ResponseEntity.ok(new LoginResponse(jwt, userDetails.getUsername(),id, businessId));
+            return ResponseEntity.ok(new LoginResponse(jwt, userDetails.getUsername(),id, firstName,lastName, businessId));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
         } catch (Exception e) {

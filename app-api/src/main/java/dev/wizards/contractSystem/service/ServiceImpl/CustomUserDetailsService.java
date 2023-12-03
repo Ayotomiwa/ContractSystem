@@ -42,29 +42,26 @@ public class CustomUserDetailsService implements UserDetailsService {
     public User save(User user) {
 
         Business business = null;
-        String userId;
+        System.out.println("User: " + user.getFirstName() + " " + user.getLastName());
 
-        if(userRepo.existsByEmail(user.getEmail())){
-            userId = userRepo.getByEmail(user.getEmail()).getId();
-            user.setId(userId);
-        }
-        
+
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
-        if(user.getBusiness().getCompanyName() == null){
+        if(user.getBusiness() == null || user.getBusiness().getCompanyName() == null){
             System.out.println("Business is null");
             user.setType(ROLE.INDIVIDUAL_USER);
         }
-        else if(businessRepo.existsByCompanyName(user.getBusiness().getCompanyName())){
+        else{
             System.out.println("Business exists - " + user.getBusiness().getCompanyName());
             user.setType(ROLE.BUSINESS_USER);
             business = businessRepo.getByCompanyName(user.getBusiness().getCompanyName());
+            if(business == null){
+                businessRepo.save(user.getBusiness());
+            }
+            else{
+                user.setBusiness(business);
+            }
         }
-        else{
-            business = businessRepo.save(user.getBusiness());
-            user.setBusiness(business);
-        }
-
         return userRepo.save(user);
     }
 

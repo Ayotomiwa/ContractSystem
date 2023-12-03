@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum INBOX_STATUS {
-    RECEIVED("RECEIVED"), ACCEPTED("ACCEPTED"), DECLINED("REJECTED");
+    RECEIVED("RECEIVED"), ACCEPTED("ACCEPTED"), DECLINED("DECLINED");
 
     private final String status;
     INBOX_STATUS(String status) {

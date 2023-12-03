@@ -72,6 +72,13 @@ public class ClientController {
         return ResponseEntity.ok(clientPages);
     }
 
+
+
+    @GetMapping("{business-id}/clients/list")
+    public ResponseEntity<?> getClientsList(@PathVariable("business-id") String parameter){
+        return ResponseEntity.ok(clientRepo.findAllByBusinessUserId(parameter));
+    }
+
     @GetMapping("{business-id}/clients/search")
     public ResponseEntity<Page<Client>> searchClients(
             @RequestParam Optional<Integer> page,

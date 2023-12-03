@@ -8,18 +8,18 @@ import org.springframework.data.mongodb.repository.Query;
 
 
 public interface ContractDataRepo extends MongoRepository<ContractData, String> {
-    Page<ContractData> findAllByBusinessOwnerId(PageRequest pageRequest, String businessOwnerId);
+    Page<ContractData> findAllByUserOwnerBusinessId(PageRequest pageRequest, String businessOwnerId);
 
     Page<ContractData> findAllByUserOwnerId(PageRequest of, String userId);
 
     Page<ContractData> findAllByUserOwnerIdOrRecipientEmail(PageRequest of, String userId, String email);
 
-    Page<ContractData> findAllByBusinessOwnerIdOrRecipientId(PageRequest of, String id, String id1);
+    Page<ContractData> findAllByUserOwnerBusinessIdOrRecipientId(PageRequest of, String id, String id1);
 
 
     Page<ContractData> findAllByUserOwnerIdOrRecipientEmailAndOwnerStageOrRecipientStage(PageRequest of, String userId, String email, String searchPattern, String searchPattern1);
 
-    Page<ContractData> findAllByBusinessOwnerIdOrRecipientIdAndOwnerStageOrRecipientStage(PageRequest of, String id, String id1, String searchPattern, String searchPattern1);
+    Page<ContractData> findAllByUserOwnerBusinessIdOrRecipientIdAndOwnerStageOrRecipientStage(PageRequest of, String id, String id1, String searchPattern, String searchPattern1);
 
 
 

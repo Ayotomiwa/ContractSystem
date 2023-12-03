@@ -27,7 +27,7 @@ import {useContext, useState} from "react";
 import UserContext from "../../hooks/UserProvider";
 
 const SIDE_NAV_WIDTH = 200;
-const TOP_NAV_HEIGHT = 84;
+const TOP_NAV_HEIGHT = 54;
 
 export const TopNav = (props) => {
   const { onNavOpen, openNav, showSideBar } = props;
@@ -36,11 +36,10 @@ export const TopNav = (props) => {
   const sideBarWidth = openNav && !isSmallScreen ? SIDE_NAV_WIDTH : 0;
   const accountPopover = usePopover();
   const {user} = useContext(UserContext);
+  const isBusiness = !!user?.businessId;
 
     // const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
     const currentPath = useLocation().pathname;
-    // const [dashBoardNav, setDashBoardNav] = useState(false);
-    // const[contractsNav, setContractsNav] = useState(false);
     const navigate = useNavigate();
 
 
@@ -57,13 +56,14 @@ export const TopNav = (props) => {
         component="nav"
         sx={{
             overflowX: "hidden",
-          backdropFilter: 'blur(25px)',
+          backdropFilter: 'blur(1px)',
             backgroundColor: 'rgba(255, 255, 255, 0.7)',
-            border:"1px solid black",
+            // border:"1px solid black",
             top: 0,
           position: 'sticky',
           left:`${sideBarWidth}px`,
           maxWidth: `calc(100% - ${sideBarWidth}px)`,
+            overFlowX: "hidden",
             zIndex: 1000,
         }}
       >
@@ -93,12 +93,17 @@ export const TopNav = (props) => {
                   )}
               <Stack direction="row">
 
-                  {!isSmallScreen &&(
+                  {isSmallScreen ? (
+                              <a href="/" style={{textDecoration:"none", color:"black"}}>
+                                  <SvgIcon fontSize="large">
+                                      <HomeModernIcon
+                                          color="rgb(59, 61, 145)"/>
+                                  </SvgIcon>
+                              </a>
+                      ) : (
                   <Typography variant="h4" sx={{fontStyle:"bold", letterSpacing:"-5px", color:"black"}}>
                       <a href="/" style={{textDecoration:"none", color:"black"}}>
                           <SvgIcon fontSize="large">
-                              {/*<HomeModernIcon  color="#e75480"/>*/}
-                              {/*<HomeModernIcon  color="rgb(185,67,102)"/>*/}
                               <HomeModernIcon
                                   color="rgb(59, 61, 145)"/>
                           </SvgIcon>
@@ -131,27 +136,30 @@ export const TopNav = (props) => {
                   ) : (
                       <>
                           <Tooltip title="Create Contract">
-                              {!isSmallScreen ? (
-                                  <Button
-                                      variant="text"
-                                      onClick={() => handleNavClick("/templates")}
-                                      sx={{
-                                          color: "rgb(59, 61, 145)",
-                                          fontSize: "16px"
-                                      }}
-                                  >
-                                      <SvgIcon fontSize="large">
-                                          <DocumentPlusIcon color="rgb(185,67,102)" />
-                                      </SvgIcon>
-                                      Contracts
-                                  </Button>
-                              ) : (
-                                  <IconButton onClick={() => handleNavClick("/templates")}>
-                                      <SvgIcon fontSize="large">
-                                          <DocumentPlusIcon color="rgb(185,67,102)" />
-                                      </SvgIcon>
-                                  </IconButton>
-                              )}
+                              <>
+                                  {!isSmallScreen && isBusiness && (
+                                      <Button
+                                          variant="text"
+                                          onClick={() => handleNavClick("/templates")}
+                                          sx={{
+                                              color: "rgb(59, 61, 145)",
+                                              fontSize: "16px"
+                                          }}
+                                      >
+                                          <SvgIcon fontSize="large">
+                                              <DocumentPlusIcon color="rgb(185,67,102)" />
+                                          </SvgIcon>
+                                          Contracts
+                                      </Button>
+                                  )}
+                                  {isSmallScreen && isBusiness && (
+                                      <IconButton onClick={() => handleNavClick("/templates")}>
+                                          <SvgIcon fontSize="large">
+                                              <DocumentPlusIcon color="rgb(185,67,102)" />
+                                          </SvgIcon>
+                                      </IconButton>
+                                  )}
+                              </>
                           </Tooltip>
                           <Tooltip title="View Dashboard">
                               {!isSmallScreen ? (

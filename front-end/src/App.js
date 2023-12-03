@@ -1,8 +1,8 @@
 import './App.css';
 import React, {useContext, useEffect} from "react";
-import {BrowserRouter as Router, Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import AuthRegister from "./pages/Login/AuthRegister";
-import UserContext, {UserProvider} from "./hooks/UserProvider";
+import UserContext from "./hooks/UserProvider";
 import AuthLogin from "./pages/Login/AuthLogin";
 import {Layout} from "./components/Layout";
 import Clients from "./pages/Client/Clients";
@@ -10,14 +10,13 @@ import Products from "./pages/Products/Products";
 import ClientForm from "./pages/Client/ClientForm";
 import Templates from "./pages/Templates/Templates";
 import ContractsOverview from "./pages/Contracts/ContractsOverview";
-import ContractManagementApp from "./pages/Landing/ContractManagementApp";
-import CMAPP2  from "./pages/Landing/CMAPP2";
-import CMAPP4 from "./pages/Landing/CMAPP4";
-import PrivateRoute from "./hooks/BusinessContent";
+import LandingPage from "./pages/Landing/LandingPage";
 import BusinessContent from "./hooks/BusinessContent";
+import Inbox from "./pages/Inbox/Inbox";
+import ContractEdit from "./pages/Contracts/ContractEdit";
 
 
-  function App() {
+function App() {
     const location = useLocation();
     const { user, isAuthenticating } = useContext(UserContext);
     const navigate = useNavigate();
@@ -25,7 +24,7 @@ import BusinessContent from "./hooks/BusinessContent";
 
 
     useEffect(() => {
-      console.log("App.js: ", user + " " + location.pathname);
+      // console.log("App.js: ", user + " " + location.pathname);
       const publicPaths = ['/', '/login', '/register'];
       if (!isAuthenticating && !user && !publicPaths.includes(location.pathname)) {
         sessionStorage.setItem('pathBeforeLogin', location.pathname);
@@ -40,13 +39,15 @@ import BusinessContent from "./hooks/BusinessContent";
       <Routes>
         <Route path="/login" element={<AuthLogin/>}/>
         <Route path="/register" element={<AuthRegister/>}/>
-        <Route path="/" element={<CMAPP2/>}/>
+        <Route path="/" element={<LandingPage/>}/>
         <Route path="/clients" element={<BusinessContent><Clients/></BusinessContent>}/>
         <Route path="/products" element={<BusinessContent><Products/></BusinessContent>}/>
+        <Route path="/inbox" element={<Inbox/>}/>
         <Route path="/contracts" element={<ContractsOverview/>}/>
-        <Route path="/clients/edit/*" element={<ClientForm/>}/>
+        <Route path="/contract/edit/*" element={<BusinessContent><ContractEdit/></BusinessContent>}/>
+        <Route path="/clients/edit/*" element={<BusinessContent><ClientForm/></BusinessContent>}/>
         <Route path="/templates" element={<Templates/>}/>
-        <Route path="*" element={<h1>Not Found</h1>}/>
+        <Route path="*" element={<h1 style={{display:"grid", placeItems:"center"}}>Not Found</h1>}/>
       </Routes>
       </Layout>
   );

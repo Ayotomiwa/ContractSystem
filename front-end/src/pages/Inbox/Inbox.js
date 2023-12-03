@@ -13,14 +13,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 
 import Skeleton from '@mui/material/Skeleton';
-import {ContractsTable} from "./ContractsTable";
+
 import {PagesTable} from "../../components/PagesTable";
-import ContractFilterButtons from "./ContractFilterButtons";
+import InboxFilterButtons from "./InboxFilterButtons";
 
 
 
 
-const ContractsOverview = () => {
+const Inbox = () => {
     const {user} = useContext(UserContext);
     const [contracts, setContracts] = useState([]);
     const [page, setPage] = useState(0);
@@ -30,7 +30,7 @@ const ContractsOverview = () => {
     const [search, setSearch] = useState(false);
     const userId = user?.id;
     console.log("userId: ", userId);
-    const basicContractUrl = `http://localhost:8080/api/contracts/${userId}`;
+    const basicContractUrl = `http://localhost:8080/api/inbox/${userId}`;
     const fetchContractUrl = `size=${rowsPerPage}&page=${page}`;
     const searchContractUrl = basicContractUrl + `/search?query=${searchTerm}`;
     const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +38,16 @@ const ContractsOverview = () => {
     const display =useRef("");
 
 
+
     useEffect(() => {
+        setIsLoading(true);
+    }, [rowsPerPage]);
+
+
+    useEffect(() => {
+        if(!user){
+            return;
+        }
         if (search === false || searchTerm === "") {
             setContracts([]);
             fetchContracts();
@@ -107,7 +116,7 @@ const ContractsOverview = () => {
 
     const deleteContract = () =>
     {
-        axios.post(`http://localhost:8080/api/contracts/delete/${selectedContractId}`)
+        axios.post(`http://localhost:8080/api/delete/${selectedContractId}`)
             .then((res) => res.status)
             .then((status)=>{
                 if(status === 200){
@@ -171,7 +180,7 @@ const ContractsOverview = () => {
                         >
                             <Stack spacing={1}>
                                 <Typography variant="h4">
-                                    Contracts
+                                    Inbox
                                 </Typography>
                                 <Stack
                                     alignItems="center"
@@ -211,7 +220,7 @@ const ContractsOverview = () => {
                             >
 
                                 <SearchBar setSearchTerm={setSearchTerm} resetList={resetContractsList}
-                                placeHolder="Search Contracts"
+                                placeHolder="Search Inbox"
                                 />
                                 <IconButton
                                     color="red"
@@ -226,7 +235,7 @@ const ContractsOverview = () => {
                                 <Divider />
                             </Box>
                             <Box sx={{m:"10px"}}>
-                                <ContractFilterButtons setSearchTerm={setSearchTerm} resetList={resetContractsList}/>
+                                <InboxFilterButtons setSearchTerm={setSearchTerm} resetList={resetContractsList}/>
                             </Box>
                         </Card>
                         {/*<Card >*/}
@@ -247,15 +256,13 @@ const ContractsOverview = () => {
                             isLoading={isLoading}
                             setItemsId={setSelectedContractId}
                             columnHeaders={{
-                                "Name": "name",
-                                "Recipient": "recipientEmail",
-                                "Business":"businessOwnerId",
-                                "Owner":"userRecipient.phoneNumber",
-                                "Created Date":"createdAt",
-                                "Last Updated":"modifiedAt",
-                                "Status":"ownerStage",
+                                "From": "from",
+                                "To": "to",
+                                "Title":"",
+                                "sent":"sent",
+                                "received": "received",
+                                "Status":"status",
                             }}
-
                         />
                     </Stack>
                 </Container>
@@ -263,4 +270,4 @@ const ContractsOverview = () => {
         </>
     );
 };
-export default ContractsOverview;
+export default Inbox;

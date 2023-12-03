@@ -1,7 +1,7 @@
 import {List, ListItem, ListItemButton, ListItemText, Typography} from "@mui/material";
 
 
-const ContractFilterButtons = ({setSearchTerm, resetList}) =>{
+const InboxFilterButtons = ({setSearchTerm, resetList}) =>{
 
 
     const softColors = [
@@ -11,14 +11,14 @@ const ContractFilterButtons = ({setSearchTerm, resetList}) =>{
         '#a7c7e7',
         '#f8c6d1',
         '#d1c4e9',
-        '#88d8b0',
-        '#ffccaa',
-        '#87ceeb',
-
-        '#f6e8b1',
-
-        '#f3e5f5',
-        '#fffdd0'
+        // '#88d8b0',
+        // '#ffccaa',
+        // '#87ceeb',
+        //
+        // '#f6e8b1',
+        //
+        // '#f3e5f5',
+        // '#fffdd0'
     ];
 
 
@@ -37,7 +37,7 @@ const ContractFilterButtons = ({setSearchTerm, resetList}) =>{
             alignItems:"center", justifyContent: "center",
             width:"100%",
         }}>
-            {['ALL', 'DRAFT', 'EXPIRED', 'REVIEWED', 'SIGNED', 'ATTENTION', 'SENT'].map((text, index) => (
+            {['ALL', 'RECIEVED', 'ACCEPTED', 'DECLINED'].map((text, index) => (
                 <ListItem key={text}>
                     <ListItemButton
                         onClick={() => handleFilter(text)}
@@ -62,4 +62,4 @@ const ContractFilterButtons = ({setSearchTerm, resetList}) =>{
     )
 
 }
-export default ContractFilterButtons;
+export default InboxFilterButtons;

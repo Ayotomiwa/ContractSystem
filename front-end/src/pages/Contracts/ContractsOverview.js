@@ -39,6 +39,19 @@ const ContractsOverview = () => {
 
 
     useEffect(() => {
+        setIsLoading(true);
+    }, [rowsPerPage]);
+
+
+
+
+
+    useEffect(() => {
+
+        if (!user) {
+            return
+        }
+
         if (search === false || searchTerm === "") {
             setContracts([]);
             fetchContracts();
@@ -147,6 +160,12 @@ const ContractsOverview = () => {
         setPage(0);
     };
 
+
+    const handleEdit = (itemId, businessId) =>{
+        window.location.href = `/contract/edit?contractId=${itemId}&color=${encodeURIComponent('#d1c4e9')}&default=${false}`;
+    }
+
+
     const contractIds = useMemo(() => contracts.map((customer) => customer.id), [contracts]);
 
     const contractSelection = useSelection(contractIds);
@@ -247,15 +266,15 @@ const ContractsOverview = () => {
                             isLoading={isLoading}
                             setItemsId={setSelectedContractId}
                             columnHeaders={{
-                                "Name": "name",
-                                "Recipient": "recipientEmail",
-                                "Business":"businessOwnerId",
-                                "Owner":"userRecipient.phoneNumber",
+                                "Name": "data.title",
+                                "Recipient": "recipient.email",
+                                "Business":"recipient.business.companyName",
+                                "Owner":"userOwner.email",
                                 "Created Date":"createdAt",
                                 "Last Updated":"modifiedAt",
                                 "Status":"ownerStage",
                             }}
-
+                            handleEdit={handleEdit}
                         />
                     </Stack>
                 </Container>

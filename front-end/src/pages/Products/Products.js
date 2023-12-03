@@ -36,6 +36,11 @@ const Products = () => {
 
 
     useEffect(() => {
+        setIsLoading(true);
+    }, [rowsPerPage]);
+
+
+    useEffect(() => {
         if (search === false || searchTerm === "") {
             setProducts([]);
             fetchProducts();
@@ -56,7 +61,6 @@ const Products = () => {
 
 
     const fetchProducts = () => {
-        setIsLoading(false);
         // if (user) {
         // axios.get(`http://localhost:8080/api/products/business/${user.business.id}`)
         axios.get(basicProductUrl + "?" + fetchProductUrl)
@@ -71,7 +75,6 @@ const Products = () => {
     }
 
     const fetchSearchData = () => {
-        setIsLoading(true);
         axios.get(searchProductUrl +"&"+ fetchProductUrl)
             .then(response => {
                 processProductsData(response.data);
@@ -132,6 +135,9 @@ const Products = () => {
         setPage(0);
     };
 
+    const handleEdit = (itemId, businessId) =>{
+
+    }
 
     const productId = useMemo(() => products.map((product) => product.id), [products]);
 
@@ -225,6 +231,7 @@ const Products = () => {
                                 "Type":"type",
                                 "Cost Per Unit":"price",
                             }}
+                            handleEdit={handleEdit}
                         />
                     </Stack>
                 </Container>

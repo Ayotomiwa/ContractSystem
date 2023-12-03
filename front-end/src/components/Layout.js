@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { TopNav } from '../pages/Layout/TopNav';
 import {SideNav} from "../pages/Layout/SideNav";
-import {Box, useMediaQuery, useTheme} from "@mui/material";
+import {Box, ThemeProvider, useMediaQuery, useTheme} from "@mui/material";
 import { useLocation } from 'react-router-dom';
+import { createTheme } from '@mui/material/styles';
 
 
 
@@ -17,7 +18,12 @@ import { useLocation } from 'react-router-dom';
 
 export const Layout = (props) => {
   const { children } = props;
-  const theme= useTheme();
+  const theme = createTheme({
+    typography: {
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
+      fontWeight: 700,
+    },
+  });
   const [showSideBar, setShowSideBar] = useState(false);
   const[showTopNav, setShowTopNav] = useState(false);
   const [openSideNav, setOpenSideNav] = useState(false);
@@ -28,8 +34,12 @@ export const Layout = (props) => {
   const  nonSideBarRoutes = [...noneTopNavRoutes, "/templates", "/"];
   const currentPath = useLocation().pathname;
 
+  const isNonSidebarRoute = useCallback(() => {
+    return nonSideBarRoutes.includes(currentPath) || currentPath.startsWith("/contract/edit");
+  }, [currentPath]);
+
   useEffect(() => {
-    const sideLayoutCanBeShown = !nonSideBarRoutes.includes(currentPath);
+    const sideLayoutCanBeShown = !isNonSidebarRoute();
     if(sideLayoutCanBeShown) {
       setShowSideBar(true);
       setOpenSideNav(true);
@@ -43,7 +53,7 @@ export const Layout = (props) => {
 
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       {showTopNav && (
         <TopNav onNavOpen={() => setOpenSideNav(!openSideNav)}
                 openNav={openSideNav}
@@ -70,6 +80,6 @@ export const Layout = (props) => {
           {children}
         {/*</LayoutContainer>*/}
       </Box>
-    </>
+    </ThemeProvider>
   );
 };

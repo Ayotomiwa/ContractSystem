@@ -11,12 +11,12 @@ import {
     TableHead,
     TablePagination,
     TableRow,
+    TableRow as MuiTableRow,
     Typography
 } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import {useNavigate} from "react-router-dom";
 import {AnimatePresence, motion} from "framer-motion";
-import { TableRow as MuiTableRow } from '@mui/material';
 
 
 export const PagesTable = (props) => {
@@ -37,13 +37,15 @@ export const PagesTable = (props) => {
         businessId,
         setItemsId,
         columnHeaders,
-        showAvatar
+        showAvatar,
+        handleEdit,
     } = props;
 
     const selectedSome = (selected.length > 0) && (selected.length < items.length);
     const selectedAll = (items.length > 0) && (selected.length === items.length);
     const navigate = useNavigate();
     const MotionTableRow = motion(MuiTableRow);
+    const columnLength = Object.keys(columnHeaders).length;
 
 
     const getNestedValue = (obj, path) => {
@@ -52,17 +54,18 @@ export const PagesTable = (props) => {
 
 
     return (
-        <Card elevation={6}  sx={{overflowX: "auto", border: "0.5px solid black", boxShadow:3}}>
+        <Card elevation={6} sx={{overflowX: "auto", border: "0.5px solid black", boxShadow: 3}}>
             {/*<Card sx={{boxShadow:3}}>*/}
             {/*<Scrollbar>*/}
             <Box sx={{minWidth: 800, minHeight: 450}}>
                 <Table>
                     {/*<TableHead sx={{backgroundColor:"rgb(59, 61, 145, 0.3)"}}>*/}
                     <TableHead>
-                        <TableRow sx={{backgroundColor:"rgb(59, 61, 145, 0.5)",
+                        <TableRow sx={{
+                            backgroundColor: "rgb(59, 61, 145, 0.5)",
                             textTransform: "uppercase",
-                            height:"40px"
-                            }}>
+                            height: "40px"
+                        }}>
                             <TableCell padding="checkbox">
                                 <Checkbox
                                     checked={selectedAll}
@@ -76,10 +79,10 @@ export const PagesTable = (props) => {
                                     }}
                                 />
                             </TableCell>
-                            {Object.entries(columnHeaders).map(([columnHeader], index ) => (
+                            {Object.entries(columnHeaders).map(([columnHeader], index) => (
                                 <TableCell key={index} sx={{
                                     fontSize: "16px",
-                                    }}>
+                                }}>
                                     {columnHeader}
                                 </TableCell>
                             ))
@@ -90,12 +93,12 @@ export const PagesTable = (props) => {
                         {isLoading ? (
                             Array.from(new Array(rowsPerPage)).map((_, index) => (
                                 <TableRow key={index}>
-                                    <TableCell colSpan={7}>
+                                    <TableCell colSpan={columnLength + 1}>
                                         <Skeleton variant="rectangular" width="100%"/>
                                     </TableCell>
                                 </TableRow>
                             ))
-                        ) : (
+                        ) : items.length > 0 ? (
                             <AnimatePresence>
                                 {items.map((item) => {
 
@@ -110,7 +113,7 @@ export const PagesTable = (props) => {
                                             layout
                                             selected={isSelected}
                                             onClick={() => {
-                                                // navigate(`/clients/edit?clientId=${item.id}&businessId=${businessId}`, {replace: true});
+                                                handleEdit(item.id, businessId);
                                             }}
                                             sx={{
                                                 cursor: 'pointer',
@@ -157,8 +160,15 @@ export const PagesTable = (props) => {
                                                 </TableCell>
                                             ))}
                                         </MotionTableRow>
-                                    )})}
+                                    )
+                                })}
                             </AnimatePresence>
+                        ) : (
+                            <TableRow>
+                                <TableCell align="center" colSpan={columnLength + 1}>
+                                    No Data to be Displayed
+                                </TableCell>
+                            </TableRow>
                         )}
                     </TableBody>
                 </Table>

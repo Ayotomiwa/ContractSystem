@@ -21,9 +21,10 @@ export const SideNav = (props) => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
     const {user} = useContext(UserContext);
-    console.log("user");
-    console.log(user);
-    const  isBusiness = !user?.businessId === null;
+    // console.log("user");
+    // console.log(user);
+    const  isBusiness = user?.businessId !== null;
+    // console.log("SideBar ", isBusiness)
     // const pathname = usePathname();
     // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 

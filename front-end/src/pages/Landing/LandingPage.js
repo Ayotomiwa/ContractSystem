@@ -27,12 +27,8 @@ const styles = {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        // backgroundColor: 'rgb(211, 161, 55, 0.7)',
-        // backgroundColor: 'rgba(255, 255, 255, 0.8)',
         minHeight: '75vh',
-        // color: 'rgba(255, 255, 255, 0.8)',
         color: 'rgb(211, 161, 55, 0.7)',
-        // color: 'rgb(59, 61, 145)',
         padding: '50px',
         textAlign: 'center'
     },
@@ -44,43 +40,23 @@ const styles = {
         justifyContent: 'center',
         padding: '20px',
         gap: '10px',
-        // backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        // backdropFilter: 'blur(10px)',
         borderRadius: '15px',
         border: '1px solid black',
     },
     testimonial: {
-        // placeSelf:"center",
-        // alignSelf:"center",
         padding: '25px',
         margin: '10px 0',
         backgroundColor: 'rgb(211, 161, 55, 0.5)',
          textAlign: 'center',
         border:"2px black solid",
-        // backgroundColor: 'rgba(255, 255, 255, 0.7)'
     },
     ctaButton: {
-        // backgroundColor: 'rgb(211, 161, 55)',
-        // color: 'black',
-        // backgroundColor: 'rgb(211, 161, 55)',
-        // color: 'black',
         marginTop: '20px',
         backgroundColor: 'rgb(211, 161, 55, 0.5)',
         color: 'black',
         border: '1px solid black'
     }
 };
-
-const features = [
-    { title: 'Contract Generation', icon: <SearchIcon /> },
-    { title: 'Centralized Repository', icon: <FolderIcon /> },
-    { title: 'Sending Contracts', icon: <SendIcon /> },
-    { title: 'Client Management', icon: <PeopleIcon /> },
-    { title: 'Contract Security', icon: <LockIcon /> },
-    { title: 'Contract Notification', icon: <NotificationsIcon /> },
-    { title: 'Contract Versioning', icon: <HistoryIcon /> },
-    { title: 'AI ChatBot', icon: <ChatIcon /> }
-];
 
 
 
@@ -118,7 +94,7 @@ const carouselVariants = {
 
 
 
-const CMAPP2 = () => {
+const LandingPage = () => {
   
     const {user} = useContext(UserContext)
 
@@ -141,10 +117,13 @@ const CMAPP2 = () => {
             <Box sx={{backgroundColor: 'rgb(59, 61, 145)', height: "85vh"}}>
                 <Box style={styles.heroSection}>
                     <Typography variant="h2"
-                                style={{fontFamily: 'Playfair Display, serif', width: "500px", textAlign: "center"}}>Simplify
-                        Your Contract Management</Typography>
+                                sx={{
+                                    fontFamily: 'Playfair Display, serif',
+                                    width: { xs: "100%", md: "500px" },
+                                    textAlign: "center"
+                                }}>Simplify Your Contract Management</Typography>
                     <Typography variant="h5">All your contracts, streamlined and secure.</Typography>
-                    <Button variant="contained" 
+                    <Button variant="contained"
                             onClick={() => handleLogin()}
                             style={styles.ctaButton}>
                         <Typography>Explore Features </Typography></Button>
@@ -154,7 +133,13 @@ const CMAPP2 = () => {
                     initial="hidden"
                     animate="visible"
                 >
-                    <Box sx={{marginTop: "-100px", display:"flex", justifyContent:"space-evenly", alignItems:"center"}}>
+                    <Box sx={{
+                        marginTop: "-100px",
+                        display:"flex",
+                        justifyContent:"space-evenly",
+                        alignItems:"center",
+                        flexDirection: { xs: "column", md: "row" }
+                    }}>
                         <img src="/assets/avatars/undraw_people_search_re_5rre.svg" alt="Contract Management"
                              style={{width: '100%', maxHeight: '280px',}}/>
                         <img src="/assets/avatars/undraw_contract_re_ves9 (2).svg" alt="Contract Management"
@@ -176,6 +161,7 @@ const CMAPP2 = () => {
                 initial="hidden"
                 animate={inView ? "visible" : "hidden"}
             >
+
                 <Grid container spacing={3} style={{padding: '50px', marginTop: "200px", height:"400px"}}>
                     <Grid item xs={12} md={4}>
                         <Card style={styles.featureCard}>
@@ -207,6 +193,7 @@ const CMAPP2 = () => {
                 variants={carouselVariants}
                 initial="hidden"
                 animate={inView ? "visible" : "hidden"}
+                style={{marginTop: "50px"}} // Add margin to prevent overlap
             >
                 <Box sx={{
                     p: 5,
@@ -215,10 +202,9 @@ const CMAPP2 = () => {
                     justifyContent: "center",
                     alignItems: "center",
                     mb:"120px",
-                    // border: "1px solid black",
                 }}>
                     <Carousel sx={{
-                        width: "50%",
+                        width: { xs: "100%", md: "50%" },
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "center",
@@ -264,4 +250,4 @@ const CMAPP2 = () => {
     );
 };
 
-export default CMAPP2;
+export default LandingPage;

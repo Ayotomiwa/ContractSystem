@@ -63,8 +63,8 @@ const AuthRegister = () => {
 
                 <Formik
                     initialValues={{
-                        firstname: '',
-                        lastname: '',
+                        firstName: '',
+                        lastName: '',
                         email: '',
                         phoneNumber: '',
                         business: {
@@ -77,8 +77,8 @@ const AuthRegister = () => {
                         submit: null
                     }}
                     validationSchema={Yup.object().shape({
-                        firstname: Yup.string().max(255).required('First Name is required'),
-                        lastname: Yup.string().max(255).required('Last Name is required'),
+                        firstName: Yup.string().max(255).required('First Name is required'),
+                        lastName: Yup.string().max(255).required('Last Name is required'),
                         email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
                         password: Yup.string().max(255).required('Password is required'),
                       phoneNumber: Yup.string().required('Phone Number is required'),
@@ -141,43 +141,43 @@ const AuthRegister = () => {
                             <Grid container spacing={3}>
                                 <Grid item xs={12} md={6}>
                                     <Stack spacing={1}>
-                                        <InputLabel htmlFor="firstname-signup">First Name*</InputLabel>
+                                        <InputLabel htmlFor="firstName-signup">First Name*</InputLabel>
                                         <OutlinedInput
-                                            id="firstname-login"
-                                            type="firstname"
-                                            value={values.firstname}
-                                            name="firstname"
+                                            id="firstName-login"
+                                            type="firstName"
+                                            value={values.firstName}
+                                            name="firstName"
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                             placeholder="John"
                                             fullWidth
-                                            error={Boolean(touched.firstname && errors.firstname)}
+                                            error={Boolean(touched.firstName && errors.firstName)}
                                         />
-                                        {touched.firstname && errors.firstname && (
-                                            <FormHelperText error id="helper-text-firstname-signup">
-                                                {errors.firstname}
+                                        {touched.firstName && errors.firstName && (
+                                            <FormHelperText error id="helper-text-firstName-signup">
+                                                {errors.firstName}
                                             </FormHelperText>
                                         )}
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <Stack spacing={1}>
-                                        <InputLabel htmlFor="lastname-signup">Last Name*</InputLabel>
+                                        <InputLabel htmlFor="lastName-signup">Last Name*</InputLabel>
                                         <OutlinedInput
                                             fullWidth
-                                            error={Boolean(touched.lastname && errors.lastname)}
-                                            id="lastname-signup"
-                                            type="lastname"
-                                            value={values.lastname}
-                                            name="lastname"
+                                            error={Boolean(touched.lastName && errors.lastName)}
+                                            id="lastName-signup"
+                                            type="lastName"
+                                            value={values.lastName}
+                                            name="lastName"
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                             placeholder="Doe"
                                             inputProps={{}}
                                         />
-                                        {touched.lastname && errors.lastname && (
+                                        {touched.lastName && errors.lastName && (
                                             <FormHelperText error id="helper-text-lastname-signup">
-                                                {errors.lastname}
+                                                {errors.lastName}
                                             </FormHelperText>
                                         )}
                                     </Stack>

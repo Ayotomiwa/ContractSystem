@@ -1,7 +1,11 @@
 import {Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography} from "@mui/material";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
+
 
 export default function TemplateCard({ title, description, image, color, contractId, setContractId, setColor }) {
 
+
+    const navigate = useNavigate();
 
 
 
@@ -12,6 +16,10 @@ export default function TemplateCard({ title, description, image, color, contrac
             border:"0.5px solid black",
             borderRadius:"12px"}}>
             <CardActionArea
+                onClick={() => {
+                    // navigate(`/contract/edit?contractId=${contractId}&color=${color}&default=${true}`)
+                    window.location.href = `/contract/edit?contractId=${contractId}&color=${encodeURIComponent(color)}&default=${true}`;
+                }}
             // sx={{backdropFilter: 'blur(25px)',
             //     // backgroundColor: 'rgba(255,255,255,0.47)'}}
             // backgroundColor: 'rgba(255,255,255,0.47)',

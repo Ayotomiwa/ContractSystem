@@ -85,7 +85,7 @@ const Templates = () => {
            .then(data => {
                setContracts(data);
                setFilteredContracts(data)
-               console.log(data);
+               // console.log(data);
            })
             .catch(error => console.error(error));
     }

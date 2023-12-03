@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
+import {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import {Box, Button, Card, Container, IconButton, Stack, SvgIcon, Typography} from '@mui/material';
 import { useSelection } from '../../hooks/UseSelection';
@@ -16,6 +16,7 @@ import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import Skeleton from '@mui/material/Skeleton';
 import {Pages} from "@mui/icons-material";
 import {PagesTable} from "../../components/PagesTable";
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -53,7 +54,17 @@ const Clients = () => {
     const searchClientUrl = basicClientUrl + `/search?query=${searchTerm}`;
     const [isLoading, setIsLoading] = useState(false);
     const [selectedClientId, setSelectedClientId] = useState(null);
+    const navigate = useNavigate();
     const display =useRef("");
+
+
+
+    useEffect(() => {
+        setIsLoading(true);
+    }, [rowsPerPage]);
+
+
+
 
 
     useEffect(() => {
@@ -71,17 +82,10 @@ const Clients = () => {
 
 
     const fetchClients = () => {
-        // console.log("fetch Clients: " +  user.businessId)
-        // if (user) {
-        // axios.get(`http://localhost:8080/api/clients/business/${user.business.id}`)
         axios.get(basicClientUrl + "?" + fetchClientsUrl)
             .then(response => {
                 processClientData(response.data);
                 setIsLoading(false);
-                // const clientWithAvatars = response.data.content.map((client) => ({
-                //     ...client,
-                //         avatar: generateRandomAvatar()
-                // }));
 
             })
             .catch(error => {
@@ -101,7 +105,6 @@ const Clients = () => {
 
 
     const fetchSearchData = () => {
-        setIsLoading(true);
         axios.get(searchClientUrl + "&" + fetchClientsUrl)
             .then(response => {
                 processClientData(response.data);
@@ -123,6 +126,9 @@ const Clients = () => {
         deleteClient()
     }
 
+    const handleEdit = (itemId, businessId) => {
+        navigate(`/clients/edit?clientId=${itemId}&businessId=${businessId}`, {replace: true});
+    }
 
     const deleteClient = () =>
     {
@@ -281,6 +287,7 @@ const Clients = () => {
                                     "Created Date":"createdDate",
                                     "Last Updated":"lastUpdatedDate",
                                 }}
+                            handleEdit={handleEdit}
                             showAvatar={true}
                         />
                     </Stack>

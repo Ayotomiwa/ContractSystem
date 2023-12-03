@@ -1,16 +1,24 @@
-import { useContext } from "react";
+import {useContext, useEffect} from "react";
 import UserContext from "./UserProvider";
 import { Navigate } from "react-router-dom";
 
 const BusinessContent = ({ children }) => {
-    const { user } = useContext(UserContext);
+    const { user, isLoading} = useContext(UserContext);
 
-    if (!user || !user.businessId) {
-        window.location.pathname = "/";
-        return null;
-    }
 
-    return children;
+        if (isLoading) {
+            return null;
+        }
+
+            if(user && user.businessId){
+                return children;
+            }
+            else{
+                // window.location.pathname = "/";
+                return null;
+            }
+
+        // ...
 };
 
 export default BusinessContent;

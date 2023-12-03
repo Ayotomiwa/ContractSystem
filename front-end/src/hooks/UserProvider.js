@@ -6,7 +6,10 @@ const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [lastUser, setLastUser] = useState(null);
     const [isAuthenticating, setIsAuthenticating] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
+
 
 
     useEffect(() => {
@@ -21,21 +24,24 @@ export const UserProvider = ({ children }) => {
             }
         }
         setIsAuthenticating(false);
+        setIsLoading(false);
     }, []);
 
 
     const login = (user, path) => {
         sessionStorage.setItem('user', JSON.stringify(user));
         setUser(user);
-        console.log("User is logged in " + user.token)
-        console.log("User is logged in " + user.businessId)
+
         if(path){
             window.location.pathname = path;
         }
         else{
-            const storedPath = sessionStorage.getItem('pathBeforeLogin');
-            console.log("storedPath: ", storedPath);
+            let storedPath = sessionStorage.getItem('pathBeforeLogin');
             if(storedPath){
+                const lastUser = sessionStorage.getItem('lastUser');
+                if(storedPath.startsWith('/contract/edit/') && (lastUser.id !== user.id || lastUser.businessId !== user.businessId)){
+                    storedPath = '/';
+                }
                 window.location.pathname = storedPath;
             }
             else{
@@ -45,7 +51,10 @@ export const UserProvider = ({ children }) => {
     };
 
     const logout = () => {
+        const lastUser = sessionStorage.getItem('lastUser');
+        sessionStorage.setItem('lastUser', JSON.stringify(lastUser));
         sessionStorage.removeItem('user');
+        sessionStorage.removeItem('pathBeforeLogin');
         setUser(null);
     };
 

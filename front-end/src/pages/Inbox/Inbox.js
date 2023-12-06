@@ -1,24 +1,16 @@
-import {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
+import {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import {Box, Button, Card, Container, Divider, IconButton, Stack, SvgIcon, Typography} from '@mui/material';
-import { useSelection } from '../../hooks/UseSelection';
-import { Layout as DashboardLayout } from '../../components/Layout';
-import { SearchBar } from '../../components/SearchBar';
-import { applyPagination } from '../../utils/apply-pagination';
+import {useSelection} from '../../hooks/UseSelection';
+import {SearchBar} from '../../components/SearchBar';
 import axios from "axios";
 import UserContext from "../../hooks/UserProvider";
 import {generateRandomAvatar} from "../../utils/avatarUtils";
-import {Link as RouterLink} from "react-router-dom";
-import DeleteIcon from '@mui/icons-material/Delete';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
-
-import Skeleton from '@mui/material/Skeleton';
 
 import {PagesTable} from "../../components/PagesTable";
 import InboxFilterButtons from "./InboxFilterButtons";
 import {CheckIcon, NoSymbolIcon} from "@heroicons/react/20/solid";
-
-
 
 
 const Inbox = () => {
@@ -30,15 +22,14 @@ const Inbox = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [search, setSearch] = useState(false);
     const userId = user?.id;
-    console.log("userId: ", userId);
+    // const basicContractUrl = ` https://contract-system-5c4e51349d5b.herokuapp.com/api/inbox/${userId}`;
     const basicContractUrl = `http://localhost:8080/api/inbox/${userId}`;
     const fetchContractUrl = `size=${rowsPerPage}&page=${page}`;
     const searchContractUrl = basicContractUrl + `/search?query=${searchTerm}`;
     const [isLoading, setIsLoading] = useState(false);
     const [selectedContractId, setSelectedContractId] = useState(null);
-    const[contractId, setContractId] = useState(null);
-    const display =useRef("");
-
+    const [contractId, setContractId] = useState(null);
+    const display = useRef("");
 
 
     useEffect(() => {
@@ -46,17 +37,15 @@ const Inbox = () => {
     }, [rowsPerPage]);
 
     useEffect(() => {
-        if(!contractId){
+        if (!contractId) {
             return;
         }
         window.location.href = `/contract/edit?contractId=${contractId}&color=${encodeURIComponent('#d1c4e9')}&default=${false}`;
     }, [contractId]);
 
 
-
-
     useEffect(() => {
-        if(!user){
+        if (!user) {
             return;
         }
         if (search === false || searchTerm === "") {
@@ -75,19 +64,19 @@ const Inbox = () => {
         // if (user) {
         // axios.get(`http://localhost:8080/api/clients/business/${user.business.id}`)
         axios.get(basicContractUrl + "?" + fetchContractUrl, {
-            headers: {
-                'Authorization': `Bearer ${user.token}`
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
             }
-        }
-    ).then(response => {
-                processContractsData(response.data);
-                setIsLoading(false);
-                // const clientWithAvatars = response.data.content.map((client) => ({
-                //     ...client,
-                //         avatar: generateRandomAvatar()
-                // }));
+        ).then(response => {
+            processContractsData(response.data);
+            setIsLoading(false);
+            // const clientWithAvatars = response.data.content.map((client) => ({
+            //     ...client,
+            //         avatar: generateRandomAvatar()
+            // }));
 
-            })
+        })
             .catch(error => {
                 console.error("Error fetching contracts:", error);
                 setIsLoading(false);
@@ -108,19 +97,19 @@ const Inbox = () => {
     const fetchSearchData = () => {
         setIsLoading(true);
         axios.get(searchContractUrl + "&" + fetchContractUrl, {
-            headers: {
-                'Authorization': `Bearer ${user.token}`
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
             }
-        }
-    ).then(response => {
-                processContractsData(response.data);
-                setIsLoading(false);
-                // const clientWithAvatars = response.data.content.map((client) => ({
-                //     ...client,
-                //         avatar: generateRandomAvatar()
-                // }));
+        ).then(response => {
+            processContractsData(response.data);
+            setIsLoading(false);
+            // const clientWithAvatars = response.data.content.map((client) => ({
+            //     ...client,
+            //         avatar: generateRandomAvatar()
+            // }));
 
-            })
+        })
             .catch(error => {
                 console.error("Error fetching contracts:", error);
                 setIsLoading(false);
@@ -129,7 +118,8 @@ const Inbox = () => {
 
 
     const fetchInboxData = (itemId) => {
-        axios.get(`http://localhost:8080/api/inbox/${itemId}/contract`, {
+        // axios.get(`http://localhost:8080/api/inbox/${itemId}/contract`, {
+        axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/inbox/${itemId}/contract`, {
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }
@@ -144,43 +134,42 @@ const Inbox = () => {
         deleteContract()
     }
 
-    const handleEdit = (itemId) =>{
+    const handleEdit = (itemId) => {
         fetchInboxData(itemId);
 
     }
 
-    const deleteContract = () =>
-    {
-        axios.post(`http://localhost:8080/api/delete/${selectedContractId}`,{}, {
+    const deleteContract = () => {
+        axios.post(`http://localhost:8080/api/delete/${selectedContractId}`, {}, {
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }
         })
             .then((res) => res.status)
-            .then((status)=>{
-                if(status === 200){
+            .then((status) => {
+                if (status === 200) {
                     setContracts(prevClients => prevClients.filter(client => client.id !== selectedContractId));
                 }
-            }).
-        catch((error) => {
+            }).catch((error) => {
             console.log(error);
         })
     }
 
 
     const handleStatus = (status) => {
-        axios.post(`http://localhost:8080/api/inbox/${selectedContractId}/${status}`,{}, {
+
+        // axios.post(`http://localhost:8080/api/inbox/${selectedContractId}/${status}`,{}, {
+        axios.post(`https://contract-system-5c4e51349d5b.herokuapp.com/api/inbox/${selectedContractId}/${status}`, {}, {
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }
         })
             .then((res) => res.status)
-            .then((status)=>{
-                if(status === 200){
+            .then((status) => {
+                if (status === 200) {
                     fetchContracts();
                 }
-            }).
-        catch((error) => {
+            }).catch((error) => {
             console.log(error);
         })
     }
@@ -246,7 +235,7 @@ const Inbox = () => {
                             </Stack>
                             <div>
                                 <Button
-                                   onClick={() => window.location.href = "/templates"}
+                                    onClick={() => window.location.href = "/templates"}
                                     startIcon={(
                                         <SvgIcon fontSize="small">
                                             <PlusIcon/>
@@ -275,16 +264,17 @@ const Inbox = () => {
                             >
 
                                 <SearchBar setSearchTerm={setSearchTerm} resetList={resetContractsList}
-                                placeHolder="Search Inbox"
+                                           placeHolder="Search Inbox"
                                 />
                                 <Card elevation={3}
-                                      sx={{display:"flex", justifyContent:"space-between", gap:2,
-                                    backgroundColor:"rgb(59, 61, 145, 0.2)",
-                                      border:"1px solid rgb(59, 61, 145, 0.2)"
+                                      sx={{
+                                          display: "flex", justifyContent: "space-between", gap: 2,
+                                          backgroundColor: "rgb(59, 61, 145, 0.2)",
+                                          border: "1px solid rgb(59, 61, 145, 0.2)"
                                       }}>
                                     <IconButton
                                         color="red"
-                                        onClick={()=> handleStatus("ACCEPTED")}
+                                        onClick={() => handleStatus("ACCEPTED")}
                                     >
                                         <SvgIcon sx={{fontSize: "40px"}}>
                                             <CheckIcon color="rgb(185,67,102)"/>
@@ -308,10 +298,10 @@ const Inbox = () => {
                                     </IconButton>
                                 </Card>
                             </Stack>
-                            <Box sx={{mt:"30px"}}>
-                                <Divider />
+                            <Box sx={{mt: "30px"}}>
+                                <Divider/>
                             </Box>
-                            <Box sx={{m:"10px"}}>
+                            <Box sx={{m: "10px"}}>
                                 <InboxFilterButtons setSearchTerm={setSearchTerm} resetList={resetContractsList}/>
                             </Box>
                         </Card>
@@ -335,10 +325,10 @@ const Inbox = () => {
                             columnHeaders={{
                                 "From": "from",
                                 "To": "to",
-                                "Title":"title",
-                                "sent":"sent",
+                                "Title": "title",
+                                "sent": "sent",
                                 "received": "received",
-                                "Status":"status",
+                                "Status": "status",
                             }}
                             tableType="inbox"
                             handleEdit={handleEdit}

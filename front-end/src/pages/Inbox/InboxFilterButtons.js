@@ -4,22 +4,6 @@ import {List, ListItem, ListItemButton, ListItemText, Typography} from "@mui/mat
 const InboxFilterButtons = ({setSearchTerm, resetList}) =>{
 
 
-    const softColors = [
-
-        '#a8e6cf',
-
-        '#a7c7e7',
-        '#f8c6d1',
-        '#d1c4e9',
-        // '#88d8b0',
-        // '#ffccaa',
-        // '#87ceeb',
-        //
-        // '#f6e8b1',
-        //
-        // '#f3e5f5',
-        // '#fffdd0'
-    ];
 
     const stagesColor = {
         "ALL": "#a8e6cf",

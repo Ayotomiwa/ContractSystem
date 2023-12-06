@@ -368,7 +368,10 @@ const AuthRegister = () => {
                                                     size="large"
                                                     type="submit"
                                                     variant="contained"
-                                                    sx={{backgroundColor:"rgb(99, 102, 241)", borderRadius:"10px"}}
+                                                    sx={{backgroundColor:"rgb(59, 61, 145)", borderRadius:"10px",
+                                                        "&:hover,&:focus, &:active": {
+                                                            backgroundColor: "rgb(59, 61, 145)"
+                                                        }}}
                                                 >
                                                     Create Account
                                                 </Button>

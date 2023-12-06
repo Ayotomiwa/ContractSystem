@@ -1,19 +1,9 @@
-
 import PropTypes from 'prop-types';
-import {
-    Box,
-    Button,
-    Divider,
-    Drawer,
-    Stack,
-    SvgIcon, SwipeableDrawer,
-    Typography,
-    useMediaQuery, useTheme
-} from '@mui/material';
+import {Box, Divider, Stack, SwipeableDrawer, Typography, useMediaQuery, useTheme} from '@mui/material';
 import items from './Config';
-import { SideNavItem } from './SideNavItem';
-import UserContext from  '../../hooks/UserProvider';
-import {useContext, useRef, useState} from "react";
+import {SideNavItem} from './SideNavItem';
+import UserContext from '../../hooks/UserProvider';
+import {useContext} from "react";
 
 
 export const SideNav = (props) => {
@@ -21,7 +11,7 @@ export const SideNav = (props) => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
     const {user} = useContext(UserContext);
-    const  isBusiness = user?.businessId !== null;
+    const isBusiness = user?.businessId !== null;
 
     const path = window.location.pathname;
 
@@ -33,27 +23,27 @@ export const SideNav = (props) => {
                 height: '100%',
             }}
         >
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        backgroundColor: 'rgba(255, 255, 255, 0.04)',
-                        borderRadius: 1,
-                        justifyContent: 'center',
-                        mt: 10,
-                        p: 3
-                    }}
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                    borderRadius: 1,
+                    justifyContent: 'center',
+                    mt: 10,
+                    p: 3
+                }}
+            >
+
+                <Typography
+                    color="inherit"
+                    variant="h5"
+                    sx={{textAlign: "center"}}
                 >
+                    {user?.businessId ? "Manage Your Business" : "Manage Your Contracts"}
+                </Typography>
 
-                        <Typography
-                            color="inherit"
-                            variant="h5"
-                            sx={{textAlign:"center"}}
-                        >
-                            {user?.businessId? "Manage Your Business" : "Manage Your Contracts"}
-                        </Typography>
-
-                </Box>
+            </Box>
             <Divider sx={{borderColor: 'neutral.700'}}/>
             <Box
                 component="nav"
@@ -90,15 +80,15 @@ export const SideNav = (props) => {
                     })}
                 </Stack>
             </Box>
-            <Divider />
+            <Divider/>
         </Box>
     );
 
 
     return (
         !isSmallScreen ? (
-                open &&
-                (<SwipeableDrawer
+            open &&
+            (<SwipeableDrawer
                     anchor="left"
                     open={open}
                     onClose={onClose}
@@ -106,9 +96,9 @@ export const SideNav = (props) => {
                     PaperProps={{
 
                         sx: {
-                            mt:0,
+                            mt: 0,
                             backgroundColor: "rgb(59, 61, 145)",
-                            border:"1px solid black",
+                            border: "1px solid black",
                             boxShadow: 20,
                             color: "white",
                             width: 200
@@ -118,32 +108,32 @@ export const SideNav = (props) => {
                 >
                     {content}
                 </SwipeableDrawer>
-                )
-            ) : (
-                <SwipeableDrawer
-                    anchor="left"
-                    open={open}
-                    onClose={onClose}
-                    onOpen={OnOpen}
-                    PaperProps={{
-                        sx: {
-                            backgroundColor: "rgb(59, 61, 145)",
-                            // backgroundColor: "#e75480",
-                            color: "white",
-                            width: 200
-                        }
-                    }}
-                    // sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
-                    // variant="temporary"
-                    variant="temporary"
-                >
-                    {content}
-                </SwipeableDrawer>
             )
-);
+        ) : (
+            <SwipeableDrawer
+                anchor="left"
+                open={open}
+                onClose={onClose}
+                onOpen={OnOpen}
+                PaperProps={{
+                    sx: {
+                        backgroundColor: "rgb(59, 61, 145)",
+                        // backgroundColor: "#e75480",
+                        color: "white",
+                        width: 200
+                    }
+                }}
+                // sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
+                // variant="temporary"
+                variant="temporary"
+            >
+                {content}
+            </SwipeableDrawer>
+        )
+    );
 };
 
 SideNav.propTypes = {
-  onClose: PropTypes.func,
-  open: PropTypes.bool
+    onClose: PropTypes.func,
+    open: PropTypes.bool
 };

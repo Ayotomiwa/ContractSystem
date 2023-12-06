@@ -30,8 +30,11 @@ export const AccountPopOver = (props) => {
             }}
             onClose={onClose}
             open={open}
-            PaperProps={{sx: {
-                width: user ? 250 : 150}}}
+            PaperProps={{
+                sx: {
+                    width: user ? 250 : 150
+                }
+            }}
         >
             <Box
                 sx={{
@@ -67,14 +70,14 @@ export const AccountPopOver = (props) => {
                             Sign out
                         </MenuItem>
 
-                    ):(
-                    <MenuItem onClick={handleSignIn}>
-                Sign in
-            </MenuItem>
-            )}
-        </MenuList>
-</Popover>
-)
+                    ) : (
+                        <MenuItem onClick={handleSignIn}>
+                            Sign in
+                        </MenuItem>
+                    )}
+            </MenuList>
+        </Popover>
+    )
 
 };
 

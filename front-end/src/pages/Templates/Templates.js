@@ -13,10 +13,11 @@ import {
 import {InboxIcon} from "@heroicons/react/20/solid";
 import TemplateCard from "./TemplateCard";
 import "./templates.css";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import TemplatePreviewModal from "./TemplatePreviewModal";
-import TemplateHeading from "./TemplateHeading";
+import {UserProvider} from "../../hooks/UserProvider";
+
 
 
 
@@ -25,7 +26,7 @@ function MailIcon() {
 }
 
 const Templates = () => {
-
+    const {user } = useContext(UserProvider);
     const [modalOpen, setModalOpen] = useState(false);
     const [contracts, setContracts] = useState([]);
     const[filteredContracts, setFilteredContracts] = useState([]);
@@ -80,7 +81,11 @@ const Templates = () => {
 
     const fetchTemplates= ()=>{
 
-       axios.get(`http://localhost:8080/api/templates/default`)
+       axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/templates/default`, {
+           headers: {
+               'Authorization': `Bearer ${user.token}`
+           }
+       })
             .then(res => res.data.content)
            .then(data => {
                setContracts(data);
@@ -93,7 +98,11 @@ const Templates = () => {
 
     const previewContract = () => {
 
-        axios.get(`http://localhost:8080/api/templates/default/${selectedContractId}`)
+        axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/templates/default/${selectedContractId}`, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
             .then(res => res.data)
             .then(data => {
                 setContractData(data);

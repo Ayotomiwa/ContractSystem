@@ -1,11 +1,9 @@
 import React from 'react';
-import { Modal, Box, Typography, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import {Box, Modal} from '@mui/material';
 import ContractPaper from '../../components/ContractPaper';
 
 
-
-const TemplatePreviewModal = ({ open, handleClose, data, color }) => {
+const TemplatePreviewModal = ({open, handleClose, data, color}) => {
 
     const style = {
         position: 'absolute',
@@ -40,7 +38,7 @@ const TemplatePreviewModal = ({ open, handleClose, data, color }) => {
                 {/*<Typography id="modal-modal-title" variant="h3" component="h2" gutterBottom>*/}
                 {/*    Contract Preview*/}
                 {/*</Typography>*/}
-                <ContractPaper data={data} color={color} />
+                <ContractPaper data={data} color={color}/>
             </Box>
         </Modal>
     );

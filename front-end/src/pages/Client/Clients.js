@@ -1,43 +1,15 @@
 import {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import {Box, Button, Card, Container, IconButton, Stack, SvgIcon, Typography} from '@mui/material';
-import { useSelection } from '../../hooks/UseSelection';
-import { Layout as DashboardLayout } from '../../components/Layout';
-import { ClientTable } from './ClientTable';
-import { SearchBar } from '../../components/SearchBar';
-import { applyPagination } from '../../utils/apply-pagination';
+import {useSelection} from '../../hooks/UseSelection';
+import {SearchBar} from '../../components/SearchBar';
 import axios from "axios";
 import UserContext from "../../hooks/UserProvider";
 import {generateRandomAvatar} from "../../utils/avatarUtils";
-import {Link as RouterLink} from "react-router-dom";
-import DeleteIcon from '@mui/icons-material/Delete';
+import {Link as RouterLink, useNavigate} from "react-router-dom";
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
-
-import Skeleton from '@mui/material/Skeleton';
-import {Pages} from "@mui/icons-material";
 import {PagesTable} from "../../components/PagesTable";
-import {useNavigate} from "react-router-dom";
 
-
-
-// const useCustomers = (page, rowsPerPage) => {
-//   return useMemo(
-//     () => {
-//       return applyPagination(data, page, rowsPerPage);
-//     },
-//     [page, rowsPerPage]
-//   );
-// };
-
-//
-// const useCustomerIds = (customers) => {
-//   return useMemo(
-//     () => {
-//       return customers.map((customer) => customer.id);
-//     },
-//     [customers]
-//   );
-// };
 
 const Clients = () => {
     const {user} = useContext(UserContext);
@@ -48,14 +20,13 @@ const Clients = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [search, setSearch] = useState(false);
     // const businessId = "65523e0a91702e609ee9040b";
-    const businessId = user?.businessId? user.businessId : "";
+    const businessId = user?.businessId ? user.businessId : "";
     const basicClientUrl = `http://localhost:8080/api/business/${businessId}/clients`;
     const fetchClientsUrl = `size=${rowsPerPage}&page=${page}`;
     const searchClientUrl = basicClientUrl + `/search?query=${searchTerm}`;
     const [isLoading, setIsLoading] = useState(false);
     const [selectedClientId, setSelectedClientId] = useState(null);
     const navigate = useNavigate();
-    const display =useRef("");
 
 
 
@@ -64,10 +35,9 @@ const Clients = () => {
     }, [rowsPerPage]);
 
 
-
     useEffect(() => {
-        if(!user) {
-           return;
+        if (!user) {
+            return;
         }
         if (search === false || searchTerm === "") {
             setClients([]);
@@ -88,41 +58,32 @@ const Clients = () => {
                 }
             }
         ).then(response => {
-                processClientData(response.data);
-                setIsLoading(false);
+            processClientData(response.data);
+            setIsLoading(false);
 
-            })
+        })
             .catch(error => {
                 console.error("Error fetching clients:", error);
                 setIsLoading(false);
             });
     }
 
-    // const useCustomers = (page, rowsPerPage) => {
-    //     return useMemo(
-    //         () => {
-    //             return applyPagination(clients, page, rowsPerPage);
-    //         },
-    //         [page, rowsPerPage]
-    //     );
-    // };
-
 
     const fetchSearchData = () => {
         axios.get(searchClientUrl + "&" + fetchClientsUrl, {
-            headers: {
-                'Authorization': `Bearer ${user.token}`
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
             }
-        }
         ).then(response => {
-                processClientData(response.data);
-                setIsLoading(false);
-                // const clientWithAvatars = response.data.content.map((client) => ({
-                //     ...client,
-                //         avatar: generateRandomAvatar()
-                // }));
+            processClientData(response.data);
+            setIsLoading(false);
+            // const clientWithAvatars = response.data.content.map((client) => ({
+            //     ...client,
+            //         avatar: generateRandomAvatar()
+            // }));
 
-            })
+        })
             .catch(error => {
                 console.error("Error fetching clients:", error);
                 setIsLoading(false);
@@ -138,22 +99,21 @@ const Clients = () => {
         navigate(`/clients/edit?clientId=${itemId}&businessId=${businessId}`, {replace: true});
     }
 
-    const deleteClient = () =>
-    {
-        axios.get(`http://localhost:8080/api/business/delete/${selectedClientId}`, {
+    const deleteClient = () => {
+        // axios.get(`http://localhost:8080/api/business/delete/${selectedClientId}`, {
+            axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/business/delete/${selectedClientId}`, {
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }
         })
             .then((res) => res.status)
-            .then((status)=>{
-                if(status === 200){
+            .then((status) => {
+                if (status === 200) {
                     setClients(prevClients => prevClients.filter(client => client.id !== selectedClientId));
                 }
-            }).
-            catch((error) => {
-              console.log(error);
-           })
+            }).catch((error) => {
+            console.log(error);
+        })
     }
 
 
@@ -189,19 +149,6 @@ const Clients = () => {
     const clientSelection = useSelection(clientId);
 
 
-    // const handlePageChange = useCallback(
-    //   (event, value) => {
-    //     setPage(value);
-    //   },
-    //   []
-    // );
-
-    // const handleRowsPerPageChange = useCallback(
-    //   (event) => {
-    //     setRowsPerPage(event.target.value);
-    //   },
-    //   []
-    // );
 
     return (
         <>
@@ -294,11 +241,11 @@ const Clients = () => {
                             columnHeaders={{
                                 "Name": "userRecipient.firstName",
                                 "Email": "userRecipient.email",
-                                "Phone Number":"userRecipient.phoneNumber",
-                                    "Business":"userRecipient.business.companyName",
-                                    "Created Date":"createdDate",
-                                    "Last Updated":"lastUpdatedDate",
-                                }}
+                                "Phone Number": "userRecipient.phoneNumber",
+                                "Business": "userRecipient.business.companyName",
+                                "Created Date": "createdDate",
+                                "Last Updated": "lastUpdatedDate",
+                            }}
                             handleEdit={handleEdit}
                             showAvatar={true}
                         />

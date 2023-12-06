@@ -48,7 +48,9 @@ const ProfileDetails = () => {
 
     const fetchClient = () => {
       console.log("fetching client", user.token);
-        axios.get(`http://localhost:8080/api/business/${clientId}`, {
+        https://contract-system-5c4e51349d5b.herokuapp.com/
+        // axios.get(`http://localhost:8080/api/business/${clientId}`, {
+            axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/business/${clientId}`, {
           headers: {
             'Authorization': `Bearer ${user.token}`
           }
@@ -71,7 +73,8 @@ const ProfileDetails = () => {
     const handleSubmit = () => {
         console.log(values);
         axios.post(
-            `http://localhost:8080/api/business/${businessId}/clients`, {
+            // `http://localhost:8080/api/business/${businessId}/clients`, {
+                `https://contract-system-5c4e51349d5b.herokuapp.com/api/business/${businessId}/clients`, {
                 data: {
                     id: clientId,
                     userRecipient: {

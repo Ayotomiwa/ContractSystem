@@ -28,7 +28,7 @@ const Products = () => {
     const [searchTerm,setSearchTerm] = useState("");
     const [search, setSearch] = useState(false);
     const businessId= "65523e0a91702e609ee9040b"
-    const basicProductUrl = `http://localhost:8080/api/product-services/business/${businessId}`;
+    const basicProductUrl = `https://contract-system-5c4e51349d5b.herokuapp.com/api/product-services/business/${businessId}`;
     const fetchProductUrl = `size=${rowsPerPage}&page=${page}`;
     const searchProductUrl= basicProductUrl + `/search?query=${searchTerm}` ;
     const [isLoading, setIsLoading] = useState(false);
@@ -122,7 +122,7 @@ const Products = () => {
 
     const deleteProduct = () =>
     {
-        axios.post(`http://localhost:8080/api/product-services/${selectedProductId}`, {},
+        axios.post(`https://contract-system-5c4e51349d5b.herokuapp.com/api/product-services/${selectedProductId}`, {},
             {
                 headers: {
                     'Authorization': `Bearer ${user.token}`

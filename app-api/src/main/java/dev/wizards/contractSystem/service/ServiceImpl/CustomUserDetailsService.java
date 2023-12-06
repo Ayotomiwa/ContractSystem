@@ -9,6 +9,8 @@ import dev.wizards.contractSystem.repository.UserRepo;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,7 +43,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public User save(User user) {
 
-        Business business = null;
+        Business business;
+
+        System.out.println("Sign Up User : " + user);
+
         System.out.println("User: " + user.getFirstName() + " " + user.getLastName());
 
 

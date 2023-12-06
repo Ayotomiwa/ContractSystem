@@ -16,17 +16,16 @@ public class JwtTokenProvider {
 
 
 
-        @Value("600000")
+        @Value("600000000000")
         private long jwtExpiration;
 
         private final SecretKey jwtSecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-//        private final String jwtSecretKey = jwtSecret;
+
 
         public String generateToken(Authentication authentication) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             Date now = new Date();
             Date expiryDate = new Date(now.getTime() + jwtExpiration);
-//            SecretKey jwtSecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
             System.out.println("jwtSecret: " + jwtSecretKey);
 

@@ -21,6 +21,7 @@ public class Inbox {
     private String id;
     private String to;
     private String from;
+    private String title;
     private LocalDateTime sent;
     private LocalDateTime received;
     private Boolean isAccepted;

@@ -24,44 +24,18 @@ public class ContractData {
 
     private Map<String,Object> placeholders;
     private Map<String, Object> data;
-
-
     private String templateId;
-
+    private String message;
     private User userOwner;
     private User recipient;
-
-//    private String userOwnerId;
-//    private String businessOwnerId;
-//    private String recipientId;
-//    private String recipientEmail;
-
-
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private STATUS ownerStage;
     private STATUS recipientStage;
-    private boolean isSignedUser;
+    private boolean signedUser;
     private LocalDateTime signedUserDate;
     private LocalDateTime signedRecipientDate;
-    private boolean isSignedRecipient;
+    private boolean signedRecipient;
 
-    public ContractData(ContractData contractData) {
-        this.id = contractData.getId();
-        this.name = contractData.getName();
-        this.placeholders = contractData.getPlaceholders();
-        this.data = contractData.getData();
-        this.templateId = contractData.getTemplateId();
-          this.userOwner = contractData.getUserOwner();
-            this.recipient = contractData.getRecipient();
-        this.createdAt = contractData.getCreatedAt();
-        this.modifiedAt = contractData.getModifiedAt();
-        this.ownerStage = contractData.getOwnerStage();
-        this.recipientStage = contractData.getRecipientStage();
-        this.isSignedUser = contractData.isSignedUser();
-        this.isSignedRecipient = contractData.isSignedRecipient();
-        this.signedUserDate = contractData.getSignedUserDate();
-        this.signedRecipientDate = contractData.getSignedRecipientDate();
-    }
 }
 

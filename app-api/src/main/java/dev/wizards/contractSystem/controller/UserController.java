@@ -1,6 +1,8 @@
 package dev.wizards.contractSystem.controller;
 
+import dev.wizards.contractSystem.model.Enums.ROLE;
 import dev.wizards.contractSystem.model.User;
+import dev.wizards.contractSystem.repository.UserRepo;
 import dev.wizards.contractSystem.service.ServiceImpl.CustomUserDetailsService;
 import dev.wizards.contractSystem.service.ServiceImpl.TokenBlacklistService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,10 +22,12 @@ import java.util.List;
 public class UserController {
     private final CustomUserDetailsService customUserDetailsService;
     private final TokenBlacklistService tokenBlacklistService;
+    private final UserRepo userRepo;
 
-    public UserController(CustomUserDetailsService customUserDetailsService, TokenBlacklistService tokenBlacklistService) {
+    public UserController(CustomUserDetailsService customUserDetailsService, TokenBlacklistService tokenBlacklistService, UserRepo userRepo) {
         this.customUserDetailsService = customUserDetailsService;
         this.tokenBlacklistService = tokenBlacklistService;
+        this.userRepo = userRepo;
     }
 
     @PostMapping("/sign-up")
@@ -32,10 +36,15 @@ public class UserController {
         if(user.getEmail() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is required");
         }
+
         if (customUserDetailsService.existsByEmail(user.getEmail())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with the same username or email already exists.");
+            if(userRepo.findByEmail(user.getEmail()).get().getPassword() != null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with the same username or email already exists.");
+            }
+            else{
+                user.setId(userRepo.findByEmail(user.getEmail()).get().getId());
+            }
         }
-        System.out.println("Sign Up User : " + user);
 
         return ResponseEntity.ok(customUserDetailsService.save(user));
     }

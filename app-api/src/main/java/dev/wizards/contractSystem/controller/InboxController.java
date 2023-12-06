@@ -56,7 +56,7 @@ public class InboxController {
                     PageRequest.of(page.orElse(0),
                             size.orElse(30L).intValue(),
                             Sort.Direction.valueOf(sort.orElse("DESC")),
-                            sortBy.orElse("lastUpdatedDate")),
+                            sortBy.orElse("received")),
                     user.getEmail());
         }
         else {
@@ -72,11 +72,23 @@ public class InboxController {
                     PageRequest.of(page.orElse(0),
                             size.orElse(30L).intValue(),
                             Sort.Direction.valueOf(sort.orElse("DESC")),
-                            sortBy.orElse("lastUpdatedDate")),
+                            sortBy.orElse("received")),
                     emails);
         }
         return ResponseEntity.ok(inbox);
     }
+
+
+    @GetMapping("/{inbox-id}/contract")
+    public ResponseEntity<?> getInbox(@PathVariable("inbox-id") String inboxId){
+        if(!inboxRepo.existsById(inboxId)){
+            return ResponseEntity.badRequest().body("Contract does not exist");
+        }
+
+        Inbox inbox = inboxRepo.findById(inboxId).get();
+        return ResponseEntity.ok(inbox);
+    }
+
 
 
     @GetMapping("/{user-id}/search")
@@ -111,28 +123,22 @@ public class InboxController {
         try {
            INBOX_STATUS status = INBOX_STATUS.valueOf(searchPattern.toUpperCase());
             if (user.getBusiness() == null) {
-                contracts = inboxRepo.findAllByToAndStatus(
+                contracts = inboxRepo.findByUserIdAndMatchingStatus(
                         PageRequest.of(page.orElse(0),
                                 size.orElse(30L).intValue(),
                                 Sort.Direction.valueOf(sort.orElse("DESC")),
-                                sortBy.orElse("lastUpdatedDate")),
-                        userId, user.getEmail(), searchPattern.toUpperCase(), searchPattern.toUpperCase());
+                                sortBy.orElse("received")),
+                        userId, searchPattern.toUpperCase());
             } else {
 
                 String businessId = user.getBusiness().getId();
-                List<User> users = userRepo.findAllByBusinessId(businessId);
-                if(users.isEmpty()){
-                    return ResponseEntity.badRequest().body("Your business does not have any users");
-                }
 
-                List<String> emails = users.stream().map(User::getEmail).toList();
-
-                contracts = inboxRepo.findAllByToInAndStatus(
+                contracts = inboxRepo.findByBusinessIdAndMatchingStatus(
                         PageRequest.of(page.orElse(0),
                                 size.orElse(30L).intValue(),
                                 Sort.Direction.valueOf(sort.orElse("DESC")),
-                                sortBy.orElse("lastUpdatedDate")),
-                        emails, searchPattern.toUpperCase(), searchPattern.toUpperCase());
+                                sortBy.orElse("received")),
+                        businessId, searchPattern.toUpperCase());
             }
         } catch (IllegalArgumentException e) {
             if (user.getBusiness() == null) {
@@ -156,38 +162,50 @@ public class InboxController {
 
 
 
-    @PostMapping("/{inbox-id}/{status}")
-    public ResponseEntity<?> updateInboxStatus(@PathVariable("inbox-id") String inboxId, @PathVariable("status") String status){
-        if(!inboxRepo.existsById(inboxId)){
+    @PostMapping("/{contract-id}/{status}")
+    public ResponseEntity<?> updateInboxStatus(@PathVariable("contract-id") String id, @PathVariable("status") String status){
+
+
+        if(!contractRepo.existsById(id)){
             return ResponseEntity.badRequest().body("Contract does not exist");
         }
 
-        Inbox inbox = inboxRepo.findById(inboxId).get();
+        Inbox inbox = inboxRepo.findByContractId(id);
+        String contractId = inbox.getContractId();
+        ContractData contract = contractRepo.findById(contractId).get();
 
-        String oldContractId = inbox.getContractId();
-        ContractData oldContract = contractRepo.findById(oldContractId).get();
-        ContractData newContract = new ContractData(oldContract);
+        if(status.equals("SIGNED")){
+            inbox.setStatus(INBOX_STATUS.SIGNED);
+            inbox.setIsAccepted(true);
+            contract.setSignedRecipient(true);
+            contract.setModifiedAt(LocalDateTime.now());
+            contract.setOwnerStage(STATUS.SIGNED);
+            contract.setRecipientStage(STATUS.SIGNED);
+            contract.setSignedRecipientDate(LocalDateTime.now());
+            inboxRepo.save(inbox);
+            contractRepo.save(contract);
+            return ResponseEntity.ok(inbox);
+        }
 
         if(status.equals("ACCEPTED")){
             inbox.setIsAccepted(true);
-            inbox.setStatus(INBOX_STATUS.ACCEPTED);
-            inbox.setContractId(contractRepo.save(newContract).getId());
+            inbox.setStatus(INBOX_STATUS.ATTENTION);
             inboxRepo.save(inbox);
 
-            oldContract.setRecipientStage(STATUS.REVIEW);
-            oldContract.setOwnerStage(STATUS.PENDING);
-            oldContract.setModifiedAt(LocalDateTime.now());
-            contractRepo.save(oldContract);
+            contract.setRecipientStage(STATUS.ATTENTION);
+            contract.setOwnerStage(STATUS.PENDING);
+            contract.setModifiedAt(LocalDateTime.now());
+            contractRepo.save(contract);
             return ResponseEntity.ok(inbox);
         }
         else if(status.equals("DECLINED")){
             inbox.setIsAccepted(false);
             inbox.setStatus(INBOX_STATUS.DECLINED);
-            oldContract.setOwnerStage(STATUS.DECLINED);
-            oldContract.setRecipientStage(STATUS.DECLINED);
-            oldContract.setModifiedAt(LocalDateTime.now());
+            contract.setOwnerStage(STATUS.DECLINED);
+            contract.setRecipientStage(STATUS.DECLINED);
+            contract.setModifiedAt(LocalDateTime.now());
             inboxRepo.save(inbox);
-            contractRepo.save(oldContract);
+            contractRepo.save(contract);
             return ResponseEntity.ok(inbox);
         }
         else{

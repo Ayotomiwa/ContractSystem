@@ -28,15 +28,20 @@
 </head>
 <body>
 <div class="container">
-    <h1>Hello,</h1>
+    <h1>Hello, <strong th:text="${recipientName}"></strong></h1>
     <p>
-        You have a new contract named <strong th:text="${contract.name}"></strong>.
-    </p>
-    <p>
-        Please review the contract details and sign in to proceed.
+        You have a new contract named <strong th:text="${contractName}"></strong>.
+        Please sign up using the same email address that this email was sent to.
     </p>
     <p>
         <a th:href="${signinLink}" class="button">Sign In</a>
+    </p>
+    <p>
+        if you already have an account, please sign in using the link above and you will be able to see the contract.
+        if you believe this email was sent to you by mistake, please click on the link below to remove your email from our system.
+    </p>
+    <p>
+        <a th:href="${unsubscribeLink}" class="button">Unsubscribe</a>
     </p>
 </div>
 </body>

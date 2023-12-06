@@ -35,10 +35,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(!requiresAuthentication(request)){
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        if(!requiresAuthentication(request)){
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
         try {
             String jwt = getJwtFromRequest(request);
             System.out.println("Jwt: " + jwt);
@@ -59,23 +59,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         } catch (JwtException | IllegalArgumentException e ) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Invalid token");
+            response.getWriter().write("Invalid token. Please provide a valid token.");
             return;
         }
         filterChain.doFilter(request, response);
     }
 
-    private boolean requiresAuthentication(HttpServletRequest request) {
-        List<RequestMatcher> permitAllMatchers = Arrays.asList(
-                new AntPathRequestMatcher("/api/user/**", HttpMethod.POST.toString()),
-                new AntPathRequestMatcher("/api/authenticate/**", HttpMethod.POST.toString()),
-                new AntPathRequestMatcher("/api/exams/**"),
-                new AntPathRequestMatcher("/api/modules/**", HttpMethod.GET.toString()),
-                new AntPathRequestMatcher("/api/exam-logs/**", HttpMethod.POST.toString())
-        );
-
-        return permitAllMatchers.stream().noneMatch(matcher -> matcher.matches(request));
-    }
+//    private boolean requiresAuthentication(HttpServletRequest request) {
+//        List<RequestMatcher> permitAllMatchers = Arrays.asList(
+//                new AntPathRequestMatcher("/api/contracts/**", HttpMethod.POST.toString()),
+//                new AntPathRequestMatcher("/api/inbox/**", HttpMethod.POST.toString()),
+//                new AntPathRequestMatcher("/api/business/**"),
+//                new AntPathRequestMatcher("/api/clients/**", HttpMethod.GET.toString()),
+//                new AntPathRequestMatcher("/api/exam-logs/**", HttpMethod.POST.toString())
+//        );
+//
+//        return permitAllMatchers.stream().noneMatch(matcher -> matcher.matches(request));
+//    }
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");

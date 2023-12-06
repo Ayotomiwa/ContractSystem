@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.context.Context;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -46,25 +45,15 @@ public class ContractController {
         if(!businessRepo.existsById(userRepo.findById(userId).get().getBusiness().getId())){
             return ResponseEntity.badRequest().body("Only business Users are authorized to create contracts");
         }
-//        if(contract.getRecipient().getEmail() == null){
-//            return ResponseEntity.badRequest().body("Recipient Email is required");
-//        }
+
        contract.setUserOwner(userRepo.findById(userId).get());
-        if(contract.getId() == null){
+        if(contract.getId() == null || contractRepo.existsById(contract.getId())){
             contract.setCreatedAt(LocalDateTime.now());
             contract.setOwnerStage(STATUS.DRAFT);
         }
 
-//        if(userRepo.findByEmail(contract.getRecipientEmail()).isPresent()){
-//            String recipientId = userRepo.findByEmail(contract.getRecipientEmail()).get().getId();
-//            contract.setRecipientId(recipientId);
-//        }
-//        else{
-//            User user = new User();
-//            user.setEmail(contract.getRecipientEmail());
-//            user.setType(ROLE.CLIENT_NON_USER);
-//            userRepo.save(user);
-//        }
+//        contract.setSignedUser(true);
+//        contract.setSignedRecipient(true);
 
         contract.setModifiedAt(LocalDateTime.now());
         contractRepo.save(contract);
@@ -74,6 +63,8 @@ public class ContractController {
     @PostMapping("/{user-id}/send")
     public ResponseEntity<?> sendContract(@RequestBody ContractData ctrct,@PathVariable("user-id") String userId){
 
+        ctrct.setSignedUser(true);
+        ctrct.setSignedUserDate(LocalDateTime.now());
         ResponseEntity<?> contractSaveResponse = addContract(ctrct, userId);
 
 
@@ -102,17 +93,20 @@ public class ContractController {
             return ResponseEntity.badRequest().body("You cannot send a contract to yourself");
         }
 
-
-        Context context = new Context();
-        context.setVariable("contract", contract);
-        context.setVariable("signinLink", "http://192.168.2.116:3000/register");
+//
+//        Context context = new Context();
+//        context.setVariable("contractName", contract.getName());
+//        context.setVariable("recipientName", contract.getRecipient().getFirstName() + " " + contract.getRecipient().getLastName());
+//        context.setVariable("signinLink", "http://localhost:3000/contract/edit?contractId=" + contract.getId() + "&color=%23d1c4e9&default=false");
         Inbox inbox = new Inbox();
         try {
             inbox.setTo(contract.getRecipient().getEmail());
             inbox.setFrom(userEmail);
             inbox.setSent(LocalDateTime.now());
+            inbox.setTitle(contract.getName());
 
-            mailService.sendEmail(recipientEmail, "New Contract", context, "contract");
+
+//            mailService.sendEmail(recipientEmail, "New Contract", context, "contract");
 
             if(userRepo.findByEmail(recipientEmail).isPresent()){
                 User recipient = userRepo.findByEmail(recipientEmail).get();
@@ -129,9 +123,13 @@ public class ContractController {
             contract.setOwnerStage(STATUS.SENT);
 
             inbox.setIsAccepted(false);
-            inbox.setStatus(INBOX_STATUS.RECEIVED);
+            inbox.setStatus(INBOX_STATUS.UNREAD);
 
-        } catch (MailjetException e) {
+//        } catch (MailjetException e) {
+//            throw new RuntimeException(e);
+//        }
+        }
+        catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -158,6 +156,10 @@ public class ContractController {
         contract.setRecipientStage(STATUS.SIGNED);
         contract.setModifiedAt(LocalDateTime.now());
         contractRepo.save(contract);
+        Inbox inbox = inboxRepo.findByContractId(contractId);
+        inbox.setIsAccepted(true);
+        inbox.setStatus(INBOX_STATUS.SIGNED);
+        inboxRepo.save(inbox);
         return ResponseEntity.ok(contract);
     }
 
@@ -179,26 +181,31 @@ public class ContractController {
 
 
         if(user.getBusiness() == null){
-             contracts = contractRepo.findAllByUserOwnerIdOrRecipientEmail(
-                    PageRequest.of(page.orElse(0),
-                            size.orElse(30L).intValue(),
-                            Sort.Direction.valueOf(sort.orElse("DESC")),
-                            sortBy.orElse("lastUpdatedDate")),
-                    userId, user.getEmail());
-        }
+//             contracts = contractRepo.findAllByUserOwnerIdOrRecipientEmail(
+//                    PageRequest.of(page.orElse(0),
+//                            size.orElse(30L).intValue(),
+//                            Sort.Direction.valueOf(sort.orElse("DESC")),
+//                            sortBy.orElse("lastUpdatedDate")),
+//                    userId, user.getEmail());
+//        }
+        contracts = contractRepo.findAllByUserOwnerId(
+                PageRequest.of(page.orElse(0),
+                        size.orElse(30L).intValue(),
+                        Sort.Direction.valueOf(sort.orElse("DESC")),
+                        sortBy.orElse("modifiedAt")),
+                userId);
+    }
         else{
-
-           contracts = contractRepo.findAllByUserOwnerBusinessIdOrRecipientId(
+           contracts = contractRepo.findAllByUserOwnerBusinessIdOrUserOwnerId(
                     PageRequest.of(page.orElse(0),
                             size.orElse(30L).intValue(),
                             Sort.Direction.valueOf(sort.orElse("DESC")),
-                            sortBy.orElse("lastUpdatedDate")),
-                    user.getBusiness().getId(), user.getBusiness().getId());
+                            sortBy.orElse("modifiedAt")),
+                    user.getBusiness().getId(), userId);
            }
 
         return ResponseEntity.ok(contracts);
     }
-
 
 
     @GetMapping("/{contract-id}/edit")
@@ -228,35 +235,35 @@ public class ContractController {
             return getContracts(page, sortBy, sort, size, userId);
         }
 
-
         Page<ContractData> contracts;
 
         PageRequest pageRequest = PageRequest.of(
                 page.orElse(0),
                 size.orElse(30L).intValue(),
-                Sort.Direction.valueOf(sort.orElse("ASC")),
-                sortBy.orElse("id")
+                Sort.Direction.valueOf(sort.orElse("DESC")),
+                sortBy.orElse("modifiedAt")
         );
 
         String searchPattern = query.trim();
+
+
         User user = userRepo.findById(userId).get();
 
         try {
             STATUS status = STATUS.valueOf(searchPattern.toUpperCase());
                 if (user.getBusiness() == null) {
-                    contracts = contractRepo.findAllByUserOwnerIdOrRecipientEmailAndOwnerStageOrRecipientStage(
+                    contracts = contractRepo.findByUserIdAndMatchingStatus(
                             PageRequest.of(page.orElse(0),
                                     size.orElse(30L).intValue(),
                                     Sort.Direction.valueOf(sort.orElse("DESC")),
-                                    sortBy.orElse("lastUpdatedDate")),
-                            userId, user.getEmail(), searchPattern.toUpperCase(), searchPattern.toUpperCase());
+                                    sortBy.orElse("modifiedAt")),
+                            userId, searchPattern.toUpperCase());
                 } else {
-                    contracts = contractRepo.findAllByUserOwnerBusinessIdOrRecipientIdAndOwnerStageOrRecipientStage(
+                    contracts = contractRepo.findByBusinessIdAndMatchingStatus(
                             PageRequest.of(page.orElse(0),
                                     size.orElse(30L).intValue(),
                                     Sort.Direction.valueOf(sort.orElse("DESC")),
-                                    sortBy.orElse("lastUpdatedDate")),
-                            user.getBusiness().getId(), user.getBusiness().getId(), searchPattern.toUpperCase(), searchPattern.toUpperCase());
+                                    sortBy.orElse("modifiedAt")), user.getBusiness().getId(), searchPattern.toUpperCase());
                 }
         } catch (IllegalArgumentException e) {
             if (user.getBusiness() == null) {
@@ -269,88 +276,6 @@ public class ContractController {
         }
        return ResponseEntity.ok(contracts);
     }
-
-
-
-//    @GetMapping("/inbox/{user-id}")
-//    public ResponseEntity<?> getInbox(
-//            @RequestParam Optional<Integer> page,
-//            @RequestParam Optional<String> sortBy,
-//            @RequestParam Optional<String> sort,
-//            @RequestParam Optional<Long> size,
-//            @PathVariable("user-id") String userId){
-//
-//       if(!userRepo.existsById(userId)){
-//           return ResponseEntity.badRequest().body("User does not exist");
-//         }
-//
-//      User user = userRepo.findById(userId).get();
-//       Page<Inbox> inbox;
-//
-//        if(user.getBusiness() == null){
-//           inbox = inboxRepo.findAllByTo(
-//                PageRequest.of(page.orElse(0),
-//                        size.orElse(30L).intValue(),
-//                        Sort.Direction.valueOf(sort.orElse("DESC")),
-//                        sortBy.orElse("lastUpdatedDate")),
-//                user.getEmail());
-//         }
-//        else {
-//            String businessId = user.getBusiness().getId();
-//            List<User> users = userRepo.findAllByBusinessId(businessId);
-//            if(users.isEmpty()){
-//                return ResponseEntity.badRequest().body("Your business does not have any users");
-//            }
-//            inbox = inboxRepo.findAllByTo(
-//                    PageRequest.of(page.orElse(0),
-//                            size.orElse(30L).intValue(),
-//                            Sort.Direction.valueOf(sort.orElse("DESC")),
-//                            sortBy.orElse("lastUpdatedDate")),
-//                    users.get(0).getEmail());
-//
-//        }
-//        return ResponseEntity.ok(inbox);
-//    }
-//
-//
-//    @PostMapping("/inbox/{inbox-id}/{status}")
-//    public ResponseEntity<?> updateInboxStatus(@PathVariable("inbox-id") String inboxId, @PathVariable("status") String status){
-//        if(!inboxRepo.existsById(inboxId)){
-//            return ResponseEntity.badRequest().body("Contract does not exist");
-//        }
-//
-//        Inbox inbox = inboxRepo.findById(inboxId).get();
-//
-//        String oldContractId = inbox.getContractId();
-//        ContractData oldContract = contractRepo.findById(oldContractId).get();
-//        ContractData newContract = new ContractData(oldContract);
-//
-//        if(status.equals("ACCEPTED")){
-//            inbox.setIsAccepted(true);
-//            inbox.setStatus(INBOX_STATUS.ACCEPTED);
-//            inbox.setContractId(contractRepo.save(newContract).getId());
-//            inboxRepo.save(inbox);
-//
-//            oldContract.setRecipientStage(STATUS.REVIEW);
-//            oldContract.setOwnerStage(STATUS.PENDING);
-//            oldContract.setModifiedAt(LocalDateTime.now());
-//            contractRepo.save(oldContract);
-//            return ResponseEntity.ok(inbox);
-//        }
-//        else if(status.equals("DECLINED")){
-//            inbox.setIsAccepted(false);
-//            inbox.setStatus(INBOX_STATUS.DECLINED);
-//            oldContract.setOwnerStage(STATUS.DECLINED);
-//            oldContract.setRecipientStage(STATUS.DECLINED);
-//            oldContract.setModifiedAt(LocalDateTime.now());
-//            inboxRepo.save(inbox);
-//            contractRepo.save(oldContract);
-//            return ResponseEntity.ok(inbox);
-//        }
-//        else{
-//            return ResponseEntity.badRequest().body("Invalid status");
-//        }
-//    }
 
 
     @PostMapping("delete/{contract-id}")

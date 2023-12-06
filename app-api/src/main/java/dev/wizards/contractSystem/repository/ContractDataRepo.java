@@ -12,16 +12,6 @@ public interface ContractDataRepo extends MongoRepository<ContractData, String> 
 
     Page<ContractData> findAllByUserOwnerId(PageRequest of, String userId);
 
-    Page<ContractData> findAllByUserOwnerIdOrRecipientEmail(PageRequest of, String userId, String email);
-
-    Page<ContractData> findAllByUserOwnerBusinessIdOrRecipientId(PageRequest of, String id, String id1);
-
-
-    Page<ContractData> findAllByUserOwnerIdOrRecipientEmailAndOwnerStageOrRecipientStage(PageRequest of, String userId, String email, String searchPattern, String searchPattern1);
-
-    Page<ContractData> findAllByUserOwnerBusinessIdOrRecipientIdAndOwnerStageOrRecipientStage(PageRequest of, String id, String id1, String searchPattern, String searchPattern1);
-
-
 
     @Query("{$and: [" +
             "{'userUserId': ?1}," +
@@ -45,4 +35,29 @@ public interface ContractDataRepo extends MongoRepository<ContractData, String> 
             "]}" +
             "]}")
     Page<ContractData> regexSearchBusiness(String searchPattern, String id, PageRequest pageRequest);
+
+
+    @Query("{" +
+            "$or: [" +
+            "{" +
+            "'userOwner.business.id': ?0," +
+            "'ownerStage': ?1" +
+            "}," +
+            "]" +
+            "}")
+    Page<ContractData> findByBusinessIdAndMatchingStatus(PageRequest pageRequest, String businessId, String status);
+
+    @Query("{" +
+            "$or: [" +
+            "{" +
+            "'userOwner.id': ?0," +
+            "'ownerStage': ?1" +
+            "}," +
+            "]" +
+            "}")
+    Page<ContractData> findByUserIdAndMatchingStatus(PageRequest pageRequest, String userId, String status);
+
+    Page<ContractData> findAllByUserOwnerBusinessIdOrUserOwnerId(PageRequest of, String id, String userId);
 }
+
+

@@ -1,18 +1,18 @@
 import {useCallback, useContext, useEffect, useState} from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Divider,
-  Slide,
-  Snackbar,
-  Stack,
-  SvgIcon,
-  TextField,
-  Unstable_Grid2 as Grid
+    Box,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    Divider,
+    Slide,
+    Snackbar,
+    Stack,
+    SvgIcon,
+    TextField,
+    Unstable_Grid2 as Grid
 } from '@mui/material';
 import {useLocation} from "react-router-dom";
 import SaveIcon from '@mui/icons-material/Save';
@@ -47,34 +47,33 @@ const ProfileDetails = () => {
 
 
     const fetchClient = () => {
-      console.log("fetching client", user.token);
-        https://contract-system-5c4e51349d5b.herokuapp.com/
-        // axios.get(`http://localhost:8080/api/business/${clientId}`, {
+        console.log("fetching client", user.token);
+            // axios.get(`http://localhost:8080/api/business/${clientId}`, {
             axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/business/${clientId}`, {
-          headers: {
-            'Authorization': `Bearer ${user.token}`
-          }
-        }
-        ).then((response) => {
-            if (response.status === 200) {
-                setValues({
-                    firstName: response.data.userRecipient.firstName ? response.data.userRecipient.firstName : "",
-                    lastName: response.data.userRecipient.lastName ? response.data.userRecipient.lastName : "",
-                    email: response.data.userRecipient.email,
-                    phoneNumber: response.data.userRecipient.phoneNumber ? response.data.userRecipient.phoneNumber : "",
-                    businessName: response.data.userRecipient.business?.companyName ? response.data.userRecipient.business.companyName : "",
-                });
-            }
-        }).catch((error) => {
-            console.log(error);
-        });
+                    headers: {
+                        'Authorization': `Bearer ${user.token}`
+                    }
+                }
+            ).then((response) => {
+                if (response.status === 200) {
+                    setValues({
+                        firstName: response.data.userRecipient.firstName ? response.data.userRecipient.firstName : "",
+                        lastName: response.data.userRecipient.lastName ? response.data.userRecipient.lastName : "",
+                        email: response.data.userRecipient.email,
+                        phoneNumber: response.data.userRecipient.phoneNumber ? response.data.userRecipient.phoneNumber : "",
+                        businessName: response.data.userRecipient.business?.companyName ? response.data.userRecipient.business.companyName : "",
+                    });
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
     }
 
     const handleSubmit = () => {
         console.log(values);
         axios.post(
             // `http://localhost:8080/api/business/${businessId}/clients`, {
-                `https://contract-system-5c4e51349d5b.herokuapp.com/api/business/${businessId}/clients`, {
+            `https://contract-system-5c4e51349d5b.herokuapp.com/api/business/${businessId}/clients`, {
                 data: {
                     id: clientId,
                     userRecipient: {

@@ -21,12 +21,7 @@ export const SideNav = (props) => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
     const {user} = useContext(UserContext);
-    // console.log("user");
-    // console.log(user);
     const  isBusiness = user?.businessId !== null;
-    // console.log("SideBar ", isBusiness)
-    // const pathname = usePathname();
-    // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
     const path = window.location.pathname;
 
@@ -38,14 +33,12 @@ export const SideNav = (props) => {
                 height: '100%',
             }}
         >
-            {/*<Box sx={{p: 3}}>*/}
                 <Box
                     sx={{
                         display: 'flex',
                         alignItems: 'center',
                         backgroundColor: 'rgba(255, 255, 255, 0.04)',
                         borderRadius: 1,
-                        cursor: 'pointer',
                         justifyContent: 'center',
                         mt: 10,
                         p: 3
@@ -57,11 +50,10 @@ export const SideNav = (props) => {
                             variant="h5"
                             sx={{textAlign:"center"}}
                         >
-                            Manage Your Business
+                            {user?.businessId? "Manage Your Business" : "Manage Your Contracts"}
                         </Typography>
 
                 </Box>
-            {/*</Box>*/}
             <Divider sx={{borderColor: 'neutral.700'}}/>
             <Box
                 component="nav"

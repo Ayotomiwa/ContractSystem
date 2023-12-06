@@ -21,8 +21,18 @@ const InboxFilterButtons = ({setSearchTerm, resetList}) =>{
         // '#fffdd0'
     ];
 
+    const stagesColor = {
+        "ALL": "#a8e6cf",
+        "DECLINED": "#f8c6d1",
+        "REVIEWED": "#d1c4e9",
+        "SIGNED": "#88d8b0",
+        "ATTENTION": "#ffccaa",
+        "UNREAD": "#87ceeb"
+    }
 
-   const handleFilter = (filter) => {
+
+
+    const handleFilter = (filter) => {
        if(filter === "ALL"){
               setSearchTerm("");
               resetList(true);
@@ -37,12 +47,12 @@ const InboxFilterButtons = ({setSearchTerm, resetList}) =>{
             alignItems:"center", justifyContent: "center",
             width:"100%",
         }}>
-            {['ALL', 'RECIEVED', 'ACCEPTED', 'DECLINED'].map((text, index) => (
+            {['ALL', 'UNREAD', 'SIGNED','ATTENTION', 'DECLINED'].map((text, index) => (
                 <ListItem key={text}>
                     <ListItemButton
                         onClick={() => handleFilter(text)}
                         sx={{backdropFilter: 'blur(25px)',
-                            backgroundColor: softColors[index],
+                            backgroundColor: stagesColor[text],
                             border: "1px solid black",
                             borderRadius: "25px",
                             textAlign:"center",

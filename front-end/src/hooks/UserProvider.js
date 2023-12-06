@@ -30,6 +30,7 @@ export const UserProvider = ({ children }) => {
 
     const login = (user, path) => {
         sessionStorage.setItem('user', JSON.stringify(user));
+        sessionStorage.removeItem('lastUser');
         setUser(user);
 
         if(path){

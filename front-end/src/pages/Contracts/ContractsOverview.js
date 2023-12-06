@@ -67,7 +67,11 @@ const ContractsOverview = () => {
     const fetchContracts = () => {
         // if (user) {
         // axios.get(`http://localhost:8080/api/clients/business/${user.business.id}`)
-        axios.get(basicContractUrl + "?" + fetchContractUrl)
+        axios.get(basicContractUrl + "?" + fetchContractUrl, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
             .then(response => {
                 processContractsData(response.data);
                 setIsLoading(false);
@@ -120,7 +124,11 @@ const ContractsOverview = () => {
 
     const deleteContract = () =>
     {
-        axios.post(`http://localhost:8080/api/contracts/delete/${selectedContractId}`)
+        axios.post(`http://localhost:8080/api/contracts/delete/${selectedContractId}`, {},{
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
             .then((res) => res.status)
             .then((status)=>{
                 if(status === 200){
@@ -266,13 +274,14 @@ const ContractsOverview = () => {
                             isLoading={isLoading}
                             setItemsId={setSelectedContractId}
                             columnHeaders={{
-                                "Name": "data.title",
+                                "Name": "name",
                                 "Recipient": "recipient.email",
                                 "Business":"recipient.business.companyName",
                                 "Owner":"userOwner.email",
                                 "Created Date":"createdAt",
                                 "Last Updated":"modifiedAt",
-                                "Status":"ownerStage",
+                                // "Status":(user?.id === contracts.userOwner?.id || user.businessId === contracts.userOwner?.business?.id)? "ownerStage" : "recipientStage",
+                                "Status": "ownerStage"
                             }}
                             handleEdit={handleEdit}
                         />

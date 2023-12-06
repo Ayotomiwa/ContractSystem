@@ -2,13 +2,13 @@ import {useContext, useEffect, useState} from "react";
 import {
     Box,
     Button,
-    Checkbox, darken,
+    Checkbox,
+    darken,
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Divider,
     FormControlLabel,
     List,
     ListItem,
@@ -21,15 +21,26 @@ import UserContext from "../../hooks/UserProvider";
 import {green, red} from "@mui/material/colors";
 import {alpha} from "@mui/material/styles";
 
-const ContractEditSideBar = ({contract, setContract, setEditingPlaceholder, handleModalSubmit, setFullName, fullName, fullNameValid, color, defaultTemplate}) => {
+const ContractEditSideBar = ({
+                                 contract,
+                                 setContract,
+                                 setEditingPlaceholder,
+                                 handleModalSubmit,
+                                 setFullName,
+                                 fullName,
+                                 fullNameValid,
+                                 color,
+                                 defaultTemplate,
+                                 contractSaved,
+                                 contractSent
+                             }) => {
     const {user} = useContext(UserContext);
     const [formData, setFormData] = useState({});
     const [open, setOpen] = useState(false);
     const [signClicked, setSignClicked] = useState(false);
-    // const [fullName, setFullName] = useState('');
     const [checked, setChecked] = useState(false);
-    // const [fullNameValid, setFullNameValid] = useState(true);
     const [showAuthErrorModal, setShowAuthErrorModal] = useState(false);
+    const [isUserOwner, setIsUserOwner] = useState(false);
 
     // const handleCheckboxClick = (event) => {
     //     if (event.target.checked) {
@@ -40,20 +51,22 @@ const ContractEditSideBar = ({contract, setContract, setEditingPlaceholder, hand
     // };
 
     useEffect(() => {
-        if(!fullName){
-            console.log("handleModalSubmitInternal returned",fullNameValid );
+        if (!fullName) {
+            console.log("handleModalSubmitInternal returned", fullNameValid);
             return;
         }
         if (fullNameValid) {
-            console.log("handleModalSubmitInternal ",fullNameValid );
-            setChecked(true);
+            console.log("handleModalSubmitInternal ", fullNameValid);
             setOpen(false);
-        } else {
-            console.log("handleModalSubmitInternal else",fullNameValid );
+            setChecked(true);
+
+        } else if (!open) {
+            console.log("handleModalSubmitInternal else", fullNameValid);
             setChecked(false);
             setShowAuthErrorModal(true);
         }
-    },[fullNameValid, signClicked]);
+    }, [fullNameValid, signClicked]);
+
 
     useEffect(() => {
 
@@ -72,6 +85,7 @@ const ContractEditSideBar = ({contract, setContract, setEditingPlaceholder, hand
         });
         initialFormData["ownerSignature"] = contract.ownerSignature;
         initialFormData["recipientSignature"] = contract.recipientSignature;
+        initialFormData["message"] = contract.message;
         setFormData(initialFormData);
 
 
@@ -79,10 +93,20 @@ const ContractEditSideBar = ({contract, setContract, setEditingPlaceholder, hand
 
 
     useEffect(() => {
-        const isUserOwner = contract.userOwner?.email === user.email || contract.userOwner?.business.id === user.businessId;
-        setChecked(isUserOwner ? contract.isSignedUser : contract.isSignedRecipient);
-    }, [user]);
-
+        (!contract.userOwner && defaultTemplate !== true) || contract.userOwner?.email === user?.email || contract.userOwner?.business?.id === user?.businessId ? setIsUserOwner(true) : setIsUserOwner(false);
+        if (contract.userOwner && isUserOwner) {
+            if (checked) {
+                return
+            }
+            setChecked(contract.signedUser);
+        } else if (contract.recipient && !isUserOwner) {
+            if (checked) {
+                return;
+            }
+            setChecked(contract.signedRecipient);
+        }
+        // setChecked(isUserOwner ? contract.isSignedUser : contract.isSignedRecipient);
+    }, [user, contract]);
 
 
     const handleModalClose = (cancel = false) => {
@@ -118,7 +142,7 @@ const ContractEditSideBar = ({contract, setContract, setEditingPlaceholder, hand
                 ...prevFormData,
                 [event.target.name]: event.target.value
             };
-            // Update contract state
+
             setContract(prevContract => {
                 const newContract = {...prevContract};
                 const keys = event.target.name.split('.');
@@ -129,6 +153,7 @@ const ContractEditSideBar = ({contract, setContract, setEditingPlaceholder, hand
                     newContract.placeholders[keys[0]][keys[1]] = newFormData[event.target.name];
                 } else {
                     newContract.placeholders[event.target.name] = newFormData[event.target.name];
+                    newContract.message = newFormData["message"];
                     newContract.ownerSignature = !!newFormData["ownerSignature"];
                     newContract.recipientSignature = !!newFormData["recipientSignature"];
                 }
@@ -142,10 +167,10 @@ const ContractEditSideBar = ({contract, setContract, setEditingPlaceholder, hand
     return (
         <Stack direction="column" sx={{width: "100%"}}>
 
-            <Box sx={{pt: "10px", pb: "10px", bgcolor:color}}>
+            <Box sx={{pt: "10px", pb: "10px", bgcolor: color}}>
                 <Typography variant="h6" textAlign="center" component="h5">Contract Details</Typography>
             </Box>
-            {/*<Divider sx={{marginTop: "10px", marginBottom: "10px"}}/>*/}
+
 
             <Box component="form"
                  sx={{
@@ -153,41 +178,47 @@ const ContractEditSideBar = ({contract, setContract, setEditingPlaceholder, hand
                      maxHeight: "80vh"
                  }}
             >
-                {Object.keys(contract.placeholders).map((key) => (
-                    <List key={key}>
-                        <ListItem>
-                            <ListItemText>
-                                <Typography variant="subtitle1"
-                                            sx={{fontWeight: "bold"}}>{toTitleCase(key)}</Typography>
-                            </ListItemText>
-                        </ListItem>
-                        {typeof contract.placeholders[key] === 'object' && contract.placeholders[key] !== null ? (
-                            Object.keys(contract.placeholders[key]).map((subKey) => (
-                                <ListItem key={subKey}>
-                                    <TextField
-                                        name={`${key}.${subKey}`}
-                                        label={toTitleCase(subKey)}
-                                        value={formData[`${key}.${subKey}`] || ''}
-                                        onChange={handleChange}
-                                        fullWidth
-                                        sx={{bgcolor:alpha(color, 0.2)}}
-                                    />
+                {isUserOwner && (
+                    <Box>
+                        {Object.keys(contract.placeholders).map((key) => (
+                            <List key={key}>
+                                <ListItem>
+                                    <ListItemText>
+                                        <Typography variant="subtitle1"
+                                                    sx={{fontWeight: "bold"}}>{toTitleCase(key)}</Typography>
+                                    </ListItemText>
                                 </ListItem>
-                            ))
-                        ) : (
-                            <ListItem>
-                                <TextField
-                                    name={key}
-                                    label={toTitleCase(key)}
-                                    value={formData[key] || ''}
-                                    onChange={handleChange}
-                                    fullWidth
-                                    sx={{bgcolor:alpha(color, 0.2)}}
-                                />
-                            </ListItem>
-                        )}
-                    </List>
-                ))}
+                                {typeof contract.placeholders[key] === 'object' && contract.placeholders[key] !== null ? (
+                                    Object.keys(contract.placeholders[key]).map((subKey) => (
+                                        <ListItem key={subKey}>
+                                            <TextField
+                                                name={`${key}.${subKey}`}
+                                                label={toTitleCase(subKey)}
+                                                value={formData[`${key}.${subKey}`] || ''}
+                                                onChange={handleChange}
+                                                fullWidth
+                                                disabled={contractSaved || contractSent || contract.signedUser || contract.signedRecipient}
+                                                sx={{bgcolor: alpha(color, 0.2)}}
+                                            />
+                                        </ListItem>
+                                    ))
+                                ) : (
+                                    <ListItem>
+                                        <TextField
+                                            name={key}
+                                            label={toTitleCase(key)}
+                                            value={formData[key] || ''}
+                                            onChange={handleChange}
+                                            disabled={contractSaved || contractSent || contract.signedUser || contract.signedRecipient}
+                                            fullWidth
+                                            sx={{bgcolor: alpha(color, 0.2)}}
+                                        />
+                                    </ListItem>
+                                )}
+                            </List>
+                        ))}
+                    </Box>
+                )}
                 <List>
                     <ListItem>
                         <ListItemText>
@@ -196,11 +227,37 @@ const ContractEditSideBar = ({contract, setContract, setEditingPlaceholder, hand
                     </ListItem>
                     <ListItem>
                         <FormControlLabel
-                            label={defaultTemplate !== true || contract.userOwner?.email === user?.email || contract.userOwner?.business?.id === user?.businessId
+                            label={(!contract.userOwner && defaultTemplate !== true) || contract.userOwner?.email === user?.email || contract.userOwner?.business?.id === user?.businessId
                                 ? "Owner Signature" : "Recipient Signature"}
-                            control={<Checkbox checked={checked || false} onChange={handleCheckboxClick}/>}
+                            control={<Checkbox
+                                checked={checked || false}
+                                disabled={contractSent || contractSaved || (isUserOwner && contract.signedUser && (contractSaved || contractSent)) || (!isUserOwner && contract.signedRecipient)}
+                                onChange={handleCheckboxClick}/>}
                         />
                     </ListItem>
+                    {!isUserOwner && (
+                        <ListItem sx={{mt: "20px"}}>
+                            <TextField
+                                fullWidth
+                                label="Message"
+                                name="message"
+                                onChange={(e) => {
+                                    setFormData({
+                                        ...formData,
+                                        message: e.target.value,
+                                    });
+                                }}
+                                required
+                                disabled={contractSent || contractSaved || (isUserOwner && contract.signedUser && (contractSaved || contractSent)) || (!isUserOwner && contract.signedRecipient)}
+                                value={formData.message}
+                                // variant="outlined"
+                                multiline
+                                minRows={4}
+                                maxRows={4}
+                                sx={{bgcolor: alpha(color, 0.2), overflowY: "auto"}}
+                            />
+                        </ListItem>
+                    )}
                     <Dialog open={open}
                             onClose={() => handleModalClose(true)}>
                         <DialogTitle>Sign Contract</DialogTitle>
@@ -214,7 +271,7 @@ const ContractEditSideBar = ({contract, setContract, setEditingPlaceholder, hand
                                 label="Full Name"
                                 type="text"
                                 fullWidth
-                                value={fullName}
+                                value={fullName || ''}
                                 onChange={e => setFullName(e.target.value)}
                                 error={!fullNameValid}
                                 helperText={!fullNameValid ? 'You are not authorized to sign this contract' : ''}
@@ -225,26 +282,26 @@ const ContractEditSideBar = ({contract, setContract, setEditingPlaceholder, hand
                                 }}
                             />
                         </DialogContent>
-                        <DialogActions sx={{display:"flex", justifyContent:"space-around", alignItems:"center"}}>
+                        <DialogActions sx={{display: "flex", justifyContent: "space-around", alignItems: "center"}}>
                             <Button
                                 sx={{
-                                    width:"100%",
-                                    color:"white",
-                                    backgroundColor:"rgb(185,67,102)",
+                                    width: "100%",
+                                    color: "white",
+                                    backgroundColor: "rgb(185,67,102)",
                                     '&:focus,&:active,&:hover': {
-                                        color:"white",
-                                        backgroundColor:"rgb(185,67,102)"
+                                        color: "white",
+                                        backgroundColor: "rgb(185,67,102)"
                                     }
                                 }}
                                 onClick={() => handleModalClose(true)}>Cancel</Button>
                             <Button
                                 sx={{
-                                    width:"100%",
-                                    color:"white",
-                                    backgroundColor:darken(color, 0.55),
+                                    width: "100%",
+                                    color: "white",
+                                    backgroundColor: darken(color, 0.55),
                                     '&:focus,&:active,&:hover': {
-                                        color:"white",
-                                        backgroundColor:darken(color, 0.55)
+                                        color: "white",
+                                        backgroundColor: darken(color, 0.55)
                                     }
                                 }}
                                 onClick={handleModalSubmitInternal}>Sign</Button>
@@ -259,40 +316,17 @@ const ContractEditSideBar = ({contract, setContract, setEditingPlaceholder, hand
                         </DialogContent>
                         <DialogActions>
                             <Button sx={{
-                                color:"white",
-                                backgroundColor:darken(color, 0.5),
+                                color: "white",
+                                backgroundColor: darken(color, 0.5),
                                 '&:focus,&:active,&:hover': {
-                                    color:"white",
-                                    backgroundColor:darken(color, 0.5)
+                                    color: "white",
+                                    backgroundColor: darken(color, 0.5)
                                 }
                             }}
-                                onClick={() => setShowAuthErrorModal(false)}>OK</Button>
+                                    onClick={() => setShowAuthErrorModal(false)}>OK</Button>
                         </DialogActions>
                     </Dialog>
-                    {/*<List>*/}
-                    {/*    <ListItem>*/}
-                    {/*        <ListItemText>*/}
-                    {/*            <Typography variant="subtitle1" sx={{fontWeight:"bold"}}>Signatures</Typography>*/}
-                    {/*        </ListItemText>*/}
-                    {/*    </ListItem>*/}
-                    {/*    <ListItem>*/}
-                    {/*        <TextField*/}
-                    {/*            name={"ownerSignature"}*/}
-                    {/*            label={"Owner Signature"}*/}
-                    {/*            value={formData["ownerSignature"] || ''}*/}
-                    {/*            onChange={handleChange}*/}
-                    {/*            fullWidth*/}
-                    {/*        />*/}
-                    {/*    </ListItem>*/}
-                    {/*    <ListItem>*/}
-                    {/*        <TextField*/}
-                    {/*            name={"recipientSignature"}*/}
-                    {/*            label={"Recipient Signature"}*/}
-                    {/*            value={formData["recipientSignature"] || ''}*/}
-                    {/*            onChange={handleChange}*/}
-                    {/*            fullWidth*/}
-                    {/*        />*/}
-                    {/*    </ListItem>*/}
+
                 </List>
             </Box>
         </Stack>

@@ -14,6 +14,7 @@ const TemplatePreviewModal = ({ open, handleClose, data, color }) => {
         transform: 'translate(-50%, -50%)',
         width: '75%',
         maxHeight: '90vh',
+        overflowY: 'auto',
         bgcolor: color,
         borderRadius: '10px',
         border: '2px solid black',

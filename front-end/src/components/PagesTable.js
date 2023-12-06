@@ -39,6 +39,7 @@ export const PagesTable = (props) => {
         columnHeaders,
         showAvatar,
         handleEdit,
+        tableType
     } = props;
 
     const selectedSome = (selected.length > 0) && (selected.length < items.length);
@@ -117,6 +118,7 @@ export const PagesTable = (props) => {
                                             }}
                                             sx={{
                                                 cursor: 'pointer',
+                                                background: tableType === "inbox" && item.status === "UNREAD" ? "rgb(99, 102, 241, 0.08)" : "unset",
                                                 "&:hover, &:active, &:focus": {
                                                     // color: "rgb(99, 102, 241, 0.5)",
                                                     backgroundColor: "rgb(99, 102, 241, 0.08)"

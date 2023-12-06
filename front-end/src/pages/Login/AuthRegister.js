@@ -68,10 +68,10 @@ const AuthRegister = () => {
                         email: '',
                         phoneNumber: '',
                         business: {
-                            companyName: null,
-                            industry: null,
-                            address: null,
-                            phoneNumber: null
+                            companyName: "",
+                            industry: "",
+                            address: "",
+                            phoneNumber: ""
                         },
                         password: '',
                         submit: null
@@ -92,7 +92,7 @@ const AuthRegister = () => {
                     onSubmit={async (values, {setErrors, setStatus, setSubmitting}) => {
                         try {
                             console.log("Signing UP")
-                            const signUpResponse = await axios({
+                            await axios({
                                 "method": 'POST',
                                 "url": 'http://localhost:8080/api/users/sign-up',
                                 "data": values
@@ -354,23 +354,13 @@ const AuthRegister = () => {
                                         <FormHelperText error>{errors.submit}</FormHelperText>
                                     </Grid>
                                 )}
+                                {isSubmitting && (
+                                    <Grid item xs={12}>
+                                        <FormHelperText sx={{ color: 'green' }}>Authenticating...</FormHelperText>
+                                    </Grid>
+                                )}
                                 <Grid item xs={12}>
                                     <AnimateButton>
-                                        {/*{isBusiness ?*/}
-                                        {/*    (<Button*/}
-                                        {/*            component={RouterLink} // Use RouterLink as the component for the Button*/}
-                                        {/*            to={`/auth/business-form`}*/}
-                                        {/*            disableElevation*/}
-                                        {/*            disabled={isSubmitting}*/}
-                                        {/*            fullWidth*/}
-                                        {/*            size="large"*/}
-                                        {/*            type="submit"*/}
-                                        {/*            variant="contained"*/}
-                                        {/*            color="primary"*/}
-                                        {/*        >*/}
-                                        {/*            Next: Business Form*/}
-                                        {/*        </Button>*/}
-                                        {/*    ) : (*/}
                                                 <Button
                                                     disableElevation
                                                     disabled={isSubmitting}
@@ -382,7 +372,6 @@ const AuthRegister = () => {
                                                 >
                                                     Create Account
                                                 </Button>
-                                            {/*)}*/}
                                     </AnimateButton>
                                 </Grid>
                                 <Grid item xs={12}>

@@ -24,12 +24,15 @@ const ContractEdit = () => {
     const [open, setOpen] = useState(false);
     const [fullName, setFullName] = useState("");
     const[fullNameValid, setFullNameValid] = useState(true);
+    const[contractSaved, setContractSaved] = useState(false)
+    const[contractSent, setContractSent]= useState(false);
+    // const[checked, setChecked] = useState(false);
     const [recipientEditData, setRecipientEditData] = useState({
-        "firstName":"",
-        "lastName":"",
-        "email":"",
+        firstName:"",
+        lastName:"",
+        email:"",
         business:{
-            "companyName":"Barclays"
+            companyName:""
         },
         message:""
     });
@@ -44,9 +47,9 @@ const ContractEdit = () => {
             return;
         }
         console.log("CONTRACT TEMPLATE")
-        fetchContract()
+        fetchContract().then(r => console.log("Contract fetched"));
 
-    }, []);
+    }, [contractId]);
 
 
     const fetchDefaultTemplate = () => {
@@ -63,12 +66,18 @@ const ContractEdit = () => {
     }
 
 
-    const fetchContract = () => {
-        axios.get(`http://localhost:8080/api/contracts/${contractId}/edit`)
+    const fetchContract = async () => {
+        axios.get(`http://localhost:8080/api/contracts/${contractId}/edit`, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
             .then(res => res.data)
             .then(data => {
                 setContract(data);
-                setRecipientDetails(data.recipient)
+                console.log("contract", data);
+                console.log("Contract Recipient: ", data.recipient);
+                setRecipientDetails(data.recipient, data.message)
                 setIsLoading(false)
                 console.log("Contract fetched");
                 console.log(data);
@@ -77,16 +86,16 @@ const ContractEdit = () => {
 
 
 
-    const setRecipientDetails = (recipient) => {
+    const setRecipientDetails = (recipient, message) => {
         setRecipientEditData({
             ...recipientEditData,
             email: recipient.email,
             firstName: recipient.firstName,
             lastName: recipient.lastName,
             business: {
-                "companyName": recipient.business.companyName,
+                companyName: recipient.business.companyName,
             },
-            // message: formData.message,
+            message: message,
         });
     }
 
@@ -100,66 +109,104 @@ const ContractEdit = () => {
         }
 
         const contractEditData = {
-            "name": "",
+            "id": defaultTemplate && defaultTemplate === true? null : contract.id,
+            "name": contract?.name,
             "placeholders": contract?.placeholders,
-            "template": contract?.id,
-            "contract": contract?.data,
+            "template": defaultTemplate === true? contract.id : contract?.templateId,
+            "data": contract?.data,
             "userOwner":{
                 "id": user?.id,
-                business:{
+                "business":{
                     "id": user?.businessId,
                 }
             },
-            "recipient" : {
-                "id": null,
-                "firstName": recipientEditData.firstName,
-                "lastName" : recipientEditData.lastName,
-                "email": recipientEditData.email,
-                business:{
-                    companyName: recipientEditData.companyName
-                }
-            },
-            "isSignedUser": contract?.isSignedUser,
-            "isSignedRecipient": contract?.isSignedRecipient,
+            "message": recipientEditData.message,
+            "recipient":recipientEditData,
+            "signedUser": contract?.signedUser,
+            "signedRecipient": contract?.signedRecipient,
         }
-        axios.post(`http://localhost:8080/api/contracts/${user.id}`, contractEditData)
-            .then(res => res.data)
-            .then(data => {
-                console.log(data);
+        axios.post(`http://localhost:8080/api/contracts/${user.id}`, contractEditData, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
+            .then(res => res.status)
+            .then(status => {
+                if(status === 200){
+                    setContractSaved(true);
+                    console.log("CONTRACT SAVED");
+                }
             }).catch(error => console.error(error));
     }
-
 
 
     const handleSend = () => {
         if(!userId){
             return;
         }
-
+        // if(contract.isSignedUser === false){
+        //   setChecked(true);
+        // }
         const contractEditData = {
-            "name": contract?.data?.name,
+            "name": defaultTemplate && defaultTemplate === true? contract.name : contract.data?.title,
             "placeholders": contract?.placeholders,
-            "template": contract?.id,
+            "templateId":defaultTemplate === true? contract.id : contract?.templateId,
             "data": contract?.data,
             "userOwner":{
                 "id": user?.id,
-                business:{
+                "business":{
                     "id": user?.businessId,
                 }
             },
+            message: recipientEditData.message,
             "recipient":recipientEditData,
-            "isSignedUser": contract.isSignedUser,
-            "isSignedRecipient": contract.isSignedRecipient,
+            "signedUser": contract.signedUser,
+            "signedRecipient": contract.signedRecipient,
         }
-        axios.post(`http://localhost:8080/api/contracts/${user.id}/send`, contractEditData)
-            .then(res => res.data)
-            .then(data => {
-                console.log(data);
+        console.log("ContractEditData: signedUser ", contractEditData.signedUser);
+        axios.post(`http://localhost:8080/api/contracts/${user.id}/send`, contractEditData, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
+            .then(res => res.status)
+            .then(status => {
+                 if(status === 200){
+                     setContractSent(true);
+                 }
             }).catch(error => console.error(error));
     }
 
+
+    const handleRecipientAction = () => {
+        console.log("signing")
+        if(!userId){
+            return;
+        }
+        axios.post(`http://localhost:8080/api/inbox/${contractId}/SIGNED`, {},{
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
+            .then(res => res.status)
+            .then(status => {
+                if(status === 200){
+                    setContractSaved(true);
+                    console.log("CONTRACT SAVED");
+                }
+            }).catch(error => console.error(error));
+    }
+
+
+
+
+
     const handleCancel = () => {
-        window.location.href = "/templates"
+        if(defaultTemplate === true){
+            window.location.href = "/templates"
+            return;
+        }
+        window.location.href = "/contracts"
     }
 
 
@@ -174,52 +221,45 @@ const ContractEdit = () => {
 
 
     if (isLoading) {
-        return <div>Loading...</div>; // Render a loading indicator
+        return <div style={{display:"grid",placeItems:"center"}}>Loading...</div>;
     }
 
-    const handleModalSubmit = () => {
 
-        if ((!contract.userOwner && !contract.recipient) || user.id === contract.userOwner.id
-            || user.businessId === contract.userOwner.business.id) {
-            console.log("In user Signature")
-            console.log("New Contract?", !contract.userOwner && !contract.recipient)
-            const userFullName = `${user.firstName} ${user.lastName}`;
-            console.log("User Full Name: ", userFullName);
-            console.log("Full Name: ", fullName);
-            if (userFullName === fullName) {
-                setContract(prevContract => ({...prevContract, isSignedUser: true}));
-                if(defaultTemplate === "true" && !contract.userOwner){
-                    console.log("Setting user owner")
-                    console.log(user)
-                    setContract(prevContract => ({...prevContract, userOwner: user}));
-                }
-                setFullNameValid(true);
-            } else {
-                console.log("You are not authorized to sign as the Owner of this contract");
-                setContract(prevContract => ({...prevContract, isSignedUser: false}));
-                // if(defaultTemplate === "true" && !contract.userOwner){
-                //     setContract(prevContract => ({...prevContract, userOwner: ""}));
-                // }
-                setFullNameValid(false);
-            }
-        } else if ((user.id === contract.recipient.id) || (user.businessId === contract.recipient.business.id)) {
-            const recipientFullName = `${recipientEditData.firstName} ${recipientEditData.lastName}`;
-            if (recipientFullName === fullName) {
-                setContract(prevContract => ({...prevContract, isSignedRecipient: true}));
-                setFullNameValid(true);
-            } else {
-                console.log("You are not authorized to sign as the Recipient of this contract");
-                setContract(prevContract => ({...prevContract, isSignedUser: false}));
-                setFullNameValid(false);
-            }
-        } else {
-            console.log("You are not authorized to sign this contract");
-            setContract(prevContract => ({...prevContract, isSignedUser: false}));
-            setFullNameValid(false);
-        }
-        setOpen(false);
+
+    const handleUserSignature = (isAuthorized) => {
+        setContract(prevContract => ({
+            ...prevContract,
+            signedUser: isAuthorized
+        }));
     };
 
+    const handleRecipientSignature = (isAuthorized) => {
+        setContract(prevContract => ({
+            ...prevContract,
+            signedRecipient: isAuthorized
+        }));
+    };
+
+
+    const handleModalSubmit = () => {
+        const isUserOwner = (!contract.userOwner && defaultTemplate !== true) || user.id === contract.userOwner?.id || user.businessId === contract.userOwner?.business?.id;
+        let isAuthorized =`${user.firstName} ${user.lastName}` === fullName;
+
+
+        if (isAuthorized) {
+            const updatedContract = {
+                ...contract,
+                signedUser: isUserOwner ? true : contract.signedUser,
+                signedRecipient: isUserOwner ? contract.signedRecipient : true
+            };
+            setContract(updatedContract);
+            console.log("updatedContract: ", updatedContract);
+        }
+
+
+        setOpen(false);
+        setFullNameValid(isAuthorized);
+    };
 
 
     return (
@@ -249,6 +289,9 @@ const ContractEdit = () => {
                     fullNameValid={fullNameValid}
                     color={color || '#d1c4e9'}
                     defaultTemplate ={defaultTemplate}
+                    contractSent={contractSent}
+                    contractSaved={contractSaved}
+                    // signChecked={checked}
                 />
             </Box>
 
@@ -269,12 +312,17 @@ const ContractEdit = () => {
         </Paper>
             <Box sx={{width:"20%", borderLeft:"0.2px gray solid"}}>
                 <ActionSideBar
+                    contract={contract}
+                    defaultTemplate={defaultTemplate}
                     handleSave={handleSave}
                     handleSend={handleSend}
                     handleCancel={handleCancel}
                     recipientEditData ={recipientEditData}
                     setRecipientEditData={setRecipientEditData}
                     color={color || '#d1c4e9'}
+                    contractSaved={contractSaved}
+                    contractSent={contractSent}
+                    handleRecipientAction={handleRecipientAction}
                 />
             </Box>
         </Paper>

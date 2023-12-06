@@ -19,8 +19,6 @@ const handleSearch = (event) => {
 const handleInputChange= (event) => {
     event.preventDefault();
     if (event.target.value === ""){
-        // setExams([]);
-        // fetchExamsData();
         resetList(false);
         return
     }
@@ -35,7 +33,6 @@ return (
       defaultValue=""
       fullWidth
       placeholder={placeHolder}
-      // handleInputChange={handleInputChange}
       onChange={handleInputChange}
       onKeyPress={(event) => {
             if (event.key === 'Enter') {
@@ -49,7 +46,6 @@ return (
           >
               <SvgIcon
                   fontSize="large"
-                  // sx={{color:"rgb(99, 102, 241)"}}
                   sx={{color:"#e75480"}}
               >
                   <MagnifyingGlassIcon />

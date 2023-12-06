@@ -16,6 +16,7 @@ import Skeleton from '@mui/material/Skeleton';
 
 import {PagesTable} from "../../components/PagesTable";
 import InboxFilterButtons from "./InboxFilterButtons";
+import {CheckIcon, NoSymbolIcon} from "@heroicons/react/20/solid";
 
 
 
@@ -35,6 +36,7 @@ const Inbox = () => {
     const searchContractUrl = basicContractUrl + `/search?query=${searchTerm}`;
     const [isLoading, setIsLoading] = useState(false);
     const [selectedContractId, setSelectedContractId] = useState(null);
+    const[contractId, setContractId] = useState(null);
     const display =useRef("");
 
 
@@ -42,6 +44,15 @@ const Inbox = () => {
     useEffect(() => {
         setIsLoading(true);
     }, [rowsPerPage]);
+
+    useEffect(() => {
+        if(!contractId){
+            return;
+        }
+        window.location.href = `/contract/edit?contractId=${contractId}&color=${encodeURIComponent('#d1c4e9')}&default=${false}`;
+    }, [contractId]);
+
+
 
 
     useEffect(() => {
@@ -63,8 +74,12 @@ const Inbox = () => {
     const fetchContracts = () => {
         // if (user) {
         // axios.get(`http://localhost:8080/api/clients/business/${user.business.id}`)
-        axios.get(basicContractUrl + "?" + fetchContractUrl)
-            .then(response => {
+        axios.get(basicContractUrl + "?" + fetchContractUrl, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        }
+    ).then(response => {
                 processContractsData(response.data);
                 setIsLoading(false);
                 // const clientWithAvatars = response.data.content.map((client) => ({
@@ -92,8 +107,12 @@ const Inbox = () => {
 
     const fetchSearchData = () => {
         setIsLoading(true);
-        axios.get(searchContractUrl + "&" + fetchContractUrl)
-            .then(response => {
+        axios.get(searchContractUrl + "&" + fetchContractUrl, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        }
+    ).then(response => {
                 processContractsData(response.data);
                 setIsLoading(false);
                 // const clientWithAvatars = response.data.content.map((client) => ({
@@ -108,15 +127,35 @@ const Inbox = () => {
             });
     }
 
+
+    const fetchInboxData = (itemId) => {
+        axios.get(`http://localhost:8080/api/inbox/${itemId}/contract`, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
+            .then(res => res.data)
+            .then(res => setContractId(res.contractId))
+            .catch(error => console.error(error));
+    }
+
     const handleDelete = (event) => {
         event.preventDefault();
         deleteContract()
     }
 
+    const handleEdit = (itemId) =>{
+        fetchInboxData(itemId);
+
+    }
 
     const deleteContract = () =>
     {
-        axios.post(`http://localhost:8080/api/delete/${selectedContractId}`)
+        axios.post(`http://localhost:8080/api/delete/${selectedContractId}`,{}, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
             .then((res) => res.status)
             .then((status)=>{
                 if(status === 200){
@@ -129,6 +168,23 @@ const Inbox = () => {
     }
 
 
+    const handleStatus = (status) => {
+        axios.post(`http://localhost:8080/api/inbox/${selectedContractId}/${status}`,{}, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
+            .then((res) => res.status)
+            .then((status)=>{
+                if(status === 200){
+                    fetchContracts();
+                }
+            }).
+        catch((error) => {
+            console.log(error);
+        })
+    }
+
     const processContractsData = (data) => {
         const clientWithAvatars = data.content.map((client) => ({
             ...client,
@@ -140,7 +196,6 @@ const Inbox = () => {
 
 
     const resetContractsList = (value) => {
-        // setExams([]);
         setTotalContracts(0);
         setPage(0);
         setSearch(value);
@@ -222,14 +277,36 @@ const Inbox = () => {
                                 <SearchBar setSearchTerm={setSearchTerm} resetList={resetContractsList}
                                 placeHolder="Search Inbox"
                                 />
-                                <IconButton
-                                    color="red"
-                                    onClick={handleDelete}
-                                >
-                                    <SvgIcon sx={{fontSize: "40px"}}>
-                                        <TrashIcon color="rgb(185,67,102)"/>
-                                    </SvgIcon>
-                                </IconButton>
+                                <Card elevation={3}
+                                      sx={{display:"flex", justifyContent:"space-between", gap:2,
+                                    backgroundColor:"rgb(59, 61, 145, 0.2)",
+                                      border:"1px solid rgb(59, 61, 145, 0.2)"
+                                      }}>
+                                    <IconButton
+                                        color="red"
+                                        onClick={()=> handleStatus("ACCEPTED")}
+                                    >
+                                        <SvgIcon sx={{fontSize: "40px"}}>
+                                            <CheckIcon color="rgb(185,67,102)"/>
+                                        </SvgIcon>
+                                    </IconButton>
+                                    <IconButton
+                                        color="red"
+                                        onClick={() => handleStatus("DECLINED")}
+                                    >
+                                        <SvgIcon sx={{fontSize: "40px"}}>
+                                            <NoSymbolIcon color="rgb(185,67,102)"/>
+                                        </SvgIcon>
+                                    </IconButton>
+                                    <IconButton
+                                        color="red"
+                                        onClick={handleDelete}
+                                    >
+                                        <SvgIcon sx={{fontSize: "40px"}}>
+                                            <TrashIcon color="rgb(185,67,102)"/>
+                                        </SvgIcon>
+                                    </IconButton>
+                                </Card>
                             </Stack>
                             <Box sx={{mt:"30px"}}>
                                 <Divider />
@@ -258,11 +335,13 @@ const Inbox = () => {
                             columnHeaders={{
                                 "From": "from",
                                 "To": "to",
-                                "Title":"",
+                                "Title":"title",
                                 "sent":"sent",
                                 "received": "received",
                                 "Status":"status",
                             }}
+                            tableType="inbox"
+                            handleEdit={handleEdit}
                         />
                     </Stack>
                 </Container>

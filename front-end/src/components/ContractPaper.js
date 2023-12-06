@@ -65,18 +65,6 @@ const ContractPaper = ({ data, color, editingPlaceholder}) => {
 
 
 
-
-
-
-
-    // if (!data?.placeholders) {
-    //     return null; // or return some loading state
-    // }
-    // if (!data.placeholders) {
-    //     return null; // or return some loading state
-    // }
-
-
     const handleDownload = () => {
         setGeneratingPdf(true);
 
@@ -148,13 +136,11 @@ const ContractPaper = ({ data, color, editingPlaceholder}) => {
         const regex = /%%(.*?)%%/g;
         let body = section.body;
 
-        // Replace placeholders in the body
+
         const bodyWithPlaceholders = body.split(regex).map((part, index) => {
-            // Even indices are regular text, odd indices are placeholders
             if (index % 2 === 0) {
-                return part; // Regular text
+                return part;
             } else {
-                // Placeholder text
                 const keys = part.split('.');
                 let value = data.placeholders;
                 for (let key of keys) {
@@ -250,11 +236,11 @@ const ContractPaper = ({ data, color, editingPlaceholder}) => {
                             OWNER
                         </Typography>
                         <Typography sx={{fontStyle: "italic", fontFamily:"Times New Roman, serif"}}>
-                            {data.isSignedUser && data.userOwner? data.userOwner.email : "Not Signed"}
+                            {data.signedUser && data.userOwner? data.userOwner.firstName + " " +  data.userOwner.lastName : "Not Signed"}
                         </Typography>
                         <Typography sx={{fontStyle: "italic", fontFamily:"Times New Roman, serif"}}>
                             {"Signed date: "}
-                            {data.isSignedUser ?  data.signedUserDate? data.signedUserDate : new Date().toLocaleDateString() : "N/A"}
+                            {data.signedUser ?  data.signedUserDate? data.signedUserDate : new Date().toLocaleDateString() : "N/A"}
                         </Typography>
                     </Box>
                     <Box sx={{fontFamily:"Times New Roman, serif"}}>
@@ -262,11 +248,11 @@ const ContractPaper = ({ data, color, editingPlaceholder}) => {
                             RECIPIENT
                         </Typography>
                         <Typography sx={{fontStyle: "italic", fontFamily:"Times New Roman, serif"}}>
-                            {data.isSignedRecipient? data.recipient.firstName + " " + data.recipient.lastName : "Not Signed"}
+                            {data.signedRecipient? data.recipient.firstName + " " + data.recipient.lastName : "Not Signed"}
                         </Typography>
                         <Typography sx={{fontStyle: "italic", fontFamily:"Times New Roman, serif"}}>
                             {"Signed date: "}
-                            { data.signedRecipientDate? data.signedRecipientDate : "N/A"}
+                            {data.signedRecipientDate? data.signedRecipientDate : "N/A"}
                         </Typography>
                     </Box>
                 {/*<div>*/}

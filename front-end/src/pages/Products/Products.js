@@ -63,7 +63,12 @@ const Products = () => {
     const fetchProducts = () => {
         // if (user) {
         // axios.get(`http://localhost:8080/api/products/business/${user.business.id}`)
-        axios.get(basicProductUrl + "?" + fetchProductUrl)
+        axios.get(basicProductUrl + "?" + fetchProductUrl,
+            {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
             .then(response => {
                 processProductsData(response.data);
                 setIsLoading(false);
@@ -75,7 +80,12 @@ const Products = () => {
     }
 
     const fetchSearchData = () => {
-        axios.get(searchProductUrl +"&"+ fetchProductUrl)
+        axios.get(searchProductUrl +"&"+ fetchProductUrl,
+            {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
             .then(response => {
                 processProductsData(response.data);
                 setIsLoading(false);
@@ -112,7 +122,12 @@ const Products = () => {
 
     const deleteProduct = () =>
     {
-        axios.post(`http://localhost:8080/api/product-services/${selectedProductId}`)
+        axios.post(`http://localhost:8080/api/product-services/${selectedProductId}`, {},
+            {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
             .then((res) => res.status)
             .then((status)=>{
                 if(status === 200){

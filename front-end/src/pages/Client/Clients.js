@@ -65,10 +65,10 @@ const Clients = () => {
 
 
 
-
-
     useEffect(() => {
-        // console.log("fetch Clients: " +  user.businessId)
+        if(!user) {
+           return;
+        }
         if (search === false || searchTerm === "") {
             setClients([]);
             fetchClients();
@@ -82,8 +82,12 @@ const Clients = () => {
 
 
     const fetchClients = () => {
-        axios.get(basicClientUrl + "?" + fetchClientsUrl)
-            .then(response => {
+        axios.get(basicClientUrl + "?" + fetchClientsUrl, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            }
+        ).then(response => {
                 processClientData(response.data);
                 setIsLoading(false);
 
@@ -105,8 +109,12 @@ const Clients = () => {
 
 
     const fetchSearchData = () => {
-        axios.get(searchClientUrl + "&" + fetchClientsUrl)
-            .then(response => {
+        axios.get(searchClientUrl + "&" + fetchClientsUrl, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        }
+        ).then(response => {
                 processClientData(response.data);
                 setIsLoading(false);
                 // const clientWithAvatars = response.data.content.map((client) => ({
@@ -132,7 +140,11 @@ const Clients = () => {
 
     const deleteClient = () =>
     {
-        axios.get(`http://localhost:8080/api/business/delete/${selectedClientId}`)
+        axios.get(`http://localhost:8080/api/business/delete/${selectedClientId}`, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
             .then((res) => res.status)
             .then((status)=>{
                 if(status === 200){

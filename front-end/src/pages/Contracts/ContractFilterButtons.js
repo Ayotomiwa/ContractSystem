@@ -4,25 +4,36 @@ import {List, ListItem, ListItemButton, ListItemText, Typography} from "@mui/mat
 const ContractFilterButtons = ({setSearchTerm, resetList}) =>{
 
 
-    const softColors = [
+    // const softColors = [
+    //
+    //     '#a8e6cf',
+    //
+    //     '#a7c7e7',
+    //     '#f8c6d1',
+    //     '#d1c4e9',
+    //     '#88d8b0',
+    //     '#ffccaa',
+    //     '#87ceeb',
+    //
+    //     '#f6e8b1',
+    //
+    //     '#f3e5f5',
+    //     '#fffdd0'
+    // ];
 
-        '#a8e6cf',
 
-        '#a7c7e7',
-        '#f8c6d1',
-        '#d1c4e9',
-        '#88d8b0',
-        '#ffccaa',
-        '#87ceeb',
-
-        '#f6e8b1',
-
-        '#f3e5f5',
-        '#fffdd0'
-    ];
+    const stagesColor = {
+        "ALL": "#a8e6cf",
+        "DECLINED": "#f8c6d1",
+        "DRAFT": "#d1c4e9",
+        "SIGNED": "#88d8b0",
+        "ATTENTION": "#ffccaa",
+        "SENT": "#87ceeb",
+        "PENDING": "#a7c7e7",
+    }
 
 
-   const handleFilter = (filter) => {
+    const handleFilter = (filter) => {
        if(filter === "ALL"){
               setSearchTerm("");
               resetList(true);
@@ -35,18 +46,20 @@ const ContractFilterButtons = ({setSearchTerm, resetList}) =>{
     return(
         <List sx = {{display:"flex", flexDirection:"row",
             alignItems:"center", justifyContent: "center",
-            width:"100%",
+            flexWrap: { xs: "wrap", sm: "nowrap" }
+            // width:"100%",
         }}>
-            {['ALL', 'DRAFT', 'EXPIRED', 'REVIEWED', 'SIGNED', 'ATTENTION', 'SENT'].map((text, index) => (
+            {['ALL', 'DRAFT', 'PENDING', 'DECLINED','ATTENTION' ,'SIGNED', 'SENT'].map((text, index) => (
                 <ListItem key={text}>
                     <ListItemButton
                         onClick={() => handleFilter(text)}
                         sx={{backdropFilter: 'blur(25px)',
-                            backgroundColor: softColors[index],
+                            backgroundColor: stagesColor[text],
                             border: "1px solid black",
                             borderRadius: "25px",
                             textAlign:"center",
-                            height:"40px"
+                            height:"40px",
+                            width:"auto"
 
                         }}
                     >

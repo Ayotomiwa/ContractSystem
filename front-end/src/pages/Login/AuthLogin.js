@@ -162,6 +162,11 @@ const AuthLogin = () => {
                   <FormHelperText error>{errors.submit}</FormHelperText>
                 </Grid>
               )}
+              {isSubmitting && (
+                  <Grid item xs={12}>
+                    <FormHelperText sx={{ color: 'green' }}>Signing in...</FormHelperText>
+                  </Grid>
+              )}
               <Grid item xs={12}>
                 <AnimateButton>
                   <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" sx={{backgroundColor:"rgb(99, 102, 241)"}}>

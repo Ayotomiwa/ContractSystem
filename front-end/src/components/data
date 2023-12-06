@@ -72,29 +72,16 @@
 .....................
 
 {
-  "name": "Non-disclosure Agreement",
+ {
+    "name": "Non-disclosure Agreement",
   "type": "CONFIDENTIALITY",
   "industry": "Various",
   "placeholders": {
     "Contract": {
-      "effectiveDate": null,
-      "termYears": null
+      "effectiveDate": "",
+      "termYears": ""
     },
-    "Owner": {
-      "name": "",
-      "address": "",
-    },
-    "Recipient": {
-      "individualName": "",
-      "businessName": null,
-      "businessAddress": "",
-      "type": null
-    },
-    "Jurisdiction": {
-      "stateOrCountry": null
-    },
-    "userSignedDate": null,
-    "clientSignedDate": null,
+    "Jurisdiction":""
   },
 
   "description": "An agreement outlining the terms for maintaining confidentiality.",
@@ -108,7 +95,7 @@
         },
         "sectionB": {
           "title": "Length of Agreement",
-          "body": "This agreement starts on the %%contract.effectiveDate%% and continues throughout the Term of %%contract.termYears%% years."
+          "body": "This agreement starts on the %%Contract.effectiveDate%% and continues throughout the Term of %%Contract.termYears%% years."
         },
         "sectionC": {
           "title": "Keeping Information Secret",
@@ -132,20 +119,8 @@
         },
         "sectionH": {
           "title": "Governing Law and Jurisdiction",
-          "body": "This Agreement and any dispute arising out of or in connection with it is governed by and interpreted in accordance with the laws of %%Jurisdiction.stateOrCountry%%."
-        },
-    },
-    "signatures": {
-      "userSignature": {
-        "signatoryName": "%%Owner.name%%",
-         "email": "%%owner.email%%",
-       "timestamp": %%userSignedDate%%
-      },
-      "clientSignature": {
-        "signatoryName": "%%Recipient.individualName%%",
-        "email": "%%recipient.email%%",
-       "timestamp": "%%recipientSignedDate%%"
-      }
+          "body": "This Agreement and any dispute arising out of or in connection with it is governed by and interpreted in accordance with the laws of %%Jurisdiction%% ."
+        }
     }
   }
 }
@@ -354,20 +329,6 @@
            "title": "Governing Law and Jurisdiction",
            "body": "This Agreement and any dispute or claim arising out of or in connection with it shall be governed by and construed in accordance with the law of %%GoverningLaw%%."
          }
-     },
-     "signatures": {
-       "clientSignature": {
-          key": "Customer",
-         "signatoryName": "%%Customer.name%%",
-         "email": "%%Customer.email%%",
-         "timestamp": "%%Customer.timestamp%%"
-       },
-       "userSignature": {
-         "key": "Supplier",
-         "signatoryName": "%%Supplier.name%%",
-         "email": "%%Supplier.email%%",
-         "timestamp": "%%Supplier.timestamp%%"
-       }
      }
    }
  }
@@ -423,18 +384,6 @@
           "body": "This Agreement and any dispute arising out of or in connection with it is governed by and interpreted in accordance with the laws of New York."
         }
      }
-    "signatures": {
-            "userSignature": {
-                   "signatory_name": "%%Owner.name%%",
-                     "email": "%%owner.email%%",
-                    "timestamp": %%userSignedDate%%
-                 },
-          "clientSignature": {
-                      "signatoryName": "%%Recipient.individualName%%",
-                       "email": "%%recipient.email%%",
-                      "timestamp": "%%recipientSignedDate%%"
-                  }
-           }
   }
 }
 ........
@@ -443,22 +392,14 @@
   "type": "COMMERCIAL",
   "industry": "Various",
   "placeholders": {
-    "contract": {
-      "effectiveDate": null,
-      "termYears": null
+    "Contract": {
+      "effectiveDate": "",
+      "termYears": ""
     },
-    "Owner": {
-      "name": "",
-      "address": "",
-    },
-    "Recipient": {
-      "individualName": "",
-      "businessName": null,
-      "businessAddress": "",
-      "type": null
+    "Client": {
+      "services":"",
+      "fee":""
     }
-      "userSignedDate": null,
-      "clientSignedDate": null
   },
   "description": "An agreement outlining the terms of software licensing.",
   "data": {
@@ -470,15 +411,15 @@
         },
         "sectionB": {
           "title": "Length of Agreement",
-          "body": "This agreement starts on the %%contract.effectiveDate%% and continues throughout the Term of %%contract.termYears%% years."
+          "body": "This agreement starts on the %%Contract.effectiveDate%% and continues throughout the Term of %%Contract.termYears%% years."
         },
         "sectionC": {
           "title": "Services",
-          "body": "The Service Provider agrees to provide the following services: %%Recipient.services%%."
+          "body": "The Service Provider agrees to provide the following services: %%Client.services%%."
         },
         "sectionD": {
           "title": "Compensation",
-          "body": "The Service Provider agrees to pay the Service Recipient a fee of $%%Recipient.fee%% per year."
+          "body": "The Service Provider agrees to pay the Service Recipient a fee of $%%Client.fee%% per year."
         },
         "sectionE": {
           "title": "Termination",
@@ -488,67 +429,52 @@
           "title": "Governing Law and Jurisdiction",
           "body": "This Agreement and any dispute arising out of or in connection with it is governed by and interpreted in accordance with the laws of New York."
         }
-     },
-    "signatures": {
-            "userSignature": {
-                   "signatory_name": "%%Owner.name%%",
-                     "email": "%%owner.email%%",
-                    "timestamp": %%userSignedDate%%
-                 },
-          "clientSignature": {
-                      "signatoryName": "%%Recipient.individualName%%",
-                       "email": "%%recipient.email%%",
-                      "timestamp": "%%recipientSignedDate%%"
-                  }
-           }
+     }
   }
 }
 
 --------
 {
    "name": "Basic Rental Agreement",
-   "type": "LEASE",
    "industry": "Real Estate",
+   "type": "LEASE",
    "placeholders": {
      "Contract": {
-       "effectiveDate": null,
-        "termYears": null,
-        "address": null
+       "effectiveDate": "",
+        "termYears": "",
+        "address": ""
      },
-     "RENT": {
-       "amount": null,
-       "dueDate": null,
-       "securityDeposit": null
+     "Rent": {
+       "amount": "",
+       "dueDate": "",
+       "securityDeposit":""
      },
      "Renter": {
-       "name": null,
-       "address": null
+       "name": "",
+       "address": ""
      },
      "Landlord": {
-       "name": null,
-       "address": null
+       "name": "",
+       "address": ""
      },
-     juridiction": null,
-     "terminationNoticePeriod": null,
-     "userSignedDate": null,
-     "clientSignedDate": null
+     "Jurisdiction": "",
+     "TerminationNoticePeriod": ""
    },
    "description": "A rental agreement between a Renter and Landlord for leasing a property, outlining terms including rent, occupancy, and termination.",
    "data": {
-     "title": "Basic Rental Agreement",
+     "name": "Basic Rental Agreement",
      "sections": {
-
           "sectionA":{
             "title": "Parties",
-            "Body":"This Rental Agreement (hereinafter referred to as the “Agreement”) is entered into on %%Contract.effectiveDate%% by and between %%Renter.name%% (hereinafter referred to as the “Renter”) and %%Landlord.name%% (hereinafter referred to as the “Landlord”)(collectively referred to as the “Parties”)."
+            "body":"This Rental Agreement (hereinafter referred to as the “Agreement”) is entered into on %%Contract.effectiveDate%% by and between %%Renter.name%% (hereinafter referred to as the “Renter”) and %%Landlord.name%% (hereinafter referred to as the “Landlord”)(collectively referred to as the “Parties”)."
           },
           "sectionB":{
             "title":"Consideration",
-            "Body":"The Renter hereby agrees to pay the Landlord the amount of money mentioned in this Agreement to lease the property owned by the Landlord"
+            "body":"The Renter hereby agrees to pay the Landlord the amount of money mentioned in this Agreement to lease the property owned by the Landlord"
             },
           "sectionC":{
                 "title":"Term",
-                "Body":"The term of this Agreement shall begin on %%Contract.effectiveDate%% and shall continue until %%Contract.termYears%% years."
+                "body":"The term of this Agreement shall begin on %%Contract.effectiveDate%% and shall continue until %%Contract.termYears%% years."
             },
          "sectionD": {
            "title": "Premises and Occupancy",
@@ -556,11 +482,11 @@
          },
          "sectionE": {
            "title": "Costs and Payment",
-           "body": "The monthly rent is %%Rent.amount. It is to be paid by the Renter before the first day of every month. The first rent payment is due on %%Rent.dueDate%%.-	Prior to taking occupancy of the premises, the Renter will pay the Landlord an amount of %%Rent.securityDeposit%% as a security deposit to cover the cost of any damages suffered by the premises and cleaning. Such security deposit will be returned to the Renter upon the end of this Agreement, provided the premises are left in the same condition as prior to the occupancy."
+           "body":"The monthly rent is %%Rent.amount. It is to be paid by the Renter before the first day of every month. The first rent payment is due on %%Rent.dueDate%%. Prior to taking occupancy of the premises, the Renter will pay the Landlord an amount of %%Rent.securityDeposit%% as a security deposit to cover the cost of any damages suffered by the premises and cleaning. Such security deposit will be returned to the Renter upon the end of this Agreement, provided the premises are left in the same condition as prior to the occupancy."
          },
          "sectionF": {
            "title": "Termination",
-           "body": "This Agreement may be terminated immediately in the event of a breach, or at any time by providing written notice %%terminationNoticePeriod" days prior to terminating the Agreement."
+           "body": "This Agreement may be terminated immediately in the event of a breach, or at any time by providing written notice %%TerminationNoticePeriod%% days prior to terminating the Agreement."
          },
          "sectionG": {
            "title": "Abandonment and Right to Enter",
@@ -568,34 +494,20 @@
          },
          "sectionH": {
            "title": "Dispute Resolution",
-           "body": "Any dispute or difference whatsoever arising out of or in connection with this Agreement shall be submitted to arbitration/mediation/negotiation (circle one) in accordance with, and subject to the laws of %%jurisdiction%%."
+           "body": "Any dispute or difference whatsoever arising out of or in connection with this Agreement shall be submitted to arbitration/mediation/negotiation (circle one) in accordance with, and subject to the laws of %%Jurisdiction%%."
          },
          "sectionI": {
            "title": "Governing Law",
-           "body": "This Agreement shall be governed and construed in accordance with the laws of %%juridiction%%."
+           "body": "This Agreement shall be governed and construed in accordance with the laws of %%Jurisdiction%%"
          },
          "sectionJ": {
            "title": "Pets",
-           "body": "-	This Agreement contains the entire agreement and understanding among the Parties hereto with respect to the subject matter hereof, and supersedes all prior agreements, understandings, inducements and conditions, express or implied, oral or written, of any nature whatsoever with respect to the subject matter hereof. The express terms hereof control and supersede any course of performance and/or usage of the trade inconsistent with any of the terms hereof."
+           "body": "This Agreement contains the entire agreement and understanding among the Parties hereto with respect to the subject matter hereof, and supersedes all prior agreements, understandings, inducements and conditions, express or implied, oral or written, of any nature whatsoever with respect to the subject matter hereof. The express terms hereof control and supersede any course of performance and/or usage of the trade inconsistent with any of the terms hereof."
          },
          "sectionK": {
            "title": "Severability",
            "body": "If any provision of this Agreement is found void and unenforceable, the remaining provisions will remain in force."
          }
-     },
-     "signatures": {
-       "clientSignature": {
-         "key": "Renter",
-         "signatoryName": null,
-         "email": null,
-         "timestamp": null
-       },
-       "userSignature": {
-         "key": "Landlord",
-         "signatoryName": null,
-         "email": null,
-         "timestamp": null
-       }
      }
    }
 }
@@ -670,20 +582,6 @@
            "title": "Governing Law",
            "body": "This Agreement is governed and construed according to the laws of %%Jurisdiction%%."
          }
-     },
-     "signatures": {
-       "clientSignature": {
-         "key": "First Partner",
-         "signatoryName": null,
-         "email": null,
-         "timestamp": null
-       },
-       "userSignature": {
-         "key": "Second Partner",
-         "signatoryName": null,
-         "email": null,
-         "timestamp": null
-       }
      }
    }
 }
@@ -695,44 +593,38 @@
    "type": "COMMERCIAL",
    "industry": "Finance",
    "placeholders": {
-     "EffectiveDate": null,
-     "InvestorName": null,
-     "InvestorAddress": null,
-     "CompanyName": null,
-     "CompanyAddress": null,
-     "InvestmentAmount": null,
-     "CompanyShares": null,
-     "InvestmentPaymentMethod": null,
-     "InvestmentPaymentFrequency": null,
-     "InvestmentPeriodYears": null,
-     "Executives": [
-       null,
-       null,
-       null
-     ],
-     "BoardOfDirectors": [
-       null,
-       null,
-       null
-     ],
-     "NetProfitsOrLossesDistribution": null,
-     "DissolutionTerms": null,
-     "OwnershipPercentageForBoardApproval": null,
-     "InvestorVotesPercentage": null,
-     "InvestorOwnershipPercentage": null,
-     "BiannualVotingMonths": null,
-     "ConfidentialityTermYears": null,
-     "NonCompetitionTermMonths": null,
-     "TerminationNoticeDays": null,
-     "MajorityShareholderRightRefusal": null,
-     "ShareSaleRestriction": null,
-     "AmendmentTerms": null,
-     "DisputeResolutionMethod": null,
-     "GoverningLaw": null,
-     "InvestorSignature": null,
-     "CompanySignature": null,
-     "InvestorDate": null,
-     "CompanyDate": null
+      "Investor":{
+          "name":"",
+          "address":"",
+          "ownershipPercentage":"",
+          "votesPercentage":""
+      },
+      "Period":{
+            "terminationNoticeDays": "",
+            "nonCompetitionTermMonths": "",
+            "confidentialityTermYears":"",
+            "votingPeriod":"",
+            "dissolutionTerms":""
+
+       },
+      "Investment":{
+          "amount":"",
+          "paymentMethod":"",
+          "paymentFrequency":"",
+          "periodYears":""
+      },
+      "Executives":[],
+      "BoardOfDirectors":[],
+      "Company":{
+          "name":"",
+          "address":"",
+          "shares":""
+      },
+       "governingLaw": "",
+       "disputeResolutionMethod": "",
+       "AmendmentTerms": "",
+       "DistrubitionDeterminant":"",
+       "ShareSaleRestriction": ""
    },
    "description": "An agreement between an Investor and a Company outlining the terms of investment, including payment details, share distribution, management, and control, along with provisions for dissolution, voting rights, confidentiality, non-competition, and termination.",
    "data": {
@@ -740,15 +632,15 @@
      "sections": {
        "sectionA": {
          "title": "Parties",
-         "body": "This Agreement is entered into by %%InvestorName%%, with an address of %%InvestorAddress%%, and %%CompanyName%%, with an address of %%CompanyAddress%%."
+         "body": "This Agreement is entered into by %%Investor.name%%, with an address of %%Investor.address%%, and %%Company.name%%, with an address of %%Company.address%%."
        },
        "sectionB": {
          "title": "Investment",
-         "body": "The Investor will invest %%InvestmentAmount%% in exchange for %%CompanyShares%% of the Company's shares."
+         "body": "The Investor will invest %%Investment.amount%% in exchange for %%Company.shares%% of the Company's shares."
        },
        "sectionC": {
          "title": "Investment Payment",
-         "body": "Payment will be made via %%InvestmentPaymentMethod%%. The payment frequency is %%InvestmentPaymentFrequency%%, over a period of %%InvestmentPeriodYears%% years."
+         "body": "Payment will be made via %%Investment.paymentMethod%%. The payment frequency is %%Investment.paymentFrequency%%, over a period of %%Investment.periodYears%% years."
        },
        "sectionD": {
          "title": "Management and Control",
@@ -756,27 +648,23 @@
        },
        "sectionE": {
          "title": "Distribution",
-         "body": "Net profits or losses will be determined and distributed as per %%NetProfitsOrLossesDistribution%%."
+         "body": "Net profits or losses will be determined and distributed as per %%DistributionDeterminant%%."
        },
        "sectionF": {
          "title": "Dissolution",
-         "body": "In case of dissolution, %%DissolutionTerms%%."
+         "body": "In case of dissolution, %%Period.dissolutionTerms%%."
        },
        "sectionG": {
          "title": "Voting",
-         "body": "Approval of Board actions requires shareholders holding more than %%OwnershipPercentageForBoardApproval%%. The Investor has %%InvestorVotesPercentage%% of votes when owning more than %%InvestorOwnershipPercentage%%. Voting occurs biannually in %%BiannualVotingMonths%%."
+         "body": "Approval of Board actions requires shareholders holding more than %%OwnershipPercentageForBoardApproval%%. The Investor has %%Investor.votesPercentage%% of votes when owning more than %%Investor.ownershipPercentage%%. Voting occurs biannually in %%period.VotingPeriod%%."
        },
        "sectionH": {
          "title": "Confidentiality",
-         "body": "Confidentiality terms last for %%ConfidentialityTermYears%% years."
+         "body": "Confidentiality terms last for %%period.confidentialityTermYears%% years."
        },
        "sectionI": {
          "title": "Non-Competition",
-         "body": "Non-competition terms last for %%NonCompetitionTermMonths%% months following the termination of this Agreement."
-       },
-       "sectionJ": {
-         "title": "Termination",
-         "body": "The Agreement may be terminated as per the conditions outlined, with a notice period of %%TerminationNoticeDays%% days. In case of termination by the Investor, %%MajorityShareholderRightRefusal%%. The Investor agrees to %%ShareSaleRestriction%%."
+         "body": "Non-competition terms last for %%period.nonCompetitionTermMonths%% months following the termination of this Agreement."
        },
        "sectionK": {
          "title": "Amendments",
@@ -788,27 +676,221 @@
        },
        "sectionM": {
          "title": "Dispute Resolution",
-         "body": "Disputes will be submitted to %%DisputeResolutionMethod%% according to the laws of %%GoverningLaw%%."
+         "body": "Disputes will be submitted to %%disputeResolutionMethod%% according to the laws of %%governingLaw%%."
        },
        "sectionN": {
          "title": "Governing Law",
-         "body": "This Agreement is governed by the laws of %%GoverningLaw%%."
+         "body": "This Agreement is governed by the laws of %%governingLaw%%."
        },
        "sectionO": {
          "title": "Entire Agreement",
          "body": "This Agreement supersedes all prior agreements and conditions regarding this subject matter."
        }
-     },
-     "signatures": {
-       "InvestorSignature": {
-         "name": "%%InvestorName%%",
-         "date": "%%InvestorDate%%"
-       },
-       "CompanySignature": {
-         "name": "%%CompanyName%%",
-         "date": "%%CompanyDate%%"
-       }
      }
+
    }
 }
 ------
+
+{
+  "name": "Contract of Employment",
+  "industry": "Employment",
+  "type": "HR",
+  "placeholders": {
+    "Employer": {
+      "name": "",
+      "address": ""
+    },
+    "Employee": {
+      "name": "",
+      "startDate": ""
+    },
+    "EmploymentDetails": {
+      "jobTitle": "",
+      "employmentType": "",
+      "probationPeriod": "",
+      "backgroundCheck": ""
+    },
+    "WorkHours": {
+      "weekdayHours": "",
+      "weekendHours": "",
+      "sleepovers": "",
+      "flexibilityClause": ""
+    },
+    "Salary": {
+      "weekdayRate": "",
+      "weekendRate": "",
+      "sleepoverRate": "",
+      "paymentFrequency": "",
+      "paymentDate": "",
+      "timesheetSubmissionDay": ""
+    },
+    "Holiday": {
+      "holidayYear": "",
+      "entitlement": "",
+      "maximumConsecutiveDays": "",
+      "bankHolidayTreatment": ""
+    },
+    "SickLeave": {
+      "notificationRequirement": "",
+      "sspEligibility": ""
+    },
+    "HealthAndSafety": {
+      "generalPolicy": "",
+      "alcoholAndDrugsPolicy": "",
+      "smokingPolicy": ""
+    },
+    "NoticePeriod": {
+      "probationPeriodNotice": "",
+      "upToTwoYearsNotice": "",
+      "additionalYearsNotice": "",
+      "lieuOfNotice": "",
+      "grossMisconductPolicy": ""
+    },
+    "Confidentiality": {
+      "generalPolicy": "",
+      "dataRemovalOnTermination": ""
+    },
+    "DataProtection": {
+      "personalDataUsage": ""
+    },
+    "FlexibleWorking": {
+      "eligibility": "",
+      "requestProcess": "",
+      "groundsForRefusal": ""
+    },
+    "TradeUnion": {
+      "rights": "",
+      "learningRepresentatives": ""
+    },
+    "FamilyFriendlyMeasures": {
+      "maternityLeaveRights": "",
+      "paternityLeaveRights": "",
+      "parentalLeaveRights": "",
+      "timeOffForDependents": "",
+      "compassionateLeave": ""
+    },
+    "PublicDutiesLeave": {
+      "entitlement": "",
+      "paymentPolicy": ""
+    },
+    "GrievanceProcedure": {
+      "process": ""
+    },
+    "DisciplinaryProcedures": {
+      "minorIssuesPolicy": "",
+      "seriousIssuesPolicy": "",
+      "disciplinaryMeetings": "",
+      "grossMisconductExamples": ""
+    },
+    "PersonalDetails": {
+      "updateRequirement": ""
+    },
+    "ContractChanges": {
+      "notificationMethod": "",
+      "acceptancePeriod": ""
+    }
+  },
+  "description": "This Contract of Employment outlines the terms and conditions between an employer and employee, covering job details, working hours, salary, holidays, and other employment-related terms.",
+  "data": {
+    "name": "Contract of Employment",
+     "sections": {
+      "sectionA": {
+        "title": "Employment Terms",
+        "body": "This contract establishes the terms and conditions of employment between %%Employer.name%% and %%Employee.name%%. Commencing on %%Employee.startDate%%, the employee will primarily work at %%Employer.address%% as a Personal Assistant/Carer."
+      },
+      "sectionB": {
+        "title": "Working Hours",
+        "body": "Normal working hours consist of %%WorkHours.weekdayHours%% weekday hours and %%WorkHours.weekendHours%% weekend hours, along with %%WorkHours.sleepovers%% sleepover(s) if required. The employee is expected to be flexible to accommodate changes in work hours as per the employer's needs."
+      },
+      "sectionC": {
+        "title": "Breaks and Work Limits",
+        "body": "Employees are entitled to a 20-minute break for more than six hours of work per day, not at the start or end of the workday. The maximum weekly work time is 48 hours with a mandatory 11 consecutive hours of rest in any 24-hour period. Night work hours are limited to a maximum of 7 hours."
+      },
+      "sectionD": {
+        "title": "Basis of Employment",
+        "body": "Employment is on a %%EmploymentDetails.employmentType%% basis. If temporary or fixed-term, an end date is specified. The role is subject to a satisfactory Disclosure and Barring Service check and references. Secondary employment must not conflict with this role."
+      },
+      "sectionE": {
+        "title": "Salary",
+        "body": "The hourly wage is £%%Salary.weekdayRate%% for weekdays, £%%Salary.weekendRate%% for weekends, and £%%Salary.sleepoverRate%% for sleepovers. Salary is paid %%Salary.paymentFrequency%% on %%Salary.paymentDate%% via %%PaymentMethod%%. Employer deducts National Insurance and Income Tax."
+      },
+      "sectionF": {
+        "title": "Time Sheets",
+        "body": "Employees must complete and submit time sheets %%Salary.timesheetSubmissionDay%% for salary processing."
+      },
+      "sectionG": {
+        "title": "Holiday Entitlement",
+        "body": "The holiday year runs from %%Holiday.holidayYear%%, with an entitlement of %%Holiday.entitlement%%. Holidays must be agreed upon in advance and cannot be carried over. Unused holidays are not paid out."
+      },
+      "sectionH": {
+        "title": "Duties and Responsibilities",
+        "body": "The employee is required to perform duties as outlined in the job description and any other reasonable tasks as required by the employer."
+      },
+      "sectionI": {
+        "title": "Probationary Period",
+        "body": "A probationary period of %%EmploymentDetails.probationPeriod%% applies, after which employment continuation is reviewed. During this period, either party can terminate employment with one week's notice."
+      },
+      "sectionJ": {
+        "title": "Lateness & Persistent Absence",
+        "body": "Employees more than 10 minutes late must notify the employer 30 minutes before the start of the workday. Attendance issues without health reasons may lead to disciplinary actions."
+      },
+      "sectionK": {
+        "title": "Pensions",
+        "body": "A contributory pension scheme will apply when required, with further details available from the employer."
+      },
+      "sectionL": {
+        "title": "Sick Leave",
+        "body": "In case of sickness, the employee must inform the employer as soon as possible. SSP eligibility requires certain documentation and is payable up to 28 weeks."
+      },
+      "sectionM": {
+        "title": "Health and Safety at Work",
+        "body": "The employer ensures health, safety, and welfare at work. Employees must follow safety rules and avoid actions harmful to themselves or others. Alcohol consumption during work hours is prohibited."
+      },
+      "sectionN": {
+        "title": "Notice Period",
+        "body": "Notice period during probation is one week. After two years of continuous employment, one additional week's notice is required for each year, up to 12 weeks. Employer may provide payment in lieu of notice."
+      },
+      "sectionO": {
+        "title": "Confidentiality",
+        "body": "Information regarding the employer and their family is confidential. Documents or property containing confidential information must not be removed without authorization."
+      },
+      "sectionP": {
+        "title": "Data Protection",
+        "body": "The employer will manage personal information in compliance with the Data Protection Act 1998."
+      },
+      "sectionQ": {
+        "title": "Right to Request Flexible Working",
+        "body": "Employees with a minimum of 26 weeks of service can request flexible working hours, subject to employer's approval and certain conditions."
+      },
+      "sectionR": {
+        "title": "Trade Union",
+        "body": "Employees have the right to join a trade union. Trade Union Learning Representatives are entitled to time off for training."
+      },
+      "sectionS": {
+        "title": "Family Friendly Measures",
+        "body": "Female employees must notify of pregnancy for health and safety compliance. The contract outlines maternity and paternity leave rights and procedures."
+      },
+      "sectionT": {
+        "title": "Leave for Public Duties",
+        "body": "Employees are entitled to time off for public duties, including jury service, with specifics on payment for such leave."
+      },
+      "sectionU": {
+        "title": "Grievance Procedure",
+        "body": "Grievances must be submitted in writing. A meeting will be arranged to discuss the grievance, followed by a decision and appeal process if necessary."
+      },
+      "sectionV": {
+        "title": "Disciplinary Procedures",
+        "body": "The contract outlines procedures for dealing with minor and serious problems, including warnings, disciplinary meetings, and actions for gross misconduct."
+      },
+      "sectionW": {
+        "title": "Personal Details",
+        "body": "Employees must promptly inform the employer of any changes in personal details."
+      },
+      "sectionX": {
+        "title": "Changes in Terms of Employment",
+        "body": "Minor changes will be communicated via general notice. Major changes require individual notice and are considered accepted unless objected to in writing."
+      }
+    }
+  }
+}

@@ -16,17 +16,13 @@ import "./templates.css";
 import {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import TemplatePreviewModal from "./TemplatePreviewModal";
-import {UserProvider} from "../../hooks/UserProvider";
+import UserContext from "../../hooks/UserProvider";
 
 
 
-
-function MailIcon() {
-    return null;
-}
 
 const Templates = () => {
-    const {user } = useContext(UserProvider);
+    const {user } = useContext(UserContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [contracts, setContracts] = useState([]);
     const[filteredContracts, setFilteredContracts] = useState([]);

@@ -30,7 +30,7 @@ const ContractsOverview = () => {
     const [search, setSearch] = useState(false);
     const userId = user?.id;
     console.log("userId: ", userId);
-    const basicContractUrl = `http://localhost:8080/api/contracts/${userId}`;
+    const basicContractUrl = `https://contract-system-5c4e51349d5b.herokuapp.com/api/contracts/${userId}`;
     const fetchContractUrl = `size=${rowsPerPage}&page=${page}`;
     const searchContractUrl = basicContractUrl + `/search?query=${searchTerm}`;
     const [isLoading, setIsLoading] = useState(false);
@@ -124,7 +124,7 @@ const ContractsOverview = () => {
 
     const deleteContract = () =>
     {
-        axios.post(`http://localhost:8080/api/contracts/delete/${selectedContractId}`, {},{
+        axios.post(`https://contract-system-5c4e51349d5b.herokuapp.com/api/contracts/delete/${selectedContractId}`, {},{
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }

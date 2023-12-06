@@ -108,7 +108,7 @@ const ActionSideBar = ({
         if (!businessId) {
             return;
         }
-        axios.get(`http://localhost:8080/api/business/${businessId}/clients/list`, {
+        axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/business/${businessId}/clients/list`, {
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }

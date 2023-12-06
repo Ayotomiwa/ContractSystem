@@ -53,7 +53,7 @@ const ContractEdit = () => {
 
 
     const fetchDefaultTemplate = () => {
-        axios.get(`http://localhost:8080/api/templates/default/${contractId}`)
+        axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/templates/default/${contractId}`)
             .then(res => res.data)
             .then(data => {
                 setContract(data);
@@ -67,7 +67,7 @@ const ContractEdit = () => {
 
 
     const fetchContract = async () => {
-        axios.get(`http://localhost:8080/api/contracts/${contractId}/edit`, {
+        axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/contracts/${contractId}/edit`, {
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }
@@ -125,7 +125,7 @@ const ContractEdit = () => {
             "signedUser": contract?.signedUser,
             "signedRecipient": contract?.signedRecipient,
         }
-        axios.post(`http://localhost:8080/api/contracts/${user.id}`, contractEditData, {
+        axios.post(`https://contract-system-5c4e51349d5b.herokuapp.com/api/contracts/${user.id}`, contractEditData, {
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }
@@ -164,7 +164,7 @@ const ContractEdit = () => {
             "signedRecipient": contract.signedRecipient,
         }
         console.log("ContractEditData: signedUser ", contractEditData.signedUser);
-        axios.post(`http://localhost:8080/api/contracts/${user.id}/send`, contractEditData, {
+        axios.post(`https://contract-system-5c4e51349d5b.herokuapp.com/api/contracts/${user.id}/send`, contractEditData, {
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }
@@ -183,7 +183,7 @@ const ContractEdit = () => {
         if(!userId){
             return;
         }
-        axios.post(`http://localhost:8080/api/inbox/${contractId}/SIGNED`, {},{
+        axios.post(`https://contract-system-5c4e51349d5b.herokuapp.com/api/inbox/${contractId}/SIGNED`, {},{
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }

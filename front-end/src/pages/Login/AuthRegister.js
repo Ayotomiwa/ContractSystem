@@ -94,13 +94,13 @@ const AuthRegister = () => {
                             console.log("Signing UP")
                             await axios({
                                 "method": 'POST',
-                                "url": 'http://localhost:8080/api/users/sign-up',
+                                "url": 'https://contract-system-5c4e51349d5b.herokuapp.com/api/users/sign-up',
                                 "data": values
                             });
 
                             const logInResponse = await axios({
                                 "method": 'POST',
-                                "url": 'http://localhost:8080/api/authenticate',
+                                "url": 'https://contract-system-5c4e51349d5b.herokuapp.com/api/authenticate',
                                 "data": {
                                     username: values.email,
                                     password: values.password

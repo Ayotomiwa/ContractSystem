@@ -21,7 +21,7 @@ const Clients = () => {
     const [search, setSearch] = useState(false);
     // const businessId = "65523e0a91702e609ee9040b";
     const businessId = user?.businessId ? user.businessId : "";
-    const basicClientUrl = `http://localhost:8080/api/business/${businessId}/clients`;
+    const basicClientUrl = `https://contract-system-5c4e51349d5b.herokuapp.com/api/business/${businessId}/clients`;
     const fetchClientsUrl = `size=${rowsPerPage}&page=${page}`;
     const searchClientUrl = basicClientUrl + `/search?query=${searchTerm}`;
     const [isLoading, setIsLoading] = useState(false);

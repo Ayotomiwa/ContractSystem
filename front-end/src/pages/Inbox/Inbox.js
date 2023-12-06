@@ -22,8 +22,8 @@ const Inbox = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [search, setSearch] = useState(false);
     const userId = user?.id;
-    // const basicContractUrl = ` https://contract-system-5c4e51349d5b.herokuapp.com/api/inbox/${userId}`;
-    const basicContractUrl = `http://localhost:8080/api/inbox/${userId}`;
+    const basicContractUrl = ` https://contract-system-5c4e51349d5b.herokuapp.com/api/inbox/${userId}`;
+    // const basicContractUrl = `http://localhost:8080/api/inbox/${userId}`;
     const fetchContractUrl = `size=${rowsPerPage}&page=${page}`;
     const searchContractUrl = basicContractUrl + `/search?query=${searchTerm}`;
     const [isLoading, setIsLoading] = useState(false);

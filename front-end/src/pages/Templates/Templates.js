@@ -16,13 +16,12 @@ import "./templates.css";
 import {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import TemplatePreviewModal from "./TemplatePreviewModal";
-import UserContext from "../../hooks/UserProvider";
+
 
 
 
 
 const Templates = () => {
-    const {user } = useContext(UserContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [contracts, setContracts] = useState([]);
     const[filteredContracts, setFilteredContracts] = useState([]);
@@ -77,11 +76,8 @@ const Templates = () => {
 
     const fetchTemplates= ()=>{
 
-       axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/templates/default`, {
-           headers: {
-               'Authorization': `Bearer ${user.token}`
-           }
-       })
+       axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/templates/default`,
+       )
             .then(res => res.data.content)
            .then(data => {
                setContracts(data);
@@ -94,11 +90,7 @@ const Templates = () => {
 
     const previewContract = () => {
 
-        axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/templates/default/${selectedContractId}`, {
-            headers: {
-                'Authorization': `Bearer ${user.token}`
-            }
-        })
+        axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/templates/default/${selectedContractId}`)
             .then(res => res.data)
             .then(data => {
                 setContractData(data);

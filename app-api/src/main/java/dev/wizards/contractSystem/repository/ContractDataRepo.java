@@ -14,11 +14,11 @@ public interface ContractDataRepo extends MongoRepository<ContractData, String> 
 
 
     @Query("{$and: [" +
-            "{'userUserId': ?1}," +
+            "{'userOwner.id': ?1}," +
             "{$or: [" +
             "{'name': {$regex: ?0, $options: 'i'}}, " +
-            "{'recipientEmail': {$regex: ?0, $options: 'i'}}, " +
-//            "{'userRecipient.email': {$regex: ?0, $options: 'i'}}," +
+            "{'recipient.email': {$regex: ?0, $options: 'i'}}, " +
+            "{'recipient.business.companyName': {$regex: ?0, $options: 'i'}}," +
 //            "{'userRecipient.business.companyName': {$regex: ?0, $options: 'i'}}" +
             "]}" +
             "]}")
@@ -26,11 +26,11 @@ public interface ContractDataRepo extends MongoRepository<ContractData, String> 
 
 
     @Query("{$and: [" +
-            "{'businessUserId': ?1}," +
+            "{'userOwner.business.id': ?1}," +
             "{$or: [" +
-            "{'recipientEmail': {$regex: ?0, $options: 'i'}}, " +
+            "{'recipient.email': {$regex: ?0, $options: 'i'}}, " +
             "{'name': {$regex: ?0, $options: 'i'}}, " +
-//            "{'userRecipient.email': {$regex: ?0, $options: 'i'}}," +
+            "{'recipient.business.companyName': {$regex: ?0, $options: 'i'}}," +
 //            "{'userRecipient.business.companyName': {$regex: ?0, $options: 'i'}}" +
             "]}" +
             "]}")

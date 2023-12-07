@@ -147,11 +147,11 @@ const ContractsOverview = () => {
 
 
     const processContractsData = (data) => {
-        const clientWithAvatars = data.content.map((client) => ({
-            ...client,
-            avatar: generateRandomAvatar()
+        const modified = data.content.map((contract) => ({
+            ...contract,
+            owner: contract.userOwner.id === userId ? "ME" :  contract.userOwner.email,
         }));
-        setContracts(clientWithAvatars);
+        setContracts(modified);
         setTotalContracts(data.totalElements);
     }
 
@@ -282,7 +282,7 @@ const ContractsOverview = () => {
                                 "Name": "name",
                                 "Recipient": "recipient.email",
                                 "Business":"recipient.business.companyName",
-                                "Owner":"userOwner.email",
+                                "Owner":"owner",
                                 "Created Date":"createdAt",
                                 "Last Updated":"modifiedAt",
                                 "Status": "ownerStage"

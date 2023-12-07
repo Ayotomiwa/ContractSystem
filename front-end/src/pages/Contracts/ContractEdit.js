@@ -15,7 +15,7 @@ const ContractEdit = () => {
     const contractId = queryParams.get('contractId');
     const color = decodeURIComponent(queryParams.get('color'));
     const defaultTemplate = queryParams.get('default');
-    const {user} = useContext(UserContext);
+    const {user, storedPath} = useContext(UserContext);
     const userId = user?.id;
     const [contract, setContract] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -203,10 +203,10 @@ const ContractEdit = () => {
 
     const handleCancel = () => {
         if(defaultTemplate === true){
-            window.location.href = "/templates"
+            window.location.href = storedPath? storedPath :  "/templates"
             return;
         }
-        window.location.href = "/contracts"
+        window.location.href = storedPath? storedPath : "/contracts"
     }
 
 
@@ -266,10 +266,10 @@ const ContractEdit = () => {
         <Paper
             sx={{display:"flex",
                 flexDirection:"row",
-                // justifyContent:"space-between",
+                width:"100%",
                 maxWidth:"100%",
-                height:`calc(100dvh - 60px)`,
-                maxHeight:`calc(100dvh - 60px)`,
+                height:"100%",
+                maxHeight:`calc(100dvh - 50px)`,
                 overflowY:"hidden",
                 overflowX:"hidden",
                 margin:"0 auto",

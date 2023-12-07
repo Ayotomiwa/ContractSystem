@@ -120,7 +120,8 @@ const Clients = () => {
     const processClientData = (data) => {
         const clientWithAvatars = data.content.map((client) => ({
             ...client,
-            avatar: generateRandomAvatar()
+            avatar: generateRandomAvatar(),
+            name: client.userRecipient.firstName + " " + client.userRecipient.lastName
         }));
         setClients(clientWithAvatars);
         setTotalClients(data.totalElements);
@@ -239,7 +240,7 @@ const Clients = () => {
                             businessId={businessId}
                             setItemsId={setSelectedClientId}
                             columnHeaders={{
-                                "Name": "userRecipient.firstName",
+                                "Name": "name",
                                 "Email": "userRecipient.email",
                                 "Phone Number": "userRecipient.phoneNumber",
                                 "Business": "userRecipient.business.companyName",

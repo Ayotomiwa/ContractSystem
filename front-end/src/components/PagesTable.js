@@ -4,6 +4,8 @@ import {
     Box,
     Card,
     Checkbox,
+    ListItem,
+    ListItemText,
     Stack,
     Table,
     TableBody,
@@ -85,7 +87,9 @@ export const PagesTable = (props) => {
                                 <TableCell key={index} sx={{
                                     fontSize: "16px",
                                 }}>
+                                    <Typography textAlign="center">
                                     {columnHeader}
+                                    </Typography>
                                 </TableCell>
                             ))
                             }
@@ -119,10 +123,10 @@ export const PagesTable = (props) => {
                                             }}
                                             sx={{
                                                 cursor: 'pointer',
-                                                background: tableType === "inbox" &&  item.status === "UNREAD"? stagesColor[item.status] : "unset",
+                                                background: tableType === "inbox" && item.status === "UNREAD" ? stagesColor[item.status] : "unset",
                                                 "&:hover, &:active, &:focus": {
                                                     // color: "rgb(99, 102, 241, 0.5)",
-                                                    backgroundColor: tableType === "inbox" &&  item.status === "UNREAD"? stagesColor[item.status] : "rgb(99, 102, 241, 0.08)",
+                                                    backgroundColor: tableType === "inbox" && item.status === "UNREAD" ? stagesColor[item.status] : "rgb(99, 102, 241, 0.08)",
                                                 }
                                             }}
                                         >
@@ -147,25 +151,46 @@ export const PagesTable = (props) => {
                                                 />
                                             </TableCell>
                                             {Object.entries(columnHeaders).map(([header, path], index) => (
-                                                <TableCell key={index}>
+                                                <TableCell
+                                                    key={index}>
                                                     {index === 0 ? (
                                                         <Stack alignItems="center" direction="row" spacing={2}>
                                                             {showAvatar && <Avatar src={item.avatar}/>}
                                                             <Typography
-                                                                sx={{background: (header === "Status") && stagesColor[getNestedValue(item, path)]  ? stagesColor[getNestedValue(item, path)] : "unset",
-                                                                    padding: "12px"}}
+                                                                sx={{
+                                                                    background: (header === "Status") && stagesColor[getNestedValue(item, path)] ? stagesColor[getNestedValue(item, path)] : "unset",
+                                                                    padding: "12px"
+                                                                }}
                                                                 variant="subtitle2">
                                                                 {getNestedValue(item, path)}
                                                             </Typography>
                                                         </Stack>
                                                     ) : (
-                                                        <Typography
-                                                            sx={{background: (header === "Status") && stagesColor[item.status]  ? stagesColor[item.status] : "unset",
-                                                             padding: "12px"
-                                                        }}
-                                                            variant="subtitle2">
-                                                            {getNestedValue(item, path)}
-                                                        </Typography>
+                                                        header === "Created Date" || header === "Last Updated" ? (
+                                                            <ListItem>
+                                                                <ListItemText sx={{display:"grid", placeItems:"center"}}
+                                                                    primary={
+                                                                        <Typography variant="subtitle2">
+                                                                            {new Date(getNestedValue(item, path)).toLocaleDateString()}
+                                                                        </Typography>
+                                                                    }
+                                                                    secondary={
+                                                                        <Typography variant="subtitle2">
+                                                                            {new Date(getNestedValue(item, path)).toLocaleTimeString()}
+                                                                        </Typography>
+                                                                    }>
+                                                                </ListItemText>
+                                                            </ListItem>
+                                                        ) : (
+                                                            <Typography
+                                                                sx={{
+                                                                    background: (header === "Status") && stagesColor[item.status] ? stagesColor[item.status] : "unset",
+                                                                    padding: "12px"
+                                                                }}
+                                                                variant="subtitle2">
+                                                                {getNestedValue(item, path)}
+                                                            </Typography>
+                                                        )
                                                     )}
                                                 </TableCell>
                                             ))}

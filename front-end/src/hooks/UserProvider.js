@@ -9,6 +9,7 @@ export const UserProvider = ({ children }) => {
     const [lastUser, setLastUser] = useState(null);
     const [isAuthenticating, setIsAuthenticating] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
+    let storedPath;
 
 
 
@@ -28,6 +29,18 @@ export const UserProvider = ({ children }) => {
     }, []);
 
 
+
+    useState(() => {
+
+
+
+
+    },[storedPath]);
+
+
+
+
+
     const login = (user, path) => {
         sessionStorage.setItem('user', JSON.stringify(user));
         sessionStorage.removeItem('lastUser');
@@ -37,7 +50,7 @@ export const UserProvider = ({ children }) => {
             window.location.pathname = path;
         }
         else{
-            let storedPath = sessionStorage.getItem('pathBeforeLogin');
+            storedPath = sessionStorage.getItem('pathBeforeLogin');
             if(storedPath){
                 const lastUser = sessionStorage.getItem('lastUser');
                 if(storedPath.startsWith('/contract/edit/') && (lastUser.id !== user.id || lastUser.businessId !== user.businessId)){
@@ -61,7 +74,7 @@ export const UserProvider = ({ children }) => {
 
 
     return (
-        <UserContext.Provider value={{ user, login, isAuthenticating, logout }}>
+        <UserContext.Provider value={{ user, login, isAuthenticating, logout, storedPath}}>
             {children}
         </UserContext.Provider>
     );

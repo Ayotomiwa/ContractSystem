@@ -74,8 +74,10 @@ const heroVariants = {
 }
 
 const cardVariants = {
-    hidden: {x: '-100%'},
-    visible: {x: 0, transition: {type: 'spring', stiffness: 120}}
+    // hidden: {x: '-100%'},
+    // visible: {x: 0, transition: {type: 'spring', stiffness: 50}}
+    hidden: {opacity: 0},
+    visible: {opacity: 1, transition: {duration: 0.5}}
 }
 
 const carouselVariants = {
@@ -94,7 +96,7 @@ const LandingPage = () => {
 
     const handleLogin = () => {
         if (user) {
-            window.location.href = "/contracts"
+            window.location.href = "/templates"
         } else {
             window.location.href = "/login"
         }

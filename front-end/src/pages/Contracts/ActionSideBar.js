@@ -341,7 +341,7 @@ const ActionSideBar = ({
                         </Button>
                         ))}
 
-                        {(contractSent || contractSaved || !isUserOwner || contract.recipient) &&  (
+                        {(contractSent || contractSaved || !isUserOwner || (contract.recipient && contract.ownerStage !=="DRAFT")) &&  (
                         <Button variant="contained" onClick={handleCancel} sx={{
                             width: "100%",
                             backgroundColor: "rgb(185,67,102)",

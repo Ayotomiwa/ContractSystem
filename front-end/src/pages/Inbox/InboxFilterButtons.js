@@ -8,7 +8,6 @@ const InboxFilterButtons = ({setSearchTerm, resetList}) =>{
     const stagesColor = {
         "ALL": "#a8e6cf",
         "DECLINED": "#f8c6d1",
-        "REVIEWED": "#d1c4e9",
         "SIGNED": "#88d8b0",
         "ATTENTION": "#ffccaa",
         "UNREAD": "#87ceeb"

@@ -1,6 +1,6 @@
 import {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import {Box, Button, Card, Container, Divider, IconButton, Stack, SvgIcon, Typography} from '@mui/material';
+import {Box, Button, Card, Container, darken, Divider, IconButton, Stack, SvgIcon, Typography} from '@mui/material';
 import {useSelection} from '../../hooks/UseSelection';
 import {SearchBar} from '../../components/SearchBar';
 import axios from "axios";
@@ -11,6 +11,8 @@ import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import {PagesTable} from "../../components/PagesTable";
 import InboxFilterButtons from "./InboxFilterButtons";
 import {CheckIcon, NoSymbolIcon} from "@heroicons/react/20/solid";
+import {alpha} from "@mui/material/styles";
+import {dark} from "@mui/material/styles/createPalette";
 
 
 const Inbox = () => {
@@ -85,14 +87,11 @@ const Inbox = () => {
 
     const stagesColor = {
         "ALL": "#a8e6cf",
-        "DRAFT": "#a7c7e7",
-        "EXPIRED": "#f8c6d1",
-        "REVIEWED": "#d1c4e9",
+        "DECLINED": "#f8c6d1",
         "SIGNED": "#88d8b0",
-        "ATTENTION": "#ffccaa",
-        "SENT": "#87ceeb"
+        "ATTENTION": darken("#ffccaa",0.4),
+        "UNREAD": alpha("#87ceeb", 0.4)
     }
-
 
     const fetchSearchData = () => {
         setIsLoading(true);
@@ -331,6 +330,7 @@ const Inbox = () => {
                                 "Status": "status",
                             }}
                             tableType="inbox"
+                            stagesColor ={stagesColor}
                             handleEdit={handleEdit}
                         />
                     </Stack>

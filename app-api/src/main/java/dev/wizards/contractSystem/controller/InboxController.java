@@ -165,6 +165,10 @@ public class InboxController {
     @PostMapping("/{contract-id}/{status}")
     public ResponseEntity<?> updateInboxStatus(@PathVariable("contract-id") String id, @PathVariable("status") String status){
 
+        if(inboxRepo.existsById(id)){
+            id = inboxRepo.findById(id).get().getContractId();
+        }
+
 
         if(!contractRepo.existsById(id)){
             return ResponseEntity.badRequest().body("Contract does not exist");

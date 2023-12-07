@@ -119,10 +119,10 @@ export const PagesTable = (props) => {
                                             }}
                                             sx={{
                                                 cursor: 'pointer',
-                                                background: tableType === "inbox"? stagesColor[item.status] : "unset",
+                                                background: tableType === "inbox" &&  item.status === "UNREAD"? stagesColor[item.status] : "unset",
                                                 "&:hover, &:active, &:focus": {
                                                     // color: "rgb(99, 102, 241, 0.5)",
-                                                    backgroundColor: "rgb(99, 102, 241, 0.08)"
+                                                    backgroundColor: tableType === "inbox" &&  item.status === "UNREAD"? stagesColor[item.status] : "rgb(99, 102, 241, 0.08)",
                                                 }
                                             }}
                                         >
@@ -151,12 +151,19 @@ export const PagesTable = (props) => {
                                                     {index === 0 ? (
                                                         <Stack alignItems="center" direction="row" spacing={2}>
                                                             {showAvatar && <Avatar src={item.avatar}/>}
-                                                            <Typography variant="subtitle2">
+                                                            <Typography
+                                                                sx={{background: (header === "Status") && stagesColor[getNestedValue(item, path)]  ? stagesColor[getNestedValue(item, path)] : "unset",
+                                                                    padding: "12px"}}
+                                                                variant="subtitle2">
                                                                 {getNestedValue(item, path)}
                                                             </Typography>
                                                         </Stack>
                                                     ) : (
-                                                        <Typography variant="subtitle2">
+                                                        <Typography
+                                                            sx={{background: (header === "Status") && stagesColor[item.status]  ? stagesColor[item.status] : "unset",
+                                                             padding: "12px"
+                                                        }}
+                                                            variant="subtitle2">
                                                             {getNestedValue(item, path)}
                                                         </Typography>
                                                     )}

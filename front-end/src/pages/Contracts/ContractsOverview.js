@@ -1,6 +1,6 @@
 import {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import {Box, Button, Card, Container, Divider, IconButton, Stack, SvgIcon, Typography} from '@mui/material';
+import {Box, Button, Card, Container, darken, Divider, IconButton, Stack, SvgIcon, Typography} from '@mui/material';
 import { useSelection } from '../../hooks/UseSelection';
 import { Layout as DashboardLayout } from '../../components/Layout';
 import { SearchBar } from '../../components/SearchBar';
@@ -16,6 +16,7 @@ import Skeleton from '@mui/material/Skeleton';
 import {ContractsTable} from "./ContractsTable";
 import {PagesTable} from "../../components/PagesTable";
 import ContractFilterButtons from "./ContractFilterButtons";
+import {alpha} from "@mui/material/styles";
 
 
 
@@ -88,19 +89,23 @@ const ContractsOverview = () => {
     }
 
     const stagesColor = {
-        "ALL": "#a8e6cf",
-        "DRAFT": "#a7c7e7",
-        "EXPIRED": "#f8c6d1",
-        "REVIEWED": "#d1c4e9",
-        "SIGNED": "#88d8b0",
-        "ATTENTION": "#ffccaa",
-        "SENT": "#87ceeb"
+        "ALL": darken("#a8e6cf", 0.1),
+        "DRAFT": darken("#a7c7e7", 0.1),
+        "EXPIRED": darken("#f8c6d1", 0.1),
+        "REVIEWED": darken("#d1c4e9", 0.1),
+        "SIGNED": darken("#88d8b0",0.1),
+        "ATTENTION": darken("#ffccaa",0.1),
+        "SENT": darken("#87ceeb", 0.1)
     }
 
 
     const fetchSearchData = () => {
         setIsLoading(true);
-        axios.get(searchContractUrl + "&" + fetchContractUrl)
+        axios.get(searchContractUrl + "&" + fetchContractUrl, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
             .then(response => {
                 processContractsData(response.data);
                 setIsLoading(false);
@@ -280,10 +285,10 @@ const ContractsOverview = () => {
                                 "Owner":"userOwner.email",
                                 "Created Date":"createdAt",
                                 "Last Updated":"modifiedAt",
-                                // "Status":(user?.id === contracts.userOwner?.id || user.businessId === contracts.userOwner?.business?.id)? "ownerStage" : "recipientStage",
                                 "Status": "ownerStage"
                             }}
                             handleEdit={handleEdit}
+                            stagesColor={stagesColor}
                         />
                     </Stack>
                 </Container>

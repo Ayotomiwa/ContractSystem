@@ -86,11 +86,11 @@ const Inbox = () => {
     }
 
     const stagesColor = {
-        "ALL": "#a8e6cf",
-        "DECLINED": "#f8c6d1",
-        "SIGNED": "#88d8b0",
-        "ATTENTION": darken("#ffccaa",0.4),
-        "UNREAD": alpha("#87ceeb", 0.4)
+        "ALL": darken("#a8e6cf", 0.1),
+        "DECLINED": darken("#f8c6d1", 0.1),
+        "SIGNED": darken("#88d8b0",0.1),
+        "ATTENTION": darken("#ffccaa",0.1),
+        "UNREAD": alpha("#87ceeb", 0.1)
     }
 
     const fetchSearchData = () => {

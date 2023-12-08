@@ -21,10 +21,10 @@ public interface InboxRepo extends MongoRepository<Inbox, String> {
 
     @Query("{$and: [" +
             "{'to': ?1}," +
-            "{'status': ?2}," +
             "{$or: [" +
             "{'from': {$regex: ?0, $options: 'i'}}, " +
-//            "{'contractId': {$regex: ?0, $options: 'i'}}" +
+            "{'to': {$regex: ?0, $options: 'i'}}, " +
+            "{'title': {$regex: ?0, $options: 'i'}}, " +
             "]}" +
             "]}")
     Page<Inbox> regexSearchUser(String searchPattern, String userId, PageRequest pageRequest);
@@ -32,10 +32,10 @@ public interface InboxRepo extends MongoRepository<Inbox, String> {
 
     @Query("{$and: [" +
             "{'to': {$in: ?1}}," +
-            "{'status': ?2}," +
             "{$or: [" +
             "{'from': {$regex: ?0, $options: 'i'}}, " +
-//            "{'contractId': {$regex: ?0, $options: 'i'}}" +
+            "{'to': {$regex: ?0, $options: 'i'}}, " +
+            "{'title': {$regex: ?0, $options: 'i'}}, " +
             "]}" +
             "]}")
     Page<Inbox> regexSearchBusiness(String searchPattern, List<String> emails, PageRequest pageRequest);

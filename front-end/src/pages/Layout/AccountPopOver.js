@@ -12,13 +12,17 @@ export const AccountPopOver = (props) => {
     const navigate = useNavigate();
 
 
-    const handleSignOut = () => {
-        logout();
-        window.location.href = '/'
+    const handleSignOut = async () => {
+        console.log("AccountPopOver.js: handleSignOut");
+        await logout();
+        localStorage.removeItem("pathBeforeLogin"); // Clear the path from local storage
+        // navigate('/');
+        window.location.replace("/");
+
     };
 
     const handleSignIn = () => {
-        window.location.href = '/login'
+        window.location.pathname = '/login'
     }
 
     return (

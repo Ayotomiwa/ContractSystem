@@ -268,8 +268,8 @@ const ContractEdit = () => {
                 flexDirection:"row",
                 width:"100%",
                 maxWidth:"100%",
-                height:"100%",
-                maxHeight:`calc(100dvh - 50px)`,
+                height:`calc(100dvh - 54px)`,
+                maxHeight:`calc(100dvh - 54px)`,
                 overflowY:"hidden",
                 overflowX:"hidden",
                 margin:"0 auto",
@@ -303,7 +303,7 @@ const ContractEdit = () => {
             paddingTop:"50px",
             paddingBottom:"50px",
             overflowY:"auto",
-            maxHeight:"80vh",
+            maxHeight:`calc(100dvh - 50px)`,
             width:"60%",
            }}>
             <Box width="90%">

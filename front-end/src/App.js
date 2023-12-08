@@ -24,11 +24,16 @@ function App() {
 
 
     useEffect(() => {
-      // console.log("App.js: ", user + " " + location.pathname);
-      const publicPaths = ['/', '/login', '/register'];
+      const publicPaths = ['/', '/login', '/register', '/templates'];
+      console.log("App.js: path ", location.pathname);
+
       if (!isAuthenticating && !user && !publicPaths.includes(location.pathname)) {
-        sessionStorage.setItem('pathBeforeLogin', location.pathname);
-        window.location.pathname = '/login';
+          localStorage.setItem('pathBeforeLogin', location.pathname);
+          console.log("App.js private path not logged in: pathBeforeLogin ", localStorage.getItem('pathBeforeLogin'))
+          window.location.pathname = '/login';
+      }
+      else{
+            console.log("App.js: path else 2 ", location.pathname);
       }
 
     }, [user, location, navigate, isAuthenticating]);
@@ -37,6 +42,7 @@ function App() {
   return (
       <Layout>
       <Routes>
+          <Route path="/" element={<LandingPage/>}/>
         <Route path="/login" element={<AuthLogin/>}/>
         <Route path="/register" element={<AuthRegister/>}/>
         <Route path="/" element={<LandingPage/>}/>

@@ -8,6 +8,7 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [lastUser, setLastUser] = useState(null);
     const [isAuthenticating, setIsAuthenticating] = useState(true);
+    const [timedOut, setTimedOut] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     let storedPath;
 
@@ -16,10 +17,15 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         setIsAuthenticating(true);
         const user = localStorage.getItem('user');
+        const lastUser = localStorage.getItem('lastUser');
+        if(lastUser){
+            setLastUser(JSON.parse(lastUser));
+        }
         if (user) {
             const decodedToken = jwtDecode(JSON.parse(user).token);
             if (decodedToken.exp * 1000 < Date.now()) {
                 localStorage.removeItem('user');
+                setTimedOut(true);
             } else {
                 setUser(JSON.parse(user));
             }
@@ -31,34 +37,40 @@ export const UserProvider = ({ children }) => {
 
 
     const login = (user, path) => {
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.removeItem('lastUser');
+
         setUser(user);
+        localStorage.setItem('user', JSON.stringify(user));
 
         if(path){
             window.location.pathname = path;
         }
         else{
             storedPath = localStorage.getItem('pathBeforeLogin');
+            console.log("UserProvider.js: storedPath: ", storedPath , timedOut);
             if(storedPath){
-                const lastUser = localStorage.getItem('lastUser');
-                if(storedPath.startsWith('/contract/edit/') && (lastUser.id !== user.id || lastUser.businessId !== user.businessId)){
+                if(storedPath.startsWith('/contract/edit/') && (lastUser.id !== user.id || lastUser.businessId !== user.businessId) && timedOut){
                     storedPath = '/';
+                    setTimedOut(false);
                 }
                 window.location.pathname = storedPath;
             }
             else{
-                window.location.pathname = '/contracts';
+                window.location.pathname = '/';
             }
         }
+        setLastUser(user);
     };
 
     const logout = () => {
-        const lastUser = localStorage.getItem('lastUser');
-        localStorage.setItem('lastUser', JSON.stringify(lastUser));
+        // setIsAuthenticating(true)
+        localStorage.removeItem('lastUser');
         localStorage.removeItem('user');
         localStorage.removeItem('pathBeforeLogin');
-        setUser(null);
+            return new Promise((resolve) => {
+                setTimedOut(false);
+                setUser(null);
+                resolve();
+            });
     };
 
 

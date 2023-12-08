@@ -156,8 +156,6 @@ const Inbox = () => {
 
 
     const handleStatus = (status) => {
-
-        // axios.post(`http://localhost:8080/api/inbox/${selectedContractId}/${status}`,{}, {
         axios.post(`https://contract-system-5c4e51349d5b.herokuapp.com/api/inbox/${selectedContractId}/${status}`, {}, {
             headers: {
                 'Authorization': `Bearer ${user.token}`

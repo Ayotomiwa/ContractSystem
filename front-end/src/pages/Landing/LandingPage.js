@@ -94,13 +94,13 @@ const LandingPage = () => {
         triggerOnce: true
     });
 
-    const handleLogin = () => {
-        if (user) {
-            window.location.href = "/templates"
-        } else {
-            window.location.href = "/login"
-        }
-    }
+    // const handleLogin = () => {
+    //     if (user) {
+    //         window.location.href = "/templates"
+    //     } else {
+    //         window.location.href = "/login"
+    //     }
+    // }
 
 
     return (
@@ -115,7 +115,7 @@ const LandingPage = () => {
                                 }}>Simplify Your Contract Management</Typography>
                     <Typography variant="h5">All your contracts, streamlined and secure.</Typography>
                     <Button variant="contained"
-                            onClick={() => handleLogin()}
+                            onClick={() => window.location.href = "/templates"}
                             style={styles.ctaButton}>
                         <Typography>Explore Features </Typography></Button>
                 </Box>

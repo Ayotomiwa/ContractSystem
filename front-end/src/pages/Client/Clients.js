@@ -100,7 +100,6 @@ const Clients = () => {
     }
 
     const deleteClient = () => {
-        // axios.get(`http://localhost:8080/api/business/delete/${selectedClientId}`, {
             axios.get(`https://contract-system-5c4e51349d5b.herokuapp.com/api/business/delete/${selectedClientId}`, {
             headers: {
                 'Authorization': `Bearer ${user.token}`

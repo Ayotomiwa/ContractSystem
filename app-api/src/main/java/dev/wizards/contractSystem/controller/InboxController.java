@@ -123,22 +123,24 @@ public class InboxController {
         try {
            INBOX_STATUS status = INBOX_STATUS.valueOf(searchPattern.toUpperCase());
             if (user.getBusiness() == null) {
-                contracts = inboxRepo.findByUserIdAndMatchingStatus(
+                contracts = inboxRepo.findByStatusAndTo(
                         PageRequest.of(page.orElse(0),
                                 size.orElse(30L).intValue(),
                                 Sort.Direction.valueOf(sort.orElse("DESC")),
                                 sortBy.orElse("received")),
-                        userId, searchPattern.toUpperCase());
+                        status, user.getEmail());
             } else {
-
                 String businessId = user.getBusiness().getId();
+                List<User> users = userRepo.findAllByBusinessId(businessId);
+                List<String> emails = users.stream().map(User::getEmail).toList();
 
-                contracts = inboxRepo.findByBusinessIdAndMatchingStatus(
+                contracts = inboxRepo.findAllByToInAndStatus(
                         PageRequest.of(page.orElse(0),
                                 size.orElse(30L).intValue(),
                                 Sort.Direction.valueOf(sort.orElse("DESC")),
                                 sortBy.orElse("received")),
-                        businessId, searchPattern.toUpperCase());
+                        emails, status);
+
             }
         } catch (IllegalArgumentException e) {
             if (user.getBusiness() == null) {
@@ -147,9 +149,6 @@ public class InboxController {
             } else {
                 String businessId = user.getBusiness().getId();
                 List<User> users = userRepo.findAllByBusinessId(businessId);
-                if(users.isEmpty()){
-                    return ResponseEntity.badRequest().body("Your business does not have any users");
-                }
 
                 List<String> emails = users.stream().map(User::getEmail).toList();
 

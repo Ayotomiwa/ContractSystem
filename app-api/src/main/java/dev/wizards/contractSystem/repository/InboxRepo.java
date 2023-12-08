@@ -1,5 +1,6 @@
 package dev.wizards.contractSystem.repository;
 
+import dev.wizards.contractSystem.model.Enums.INBOX_STATUS;
 import dev.wizards.contractSystem.model.Inbox;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,25 +16,8 @@ public interface InboxRepo extends MongoRepository<Inbox, String> {
 
     Page<Inbox> findAllByToIn(PageRequest of, List<String> emails);
 
-    @Query("{" +
-            "$or: [" +
-            "{" +
-            "'recipient.business.id': ?0," +
-            "'recipientStage': ?1" +
-            "}," +
-            "]" +
-            "}")
-    Page<Inbox> findByBusinessIdAndMatchingStatus(PageRequest pageRequest, String businessId, String status);
 
-    @Query("{" +
-            "$or: [" +
-            "{" +
-            "'recipient.id': ?0," +
-            "'recipientStage': ?1" +
-            "}," +
-            "]" +
-            "}")
-    Page<Inbox> findByUserIdAndMatchingStatus(PageRequest pageRequest, String userId, String status);
+    Page<Inbox> findAllByToInAndStatus(PageRequest pageRequest, List<String> emails, INBOX_STATUS status);
 
     @Query("{$and: [" +
             "{'to': ?1}," +
@@ -57,4 +41,5 @@ public interface InboxRepo extends MongoRepository<Inbox, String> {
     Page<Inbox> regexSearchBusiness(String searchPattern, List<String> emails, PageRequest pageRequest);
 
     Inbox findByContractId(String contractId);
+    Page<Inbox> findByStatusAndTo(PageRequest of, INBOX_STATUS status, String email);
 }

@@ -7,7 +7,7 @@ import DocumentPlusIcon from '@heroicons/react/24/solid/DocumentPlusIcon';
 import {
     AppBar,
     Avatar,
-    Badge,
+    Badge, Box,
     Button,
     IconButton,
     Stack,
@@ -50,16 +50,20 @@ export const TopNav = (props) => {
     return (
         <>
             <AppBar
-                component="nav"
+                // component="nav"
                 sx={{
                     overflowX: "hidden",
                     backdropFilter: 'blur(1px)',
                     backgroundColor: 'rgba(255, 255, 255, 0.7)',
                     // border:"1px solid black",
-                    top: 0,
+                    margin: 0,
+                    padding:0,
                     position: 'sticky',
                     left: `${sideBarWidth}px`,
+                    width: `calc(100% - ${sideBarWidth}px)`,
                     maxWidth: `calc(100% - ${sideBarWidth}px)`,
+                    overflowY:"hidden",
+                    // height: TOP_NAV_HEIGHT,
                     overFlowX: "hidden",
                     zIndex: 1000,
                 }}
@@ -219,15 +223,16 @@ export const TopNav = (props) => {
                             }}
                             src={"/assets/avatars/avatar-carson-darrin.png"}
                         />
+
                     </Stack>
                 </Stack>
             </AppBar>
-            <AccountPopOver
-                anchorEl={accountPopover.anchorRef.current}
-                open={accountPopover.open}
-                onClose={accountPopover.handleClose}
-            />
-        </>
+    <AccountPopOver
+        anchorEl={accountPopover.anchorRef.current}
+        open={accountPopover.open}
+        onClose={accountPopover.handleClose}
+    />
+    </>
     );
 };
 

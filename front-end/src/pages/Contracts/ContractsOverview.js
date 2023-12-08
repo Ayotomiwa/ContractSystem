@@ -89,12 +89,12 @@ const ContractsOverview = () => {
 
     const stagesColor = {
         "ALL": darken("#a8e6cf", 0.1),
-        "DRAFT": darken("#a7c7e7", 0.1),
+        "DRAFT": darken("#d1c4e9", 0.1),
         "EXPIRED": darken("#f8c6d1", 0.1),
-        "REVIEWED": darken("#d1c4e9", 0.1),
         "SIGNED": darken("#88d8b0",0.1),
         "ATTENTION": darken("#ffccaa",0.1),
-        "SENT": darken("#87ceeb", 0.1)
+        "SENT": darken("#87ceeb", 0.1),
+        "PENDING": darken("#a7c7e7", 0.1),
     }
 
 
@@ -149,6 +149,7 @@ const ContractsOverview = () => {
         const modified = data.content.map((contract) => ({
             ...contract,
             owner: contract.userOwner.id === userId ? "ME" :  contract.userOwner.email,
+            status: contract.ownerStage,
         }));
         setContracts(modified);
         setTotalContracts(data.totalElements);
@@ -284,7 +285,7 @@ const ContractsOverview = () => {
                                 "Owner":"owner",
                                 "Created Date":"createdAt",
                                 "Last Updated":"modifiedAt",
-                                "Status": "ownerStage"
+                                "Status": "status"
                             }}
                             handleEdit={handleEdit}
                             stagesColor={stagesColor}

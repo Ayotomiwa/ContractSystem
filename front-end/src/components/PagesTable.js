@@ -167,7 +167,7 @@ export const PagesTable = (props) => {
                                                             </Typography>
                                                         </Stack>
                                                     ) : (
-                                                        header === "Created Date" || header === "Last Updated" ? (
+                                                        header === "Created Date" || header === "Last Updated" || header === "Sent" || header === "Received" ? (
                                                             <ListItem>
                                                                 <ListItemText sx={{display:"grid", placeItems:"center"}}
                                                                     primary={

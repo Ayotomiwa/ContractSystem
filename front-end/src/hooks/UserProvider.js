@@ -37,7 +37,7 @@ export const UserProvider = ({ children }) => {
 
 
     const login = (user, path) => {
-
+        console.log("UserProvider.js: login: user: ", user);
         setUser(user);
         localStorage.setItem('user', JSON.stringify(user));
 

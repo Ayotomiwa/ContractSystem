@@ -15,7 +15,7 @@ import { createTheme } from '@mui/material/styles';
 //   backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.25) 100%), linear-gradient(225deg, #e1e1e1 0%, #f6f6f6 100%)',
 //   backgroundSize: 'cover',
 // });
-
+const TOP_NAV_HEIGHT = 64;
 export const Layout = (props) => {
   const { children } = props;
   const theme = createTheme({
@@ -67,11 +67,7 @@ export const Layout = (props) => {
       />
           )}
       <Box sx={{
-        display: 'flex',
-        flex: '1 1 auto',
-        flexDirection: 'column',
         marginLeft: openSideNav && !isSmallScreen ? "230px" : "0px",
-
       }}>
           {children}
       </Box>

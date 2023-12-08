@@ -21,6 +21,7 @@ const InboxFilterButtons = ({setSearchTerm, resetList}) =>{
               resetList(true);
               return;
        }
+        console.log(filter);
         setSearchTerm(filter);
          resetList(true);
     }
@@ -35,7 +36,10 @@ const InboxFilterButtons = ({setSearchTerm, resetList}) =>{
                     <ListItemButton
                         onClick={() => handleFilter(text)}
                         sx={{backdropFilter: 'blur(25px)',
-                            backgroundColor: stagesColor[text],
+                            backgroundColor: "white",
+                            "&:hover, &:focus, &:active": {
+                                backgroundColor: stagesColor[text],
+                            },
                             border: "1px solid black",
                             borderRadius: "25px",
                             textAlign:"center",

@@ -54,7 +54,10 @@ const ContractFilterButtons = ({setSearchTerm, resetList}) =>{
                     <ListItemButton
                         onClick={() => handleFilter(text)}
                         sx={{backdropFilter: 'blur(25px)',
-                            backgroundColor: stagesColor[text],
+                            backgroundColor: "white",
+                            "&:hover, &:focus, &:active": {
+                                backgroundColor: stagesColor[text],
+                            },
                             border: "1px solid black",
                             borderRadius: "25px",
                             textAlign:"center",

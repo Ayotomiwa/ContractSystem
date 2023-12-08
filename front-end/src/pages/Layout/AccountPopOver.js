@@ -27,18 +27,30 @@ export const AccountPopOver = (props) => {
 
     return (
         <Popover
+            sx={{
+                maxWidth: '70%',
+                maxHeight: '70%'
+            }}
+            marginThreshold={30}
             anchorEl={anchorEl}
             anchorOrigin={{
-                horizontal: 'right',
                 vertical: 'bottom',
+                horizontal: 'left',
             }}
+            // transformOrigin={{
+            //     vertical: 'bottom',
+            //     horizontal: 'right',
+            // }}
             onClose={onClose}
             open={open}
-            PaperProps={{
+            slotProps={{
+                paper:{
                 sx: {
-                    width: user ? 250 : 150
+                    width: user ?  180 : 150,
+                    position: 'relative',
+                    border:"2px red solid"
                 }
-            }}
+            }}}
         >
             <Box
                 sx={{

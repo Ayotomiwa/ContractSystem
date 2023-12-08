@@ -47,6 +47,7 @@ const Inbox = () => {
 
 
     useEffect(() => {
+        console.log("useEffect in Inbox.js");
         if (!user) {
             return;
         }
@@ -57,6 +58,7 @@ const Inbox = () => {
             if (page === 0) {
                 setContracts([]);
             }
+            console.log("useEffect in Inbox.js, searchdata function called");
             fetchSearchData();
         }
     }, [user, page, rowsPerPage, searchTerm, search]);
@@ -64,6 +66,7 @@ const Inbox = () => {
 
     const fetchContracts = () => {
         // if (user) {
+        console.log("fetching contracts + ", searchTerm);
         // axios.get(`http://localhost:8080/api/clients/business/${user.business.id}`)
         axios.get(basicContractUrl + "?" + fetchContractUrl, {
                 headers: {
@@ -101,12 +104,9 @@ const Inbox = () => {
                 }
             }
         ).then(response => {
+            console.log("search data: ", response.data);
             processContractsData(response.data);
             setIsLoading(false);
-            // const clientWithAvatars = response.data.content.map((client) => ({
-            //     ...client,
-            //         avatar: generateRandomAvatar()
-            // }));
 
         })
             .catch(error => {
@@ -323,8 +323,8 @@ const Inbox = () => {
                                 "From": "from",
                                 "To": "to",
                                 "Title": "title",
-                                "sent": "sent",
-                                "received": "received",
+                                "Sent": "sent",
+                                "Received": "received",
                                 "Status": "status",
                             }}
                             tableType="inbox"

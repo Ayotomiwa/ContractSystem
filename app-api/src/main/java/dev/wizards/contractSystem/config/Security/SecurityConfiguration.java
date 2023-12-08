@@ -65,7 +65,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/api/clients/**").authenticated()
                                 .requestMatchers("/api/inbox/**").authenticated()
                                 .requestMatchers(("api/products-services/**")).authenticated()
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

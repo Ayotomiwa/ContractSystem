@@ -172,11 +172,11 @@ const Inbox = () => {
     }
 
     const processContractsData = (data) => {
-        const clientWithAvatars = data.content.map((client) => ({
-            ...client,
+        const modifiedInbox = data.content.map((inbox) => ({
+            ...inbox,
             avatar: generateRandomAvatar()
         }));
-        setContracts(clientWithAvatars);
+        setContracts(modifiedInbox);
         setTotalContracts(data.totalElements);
     }
 
@@ -330,6 +330,7 @@ const Inbox = () => {
                             tableType="inbox"
                             stagesColor ={stagesColor}
                             handleEdit={handleEdit}
+                            showAvatar={true}
                         />
                     </Stack>
                 </Container>

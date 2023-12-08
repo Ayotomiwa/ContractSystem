@@ -13,7 +13,6 @@ export const AccountPopOver = (props) => {
 
 
     const handleSignOut = async () => {
-        console.log("AccountPopOver.js: handleSignOut");
         await logout();
         localStorage.removeItem("pathBeforeLogin"); // Clear the path from local storage
         // navigate('/');
@@ -37,10 +36,6 @@ export const AccountPopOver = (props) => {
                 vertical: 'bottom',
                 horizontal: 'left',
             }}
-            // transformOrigin={{
-            //     vertical: 'bottom',
-            //     horizontal: 'right',
-            // }}
             onClose={onClose}
             open={open}
             slotProps={{
@@ -48,7 +43,6 @@ export const AccountPopOver = (props) => {
                 sx: {
                     width: user ?  180 : 150,
                     position: 'relative',
-                    border:"2px red solid"
                 }
             }}}
         >

@@ -7,14 +7,6 @@ import { createTheme } from '@mui/material/styles';
 
 
 
-// const LayoutContainer = styled('div')({
-//   display: 'flex',
-//   flex: '1 1 auto',
-//   flexDirection: 'column',
-//   width: '100%',
-//   backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.25) 100%), linear-gradient(225deg, #e1e1e1 0%, #f6f6f6 100%)',
-//   backgroundSize: 'cover',
-// });
 const TOP_NAV_HEIGHT = 64;
 export const Layout = (props) => {
   const { children } = props;
@@ -27,7 +19,7 @@ export const Layout = (props) => {
   const [showSideBar, setShowSideBar] = useState(false);
   const[showTopNav, setShowTopNav] = useState(false);
   const [openSideNav, setOpenSideNav] = useState(false);
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg'));
 
 
   const noneTopNavRoutes = ["/login", "/register", "/forgot-password", "/reset-password"];
@@ -42,13 +34,15 @@ export const Layout = (props) => {
     const sideLayoutCanBeShown = !isNonSidebarRoute();
     if(sideLayoutCanBeShown) {
       setShowSideBar(true);
-      setOpenSideNav(true);
+      if (!isSmallScreen) {
+        setOpenSideNav(true);
+      }
     }
     if(!noneTopNavRoutes.includes(currentPath)) {
       // setOpenNav(true);
       setShowTopNav(true);
     }
-  }, [currentPath]);
+  }, [currentPath, isSmallScreen, isNonSidebarRoute]);
 
 
 

@@ -23,7 +23,9 @@ export const UserProvider = ({ children }) => {
         }
         if (user) {
             const decodedToken = jwtDecode(JSON.parse(user).token);
-            if (decodedToken.exp * 1000 < Date.now()) {
+            const tokenLifespan = decodedToken.exp - decodedToken.iat;
+            const halfExpiryTime = decodedToken.iat + (tokenLifespan / 2);
+            if (halfExpiryTime * 1000 < Date.now()) {
                 localStorage.removeItem('user');
                 setTimedOut(true);
             } else {
@@ -37,7 +39,6 @@ export const UserProvider = ({ children }) => {
 
 
     const login = (user, path) => {
-        console.log("UserProvider.js: login: user: ", user);
         setUser(user);
         localStorage.setItem('user', JSON.stringify(user));
 
@@ -46,7 +47,6 @@ export const UserProvider = ({ children }) => {
         }
         else{
             storedPath = localStorage.getItem('pathBeforeLogin');
-            console.log("UserProvider.js: storedPath: ", storedPath , timedOut);
             if(storedPath){
                 if(storedPath.startsWith('/contract/edit/') && (lastUser.id !== user.id || lastUser.businessId !== user.businessId) && timedOut){
                     storedPath = '/';
@@ -75,7 +75,7 @@ export const UserProvider = ({ children }) => {
 
 
     return (
-        <UserContext.Provider value={{ user, login, isAuthenticating, logout, storedPath}}>
+        <UserContext.Provider value={{ user, login, isAuthenticating, logout, timedOut}}>
             {children}
         </UserContext.Provider>
     );

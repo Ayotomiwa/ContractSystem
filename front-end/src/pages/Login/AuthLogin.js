@@ -47,13 +47,9 @@ const AuthLogin = () => {
                                     password: values.password
                                 }
                             });
-                            const path = '/contracts'
                             login(logInResponse.data)
-                            console.log("Signing IN")
                             setStatus({success: true})
-                            console.log("Status is successful")
 
-                            // navigate('/user', { replace: true })
                         } catch (err) {
                             console.error(err);
                             if (err.response) {

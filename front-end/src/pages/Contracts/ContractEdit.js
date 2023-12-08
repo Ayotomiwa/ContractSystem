@@ -1,4 +1,4 @@
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import ContractPaper from "../../components/ContractPaper";
@@ -11,11 +11,12 @@ import UserContext from "../../hooks/UserProvider";
 
 const ContractEdit = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
     const contractId = queryParams.get('contractId');
     const color = decodeURIComponent(queryParams.get('color'));
     const defaultTemplate = queryParams.get('default');
-    const {user, storedPath} = useContext(UserContext);
+    const {user} = useContext(UserContext);
     const userId = user?.id;
     const [contract, setContract] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -202,11 +203,7 @@ const ContractEdit = () => {
 
 
     const handleCancel = () => {
-        if(defaultTemplate === true){
-            window.location.href = storedPath? storedPath :  "/templates"
-            return;
-        }
-        window.location.href = storedPath? storedPath : "/contracts"
+        navigate(-1);
     }
 
 
@@ -273,6 +270,7 @@ const ContractEdit = () => {
                 overflowY:"hidden",
                 overflowX:"hidden",
                 margin:"0 auto",
+                minHeight:"100%",
                 // border:"2px solid blue"
                  }}
 

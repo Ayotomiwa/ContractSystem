@@ -16,27 +16,23 @@ import Inbox from "./pages/Inbox/Inbox";
 import ContractEdit from "./pages/Contracts/ContractEdit";
 
 
+
 function App() {
     const location = useLocation();
-    const { user, isAuthenticating } = useContext(UserContext);
+    const { user, isAuthenticating, timedOut } = useContext(UserContext);
     const navigate = useNavigate();
 
 
 
     useEffect(() => {
       const publicPaths = ['/', '/login', '/register', '/templates'];
-      console.log("App.js: path ", location.pathname);
 
       if (!isAuthenticating && !user && !publicPaths.includes(location.pathname)) {
           localStorage.setItem('pathBeforeLogin', location.pathname);
-          console.log("App.js private path not logged in: pathBeforeLogin ", localStorage.getItem('pathBeforeLogin'))
+          // console.log("App.js private path not logged in: pathBeforeLogin ", localStorage.getItem('pathBeforeLogin'))
           window.location.pathname = '/login';
       }
-      else{
-            console.log("App.js: path else 2 ", location.pathname);
-      }
-
-    }, [user, location, navigate, isAuthenticating]);
+    }, [user, location, navigate, isAuthenticating, timedOut]);
 
 
   return (

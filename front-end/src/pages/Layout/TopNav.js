@@ -30,8 +30,8 @@ const TOP_NAV_HEIGHT = 54;
 export const TopNav = (props) => {
     const {onNavOpen, openNav, showSideBar} = props;
     const theme = useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-    const sideBarWidth = openNav && !isSmallScreen ? SIDE_NAV_WIDTH : 0;
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg'));
+    const sideBarWidth = openNav ? SIDE_NAV_WIDTH : 0;
     const accountPopover = usePopover();
     const {user} = useContext(UserContext);
     const isBusiness = !!user?.businessId;
@@ -163,11 +163,11 @@ export const TopNav = (props) => {
                                             )}
                                         </>
                                     </Tooltip>
-                                    <Tooltip title="View Dashboard">
+                                    <Tooltip title="View your contracts">
                                         {!isSmallScreen ? (
                                             <Button
                                                 variant="text"
-                                                onClick={() => handleNavClick("/contracts")}
+                                                onClick={() => handleNavClick("/inbox")}
                                                 size="large"
                                                 sx={{
                                                     color: "rgb(59, 61, 145)",
@@ -185,7 +185,7 @@ export const TopNav = (props) => {
                                                 Dashboard
                                             </Button>
                                         ) : (
-                                            <IconButton onClick={() => handleNavClick("/contracts")}>
+                                            <IconButton onClick={() => handleNavClick("/inbox")}>
                                                 <SvgIcon fontSize="large">
                                                     <ChartBarIcon color="rgb(185,67,102)"/>
                                                 </SvgIcon>

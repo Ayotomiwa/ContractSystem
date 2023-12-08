@@ -101,6 +101,7 @@ export const SideNav = (props) => {
                             border: "1px solid black",
                             boxShadow: 20,
                             color: "white",
+                            overflow: "hidden",
                             width: 200
                         }
                     }}
@@ -120,6 +121,7 @@ export const SideNav = (props) => {
                         backgroundColor: "rgb(59, 61, 145)",
                         // backgroundColor: "#e75480",
                         color: "white",
+                        overflow: "hidden",
                         width: 200
                     }
                 }}

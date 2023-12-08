@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface ClientRepo extends MongoRepository<Client, String> {
@@ -34,5 +35,7 @@ public interface ClientRepo extends MongoRepository<Client, String> {
     boolean existsByUserRecipientEmailAndBusinessUserId(String email, String parameter);
 
     List<Client> findAllByBusinessUserId(String parameter);
+
+    Optional<Client> findByUserRecipientEmailAndBusinessUserId(String email, String parameter);
 }
 

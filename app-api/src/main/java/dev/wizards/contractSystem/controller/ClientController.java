@@ -53,6 +53,7 @@ public class ClientController {
             if(clientRepo.existsByUserRecipientEmailAndBusinessUserId(user.getEmail(), parameter) && client.getId() == null){
                 return ResponseEntity.badRequest().body("Client already exists");
             }
+            clientRepo.findByUserRecipientEmailAndBusinessUserId(user.getEmail(), parameter).ifPresent(existingClient -> client.setCreatedDate(existingClient.getCreatedDate()));
             client.setLastUpdatedDate(LocalDateTime.now());
         }
 

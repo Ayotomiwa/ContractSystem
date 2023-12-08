@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
@@ -27,7 +28,7 @@ public class ClientController {
     private final BusinessRepo businessRepo;
 
     @PostMapping("{business-id}/clients")
-    public ResponseEntity<Client> addClient(@RequestBody Client client, @PathVariable("business-id") String parameter){
+    public ResponseEntity<?> addClient(@RequestBody Client client, @PathVariable("business-id") String parameter){
 
         User user = client.getUserRecipient();
 
@@ -45,11 +46,14 @@ public class ClientController {
         client.setBusinessRecipient(businessRecipient);
 
         if(!clientRepo.existsByUserRecipientEmailAndBusinessUserId(user.getEmail(), parameter)){
-            client.setCreatedDate(LocalDate.now());
+            client.setCreatedDate(LocalDateTime.now());
             client.setLastUpdatedDate(client.getCreatedDate());
         }
         else{
-            client.setLastUpdatedDate(LocalDate.now());
+            if(clientRepo.existsByUserRecipientEmailAndBusinessUserId(user.getEmail(), parameter) && client.getId() == null){
+                return ResponseEntity.badRequest().body("Client already exists");
+            }
+            client.setLastUpdatedDate(LocalDateTime.now());
         }
 
         clientRepo.save(client);

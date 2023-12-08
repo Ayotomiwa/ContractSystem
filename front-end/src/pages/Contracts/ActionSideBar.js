@@ -318,7 +318,7 @@ const ActionSideBar = ({
                                     backgroundColor: darken(color, 0.55)
                                 }
                             }}>
-                                Save & Send11
+                                Save & Send
                             </Button>
                         </Box>
                     </Box>

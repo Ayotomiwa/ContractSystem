@@ -71,10 +71,7 @@ const ProfileDetails = () => {
 
     const handleSubmit = () => {
         console.log(values);
-        axios.post(
-            // `http://localhost:8080/api/business/${businessId}/clients`, {
-            `https://contract-system-5c4e51349d5b.herokuapp.com/api/business/${businessId}/clients`, {
-                data: {
+        axios.post(`https://contract-system-5c4e51349d5b.herokuapp.com/api/business/${businessId}/clients`, {
                     id: clientId,
                     userRecipient: {
                         firstName: values.firstName,
@@ -88,12 +85,13 @@ const ProfileDetails = () => {
                     businessUser: {
                         id: businessId
                     }
-                },
+            },{
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
             }).then((response) => {
             if (response.status === 200) {
+                console.log("Client Saved");
                 setSaved(true);
             }
         }).catch((error) => {

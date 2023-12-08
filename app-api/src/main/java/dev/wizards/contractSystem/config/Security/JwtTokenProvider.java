@@ -15,16 +15,13 @@ import java.util.Date;
 public class JwtTokenProvider {
 
 
-
-        @Value("600000000000")
-        private long jwtExpiration;
-
-        private final SecretKey jwtSecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    private final SecretKey jwtSecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
 
         public String generateToken(Authentication authentication) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             Date now = new Date();
+            long jwtExpiration = 86400000;
             Date expiryDate = new Date(now.getTime() + jwtExpiration);
 
             System.out.println("jwtSecret: " + jwtSecretKey);

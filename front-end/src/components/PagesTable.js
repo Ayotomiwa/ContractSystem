@@ -157,9 +157,10 @@ export const PagesTable = (props) => {
                                                         <Stack alignItems="center" direction="row" spacing={2}>
                                                             {showAvatar && <Avatar src={item.avatar}/>}
                                                             <Typography
+                                                                textAlign="center"
                                                                 sx={{
                                                                     background: (header === "Status") && stagesColor[getNestedValue(item, path)] ? stagesColor[getNestedValue(item, path)] : "unset",
-                                                                    padding: "12px"
+                                                                    padding: "10px"
                                                                 }}
                                                                 variant="subtitle2">
                                                                 {getNestedValue(item, path)}
@@ -183,9 +184,10 @@ export const PagesTable = (props) => {
                                                             </ListItem>
                                                         ) : (
                                                             <Typography
+                                                                textAlign="center"
                                                                 sx={{
                                                                     background: (header === "Status") && stagesColor[item.status] ? stagesColor[item.status] : "unset",
-                                                                    padding: "12px"
+                                                                    padding: "10px"
                                                                 }}
                                                                 variant="subtitle2">
                                                                 {getNestedValue(item, path)}

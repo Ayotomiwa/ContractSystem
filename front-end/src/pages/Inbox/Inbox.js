@@ -139,7 +139,7 @@ const Inbox = () => {
     }
 
     const deleteContract = () => {
-        axios.post(`http://localhost:8080/api/delete/${selectedContractId}`, {}, {
+        axios.post(`https://contract-system-5c4e51349d5b.herokuapp.com/api/inbox/delete/${selectedContractId}`, {}, {
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }

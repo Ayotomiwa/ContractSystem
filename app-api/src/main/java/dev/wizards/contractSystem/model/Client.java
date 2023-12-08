@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Document
@@ -19,6 +20,6 @@ public class Client {
     private User userRecipient;
     private Business businessRecipient;
     private Business businessUser;
-    private LocalDate createdDate;
-    private LocalDate lastUpdatedDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastUpdatedDate;
 }

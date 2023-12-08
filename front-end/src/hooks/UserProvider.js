@@ -15,11 +15,11 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         setIsAuthenticating(true);
-        const user = sessionStorage.getItem('user');
+        const user = localStorage.getItem('user');
         if (user) {
             const decodedToken = jwtDecode(JSON.parse(user).token);
             if (decodedToken.exp * 1000 < Date.now()) {
-                sessionStorage.removeItem('user');
+                localStorage.removeItem('user');
             } else {
                 setUser(JSON.parse(user));
             }
@@ -30,29 +30,18 @@ export const UserProvider = ({ children }) => {
 
 
 
-    useState(() => {
-
-
-
-
-    },[storedPath]);
-
-
-
-
-
     const login = (user, path) => {
-        sessionStorage.setItem('user', JSON.stringify(user));
-        sessionStorage.removeItem('lastUser');
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.removeItem('lastUser');
         setUser(user);
 
         if(path){
             window.location.pathname = path;
         }
         else{
-            storedPath = sessionStorage.getItem('pathBeforeLogin');
+            storedPath = localStorage.getItem('pathBeforeLogin');
             if(storedPath){
-                const lastUser = sessionStorage.getItem('lastUser');
+                const lastUser = localStorage.getItem('lastUser');
                 if(storedPath.startsWith('/contract/edit/') && (lastUser.id !== user.id || lastUser.businessId !== user.businessId)){
                     storedPath = '/';
                 }
@@ -65,10 +54,10 @@ export const UserProvider = ({ children }) => {
     };
 
     const logout = () => {
-        const lastUser = sessionStorage.getItem('lastUser');
-        sessionStorage.setItem('lastUser', JSON.stringify(lastUser));
-        sessionStorage.removeItem('user');
-        sessionStorage.removeItem('pathBeforeLogin');
+        const lastUser = localStorage.getItem('lastUser');
+        localStorage.setItem('lastUser', JSON.stringify(lastUser));
+        localStorage.removeItem('user');
+        localStorage.removeItem('pathBeforeLogin');
         setUser(null);
     };
 

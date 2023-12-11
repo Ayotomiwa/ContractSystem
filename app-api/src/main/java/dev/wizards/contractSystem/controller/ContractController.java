@@ -99,7 +99,7 @@ public class ContractController {
         Context context = new Context();
         context.setVariable("contractName", contract.getName());
         context.setVariable("recipientName", contract.getRecipient().getFirstName() + " " + contract.getRecipient().getLastName());
-        context.setVariable("signinLink", "http://localhost:3000/contract/edit?contractId=" + contract.getId() + "&color=%23d1c4e9&default=false");
+        context.setVariable("signinLink", "https://contract-system.vercel.app/contract/edit?contractId=" + contract.getId() + "&color=%23d1c4e9&default=false");
         Inbox inbox = new Inbox();
         try {
             inbox.setTo(contract.getRecipient().getEmail());

@@ -48,14 +48,23 @@ export const UserProvider = ({ children }) => {
         else{
             storedPath = localStorage.getItem('pathBeforeLogin');
             if(storedPath){
-                if(storedPath.startsWith('/contract/edit/') && (lastUser.id !== user.id || lastUser.businessId !== user.businessId) && timedOut){
+                if(storedPath.includes('/contract/edit') && (lastUser?.id !== user?.id || lastUser?.businessId !== user?.businessId) && timedOut){
                     storedPath = '/';
+
                     setTimedOut(false);
                 }
-                window.location.pathname = storedPath;
+                else if(storedPath.includes('/contract/edit')){
+                    window.location.href = storedPath;
+                    // console.log("storedPath else if", storedPath)
+                }
+                else{
+                    console.log("storedPath else", storedPath)
+                    // window.location.pathname = storedPath;
+                }
             }
             else{
                 window.location.pathname = '/';
+                // console.log("no storedPath");
             }
         }
         setLastUser(user);

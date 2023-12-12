@@ -61,7 +61,7 @@ export const PagesTable = (props) => {
         <Card elevation={6} sx={{overflowX: "auto", border: "0.5px solid black", boxShadow: 3}}>
             {/*<Card sx={{boxShadow:3}}>*/}
             {/*<Scrollbar>*/}
-            <Box sx={{minWidth: 800, minHeight: 450}}>
+            <Box sx={{minWidth: 800, minHeight: 650}}>
                 <Table>
                     {/*<TableHead sx={{backgroundColor:"rgb(59, 61, 145, 0.3)"}}>*/}
                     <TableHead>

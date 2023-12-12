@@ -140,6 +140,7 @@ const Templates = () => {
                 </List>
         </Box>
         <Box
+           sx={{minHeight:"100vh"}}
          // sx={{minHeight:"100vh"}}
         >
             {/*<TemplateHeading/>*/}

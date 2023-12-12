@@ -28,9 +28,14 @@ function App() {
       const publicPaths = ['/', '/login', '/register', '/templates'];
 
       if (!isAuthenticating && !user && !publicPaths.includes(location.pathname)) {
-          localStorage.setItem('pathBeforeLogin', location.pathname);
-          // console.log("App.js private path not logged in: pathBeforeLogin ", localStorage.getItem('pathBeforeLogin'))
-          window.location.pathname = '/login';
+          if(location.pathname.includes('/contract/edit')){
+              localStorage.setItem('pathBeforeLogin', window.location.href);
+          }
+          else {
+              localStorage.setItem('pathBeforeLogin', location.pathname);
+          }
+        // console.log("App.js private path not logged in: pathBeforeLogin ", localStorage.getItem('pathBeforeLogin'))
+        window.location.pathname = '/login';
       }
     }, [user, location, navigate, isAuthenticating, timedOut]);
 
